@@ -13,12 +13,13 @@ echo "<div id='sitetitle' style='width:50%;'>";
 		echo "<a href='index.php'><h1>".WORDING_LIB_TITLE."</h1></a>";
 echo "</div>";
 echo "<div id='toplinks' style='width:50%;position:absolute;right:0;top:0;text-align:right'>";
+/*
 echo "How It Works | Volunteer | Donate | ";
 		if ($filename == "vision")
 			echo WORDING_VISION_TITLE;
 		else
 				echo "<a href='".URL_VISION."'>".WORDING_VISION_TITLE."</a>";
-		echo " | Team";
+		echo " | Team";*/
 if ($loggedIn)
 {
 	echo "<br/>";
