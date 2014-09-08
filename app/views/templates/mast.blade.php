@@ -1,8 +1,9 @@
 <div id='head' style='position:relative;width:100%;margin-bottom:10px;'>
 	<div id='sitetitle' style='width:50%;'>
-		<h1>
-			<a href={{URL::to('/')}}>{{Config::get('app.name')}}</a>
-		</h1>
+		<a href={{URL::to('/')}}>
+		<h1>{{ HTML::image(Config::get('app.logoUrl'),'Library Logo',array('style' => 'width:50px; height:50px; vertical-align:middle;')) }}
+		{{Config::get('app.name')}}</h1>
+		</a>
 		<b>{{Config::get('app.tag_line')}}</b>
 	</div>
 	<div id='toplinks' style='width:50%;position:absolute;right:0;top:0;text-align:right'>
