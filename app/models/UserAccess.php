@@ -33,6 +33,18 @@ class UserAccess extends Eloquent {
 	public $incrementing = false;
 	protected $primaryKey = 'UserID';
 
+	public static function validateUserActive($field, $value, $params)
+	{
+		$user = NULL;
+		$user = UserAccess::where('UserID','=',$value)->first();
+		if ($user == NULL)
+			return false;
+		if ($user->Active == 1)
+			return true;
+	    else
+	    	return false;	
+	}
+
 	public static function Login($userNameEmail, $pwd)
 	{
 		$user = NULL;

@@ -5,6 +5,7 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*",
+		"laravelbook/ardent": "2.*",
 		"phpunit/phpunit": "4.0.*"
 	},
 	"autoload": {
