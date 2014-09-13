@@ -96,7 +96,7 @@ class UserController extends BaseController
         if ($result)
             return View::make('signupSubmit');
         else
-            return var_dump($result);
+            return "Some error occurred";
     }
 }
 ?>

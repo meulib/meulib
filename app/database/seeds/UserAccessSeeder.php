@@ -4,7 +4,7 @@ class UserAccessSeeder extends Seeder {
 
     public function run()
     {
-        //DB::table('users')->delete();
+        DB::table('user_access')->delete();
 
         UserAccess::create(array('UserID' => 'OZJM1549672278',
         					'Username' => 'vanimurarka',
