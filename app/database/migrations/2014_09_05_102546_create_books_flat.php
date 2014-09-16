@@ -14,15 +14,15 @@ class CreateBooksFlat extends Migration {
 	{
 		Schema::create('books_flat', function(Blueprint $table)
 		{
-			$table->bigInteger('ID');
+			$table->bigIncrements('ID');
 			$table->string('Title', 100);
-			$table->integer('Author1ID');
+			$table->integer('Author1ID')->nullable();
 			$table->string('Author1', 100);
-			$table->integer('Author2ID');
+			$table->integer('Author2ID')->nullable();
 			$table->string('Author2', 100);
-			$table->integer('Language1ID');
+			$table->integer('Language1ID')->nullable();
 			$table->string('Language1', 50);
-			$table->integer('Language2ID');
+			$table->integer('Language2ID')->nullable();
 			$table->string('Language2', 50);
 			$table->string('SubTitle', 100);
 

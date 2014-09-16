@@ -17,9 +17,15 @@ Route::get('/', function()
 	return View::make('home');
 });
 
+// ----- BOOK ROUTES --------------
+
 Route::get('browse/{category?}', 'BookController@showAll');
 
 Route::get('book/{id?}', 'BookController@showSingle');
+
+Route::post('addbook', 'BookController@addBook');
+
+// ----- ACCOUNT CREATION ------------
 
 Route::get('account/create', 'UserController@signup');
 
@@ -29,9 +35,13 @@ Route::get('account/activate/{id?}/{verification_code?}', 'UserController@activa
 
 Route::get('showCaptcha', 'UtilityController@showCaptcha');
 
+// ------ LOGIN LOGOUT ---------------
+
 Route::post('login', 'UserController@login');
 
 Route::get('logout', 'UserController@logout');
+
+// ------- TRANSACTIONS --------------
 
 Route::post('request', 'TransactionController@request');
 
