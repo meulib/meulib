@@ -41,5 +41,15 @@ class BookController extends BaseController
             return View::make("book",array('book' => $book, 'copies' => $copies));
 	    }
     }
+
+    public function addBook()
+    {
+        $result = FlatBook::addBook(Input::all());
+        if ($result[0])
+            Session::put('TransactionMessage',['AddBook',[true,'Book added successfully.']]);
+        else
+            Session::put('TransactionMessage',['AddBook',$result]);
+        return Redirect::to(URL::previous());
+    }
 }
 ?>

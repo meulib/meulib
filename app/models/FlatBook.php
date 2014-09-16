@@ -13,7 +13,7 @@ class FlatBook extends Eloquent {
 	public static function addBook($bookDetails)
 	{
 		if (!Session::has('loggedInUser'))
-            return false;
+            return array(false,'No user logged in.');
 
         $userID = Session::get('loggedInUser')->UserID;
 
@@ -24,7 +24,7 @@ class FlatBook extends Eloquent {
         $validator = Validator::make($bookDetails, $rules);
         if ($validator->fails()) 
         {
-            return false;
+            return array(false,$validator->messages());
         }
 
         $book = new FlatBook;
@@ -35,11 +35,35 @@ class FlatBook extends Eloquent {
         if (isset($bookDetails['Language1']))
 	        $book->Language1 = $bookDetails['Language1'];
         if (isset($bookDetails['Language2']))
-        $book->Language2 = $bookDetails['Language2'];
+        	$book->Language2 = $bookDetails['Language2'];
+        if (isset($bookDetails['SubTitle']))
+        	$book->SubTitle = $bookDetails['SubTitle'];
 
         $result = $book->save();
         if ($result)
-        	return true;
+        {
+        	$bookCopy = new BookCopy;
+        	$bookCopy->BookID = $book->ID;
+        	$bookCopy->UserID = $userID;
+        	$result = $bookCopy->save();
+        	if ($result)
+        	{
+        		if (!Session::has('AddBookAdminMail'))
+				{
+				    $body = array('body'=>'New Book Added ' . $userID);
+
+					Mail::send(array('text' => 'emails.raw'), $body, function($message)
+					{
+						$message->to(Config::get('mail.admin'))
+								->subject('New ' . Config::get('app.name') . ' Book');
+					});
+					Session::put('AddBookAdminMail','sent');
+				}     		
+	        	return array(true,$book->ID);
+        	}
+        	return array(false,'Book not saved. DB save error 2.');
+        }
+        return array(false,'Book not saved. DB save error 1.');
 	}
 
 	public static function myBooks($userID)

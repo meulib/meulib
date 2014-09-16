@@ -30,7 +30,7 @@
 			{{{ ", ".$book->Author2 }}}
 			 (Authors)
 		@else
-			 (Author)
+			  (Author)
 		@endif		
 	@endif
 	<br/><br/>

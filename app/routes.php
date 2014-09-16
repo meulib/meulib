@@ -17,11 +17,13 @@ Route::get('/', function()
 	return View::make('home');
 });
 
-// ----- BROWSE ROUTES --------------
+// ----- BOOK ROUTES --------------
 
 Route::get('browse/{category?}', 'BookController@showAll');
 
 Route::get('book/{id?}', 'BookController@showSingle');
+
+Route::post('addbook', 'BookController@addBook');
 
 // ----- ACCOUNT CREATION ------------
 

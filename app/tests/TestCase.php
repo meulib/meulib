@@ -36,9 +36,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
   private function prepareForTests()
   {
     //Artisan::call('db:seed');
-    $this->validUser = UserAccess::find("OZJM1549672278");
+    $this->validUser = User::find("OZJM1549672278");
+    Mail::pretend();
   }
-
-
 }
  

@@ -103,13 +103,13 @@ class TransactionController extends BaseController
         }
         catch (Exception $e)
         {
-            Session::put('TransactionMessage',['LendBook','There was some error. Book lending not recorded.'.$e->getMessage()]);
+            Session::put('TransactionMessage',['LendBook',[false,'There was some error. Book lending not recorded.'.$e->getMessage()]]);
         }        
 
         if ($tranID > 0)
-            Session::put('TransactionMessage',['LendBook','Book Lent.']);
+            Session::put('TransactionMessage',['LendBook',[true,'Book Lent.']]);
         else
-           Session::put('TransactionMessage',['LendBook','There was some error. Book lending not recorded.'.$e->getMessage()]);
+           Session::put('TransactionMessage',['LendBook',[false,'There was some error. Book lending not recorded.'.$e->getMessage()]]);
 
         return Redirect::to(URL::previous());
     }
@@ -142,13 +142,13 @@ class TransactionController extends BaseController
         }
         catch (Exception $e)
         {
-            Session::put('TransactionMessage',['ReturnBook','There was some error. Book return not recorded.'.$e->getMessage()]);
+            Session::put('TransactionMessage',['ReturnBook',[false,'There was some error. Book return not recorded.'.$e->getMessage()]]);
         }        
 
         if ($tranID > 0)
-            Session::put('TransactionMessage',['ReturnBook','Book return recorded.']);
+            Session::put('TransactionMessage',['ReturnBook',[true,'Book return recorded.']]);
         else
-            Session::put('TransactionMessage',['ReturnBook','There was some error. Book return not recorded.'.$e->getMessage()]);
+            Session::put('TransactionMessage',['ReturnBook',[false,'There was some error. Book return not recorded.'.$e->getMessage()]]);
 
         return Redirect::to(URL::previous());
     }
