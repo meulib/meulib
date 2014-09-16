@@ -13,7 +13,6 @@
 
 Route::get('/', function()
 {
-	//return Config::get('app.name');
 	return View::make('home');
 });
 
@@ -31,7 +30,9 @@ Route::get('account/create', 'UserController@signup');
 
 Route::post('account/submit', 'UserController@submitSignup');
 
-Route::get('account/activate/{id?}/{verification_code?}', 'UserController@activate');
+Route::get('account/activate/{id?}/{verification_code?}', array(
+	'as' => 'activate',
+	'uses' => 'UserController@activate'));
 
 Route::get('showCaptcha', 'UtilityController@showCaptcha');
 

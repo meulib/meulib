@@ -30,7 +30,10 @@ class UserController extends BaseController
             {
                 $loggedInUser = User::find($result);
                 Session::put('loggedInUser',$loggedInUser);
-                return Redirect::to(URL::previous());
+                if (strpos(URL::previous(),'activate')) 
+                    return Redirect::to(URL::to('/'));
+                else
+                    return Redirect::to(URL::previous());
             }
             else
                 throw new Exception("Something Wrong In Login", 1);               

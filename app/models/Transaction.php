@@ -230,11 +230,15 @@ class Transaction extends Eloquent {
 					->lists('TransactionID');
 
 		// transaction details for unread messages
-		$trans = Transaction::whereIn('ID',$tranIDs)
-					->with('LenderUser','BorrowerUser','Book')
-					->get();
-
-		return $trans;
+		if (!empty($booksIDs))
+		{
+			$trans = Transaction::whereIn('ID',$tranIDs)
+						->with('LenderUser','BorrowerUser','Book')
+						->get();
+			return $trans;
+		}
+		else
+			return false;
 	}
 
 	public static function tMessages($tranID,$userID)
