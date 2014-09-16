@@ -94,10 +94,15 @@ class FlatBook extends Eloquent {
 						->where('Borrower','=',$borrowerID)
 						->where('Status','=',Transaction::tStatusByKey('T_STATUS_LENT'))
 						->lists('ItemID');
-		$books = FlatBook::whereIn('ID',$booksIDs)
-					->with('Copies')
-					->get();
-		return $books;
+		if (!empty($booksIDs))
+		{
+			$books = FlatBook::whereIn('ID',$booksIDs)
+						->with('Copies')
+						->get();
+			return $books;
+		}
+		else
+			return false;
 	}
 
 }

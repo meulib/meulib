@@ -81,3 +81,8 @@ App::down(function()
 */
 
 require app_path().'/filters.php';
+
+App::missing(function($exception)
+{
+	return Response::view('err_missing', array(), 404);
+});
