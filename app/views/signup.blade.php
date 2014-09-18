@@ -21,33 +21,33 @@
 			<td>{{ Form::label('l_name', 'Full Name'); }}</td>
 			<td>{{ Form::text('name', '', ['required']) }}<br/></td>
 		</tr>
+		<!-- 
 		<tr>
 			<td style="vertical-align: top;">
 				{{ Form::label('l_addr', 'Address'); }}
 			</td>
 		    <td>{{ Form::textarea('address', '', ['size' => '20x3','required']) }}
 		    </td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td>{{ Form::label('l_locality', 'Locality'); }}</td>
-			<td>{{ Form::text('locality', '') }}</td>
+			<td>{{ Form::text('locality', '', ['required']) }}</td>
 		</tr>
 		<tr>
 			<td>{{ Form::label('l_city', 'City'); }}</td>
-			<td>{{ Form::select('city', ['Manipal', 'Udupi'],['required']) }}
-			</td>
+			<td>{{ Form::text('city', '', ['required']) }}</td>
 		</tr>
 		<tr>
 			<td>{{ Form::label('l_state', 'State'); }}</td>
-			<td>{{ Form::select('state', ['Karnataka'],['required']) }}
-			</td>
+			<td>{{ Form::text('state', '', ['required']) }}</td>
 		</tr>
+		<!--
 		<tr>
 			<td>{{ Form::label('l_phone', 'Phone number'); }}<br/>
 				(mobile preferred,<br/>
 				landline with STD)</td>
 			<td valign="top">{{ Form::text('phone', '') }}<br/></td>
-		</tr>
+		</tr> -->
 		<tr>
 			<td>&nbsp;</td>
 			<td><br/></td>

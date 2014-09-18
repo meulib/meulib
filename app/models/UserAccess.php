@@ -113,12 +113,12 @@ class UserAccess extends Eloquent {
 			$user = new User;
 			$user->UserId = $userID;
 			$user->FullName = $data['name'];
-			$user->Address = $data['address'];
+			//$user->Address = $data['address'];
 			$user->Locality = $data['locality'];
 			$user->City = $data['city'];
 			$user->State = $data['state'];
 			$user->EMail = $data['email'];
-			$user->PhoneNumber = $data['phone'];
+			//$user->PhoneNumber = $data['phone'];
 			$user->save();
 		}
 		catch (Exception $e)

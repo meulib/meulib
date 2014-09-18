@@ -74,10 +74,9 @@ class UserController extends BaseController
         $rules = array(
             'email' => 'required|email|confirmed|max:100|unique:user_access,EMail',
             'name' => 'required',
-            'address' => 'required',
+            'locality' => 'required',
             'city' => 'required',
             'state' => 'required',
-            'phone' => 'integer',
             'username' => 'required|alpha_num|between:2,64|unique:user_access,Username',
             'password' => 'required|confirmed|min:6',
             'captcha' => 'captcha'
