@@ -1,8 +1,12 @@
 <div id='head' style='position:relative;width:100%;margin-bottom:10px;'>
 	<div id='sitetitle' style='width:50%;'>
 		<a href={{URL::to('/')}}>
-		<h1>{{ HTML::image(Config::get('app.logoUrl'),'Library Logo',array('style' => 'width:50px; height:50px; vertical-align:middle;')) }}
-		{{Config::get('app.name')}}</h1>
+		<h1>
+		{{ HTML::image(Config::get('app.logoUrl'),Config::get('app.name') . 'Logo',array('style' => 'vertical-align:middle;')) }}
+		@if (Config::get('app.displayNameOnMast'))
+			{{Config::get('app.name')}}
+		@endif
+		</h1>
 		</a>
 		<b>{{Config::get('app.tag_line')}}</b>
 	</div>

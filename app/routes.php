@@ -57,3 +57,32 @@ Route::post('lend', 'TransactionController@lend');
 Route::post('acceptReturn', 'TransactionController@acceptReturn');
 
 Route::get('/messages/{tranID?}', 'TransactionController@messages');
+
+// -------- CALL ARTISAN --------------
+
+/*Route::get('/xxx/{key?}',  array('as' => 'install', function($key = null)
+{
+    if($key == "xxx")
+    {
+	    try 
+	    {
+	      
+	      echo '<br>init with app tables migrations...';
+	      Artisan::call('migrate', [
+//	        '--path'     => "app/database/migrations",
+	        '--force' => true
+	        ]);
+	      echo '<br>done with app tables migrations';
+	      
+	    } 
+	    catch (Exception $e) 
+	    {
+	      Response::make($e->getMessage(), 500);
+	    }
+	}
+	else
+	{
+    	App::abort(404);
+	}
+}
+));*/
