@@ -64,7 +64,7 @@ class Transaction extends Eloquent {
 			$userM = new UserMessage;
 			$userM->MsgID = $msgID;
 			$userM->UserID = $borrowerID;
-			$userM->FromTo = MESSAGE_FROM;
+			$userM->FromTo = TransactionMessage::MsgFromValue();
 			$userM->OtherUserID = $ownerID;
 			$userM->TransactionID = $tranID;
 			$userM->Message = $msg;
@@ -74,19 +74,20 @@ class Transaction extends Eloquent {
 			$userM = new UserMessage;
 			$userM->MsgID = $msgID;
 			$userM->UserID = $ownerID;
-			$userM->FromTo = MESSAGE_TO;
+			$userM->FromTo = TransactionMessage::MsgToValue();
 			$userM->OtherUserID = $borrowerID;
 			$userM->TransactionID = $tranID;
 			$userM->Message = $msg;
 			$userM->save();
+
+			DB::commit();
+			return $tranID;
 		}
 		catch (Exception $e)
 		{
 			DB::rollback();
 			throw $e;
-		}				
-		DB::commit();
-		return $tranID;
+		}
 	}
 
 	public static function reply($tranID, $fromUserID, $toUserID, $msg)
