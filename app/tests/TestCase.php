@@ -3,7 +3,8 @@
 class TestCase extends Illuminate\Foundation\Testing\TestCase 
 {
 
-  protected $validUser = NULL;
+  protected $ownerUser = NULL;
+  protected $borrowerUser = NULL;
   
   /**
    * Default preparation for each test
@@ -36,7 +37,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
   private function prepareForTests()
   {
     //Artisan::call('db:seed');
-    $this->validUser = User::find("OZJM1549672278");
+    $this->ownerUser = User::find("OZJM1549672278");
+    $this->borrowerUser = User::find("CICN2554151496");
     Mail::pretend();
   }
 }

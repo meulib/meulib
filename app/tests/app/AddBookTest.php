@@ -12,21 +12,21 @@ class AddBookTest extends TestCase
 
 	public function testTitleGiven()
 	{
-		Session::put('loggedInUser',$this->validUser);
+		Session::put('loggedInUser',$this->ownerUser);
 		$bookDetails = array('Author1'=>'Me');
 		$this->assertFalse(FlatBook::addBook($bookDetails)[0]); // should not save
 	}
 
 	public function testAuthorGiven()
 	{
-        Session::put('loggedInUser',$this->validUser);
+        Session::put('loggedInUser',$this->ownerUser);
 		$bookDetails = array('Title'=>'My Third Book!');
 		$this->assertFalse(FlatBook::addBook($bookDetails)[0]); // should not save
 	}
 
 	public function testBasicSaved()
 	{
-		Session::put('loggedInUser',$this->validUser);
+		Session::put('loggedInUser',$this->ownerUser);
 		$bookDetails = array('Author1'=>'Me',
 						'Title'=>'My Real Book!');
 		$result = FlatBook::addBook($bookDetails);
@@ -37,14 +37,14 @@ class AddBookTest extends TestCase
 		$this->assertEquals($bookDetails['Author1'], $book->Author1);
 		$this->assertEquals($bookDetails['Title'], $book->Title);
 		$bookCopy = BookCopy::where('BookID', '=', $bookID)
-								->where('UserID', '=', $this->validUser->UserID)
+								->where('UserID', '=', $this->ownerUser->UserID)
 								->count();
 		$this->assertEquals($bookCopy,1); 
 	}
 
 	public function testFullSaved()
 	{
-		Session::put('loggedInUser',$this->validUser);
+		Session::put('loggedInUser',$this->ownerUser);
 		$bookDetails = array('Author1'=>'Me',
 						'Title'=>'My Full Book!',
 						'Author2' => 'My Collaborator',
@@ -63,7 +63,7 @@ class AddBookTest extends TestCase
 		$this->assertEquals($bookDetails['Language2'], $book->Language2);
 		$this->assertEquals($bookDetails['SubTitle'], $book->SubTitle);
 		$bookCopy = BookCopy::where('BookID', '=', $bookID)
-								->where('UserID', '=', $this->validUser->UserID)
+								->where('UserID', '=', $this->ownerUser->UserID)
 								->count();
 		$this->assertEquals($bookCopy,1); 	
 	}
