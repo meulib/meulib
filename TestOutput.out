@@ -1,0 +1,321 @@
+PHPUnit 4.0.20 by Sebastian Bergmann.
+
+Configuration read from C:\vani\Dropbox\www\ourlib\phpunit.xml
+
+......object(Illuminate\Http\RedirectResponse)#3537 (9) {
+  ["request":protected]=>
+  object(Illuminate\Http\Request)#3519 (23) {
+    ["json":protected]=>
+    NULL
+    ["sessionStore":protected]=>
+    NULL
+    ["attributes"]=>
+    object(Symfony\Component\HttpFoundation\ParameterBag)#3523 (1) {
+      ["parameters":protected]=>
+      array(0) {
+      }
+    }
+    ["request"]=>
+    object(Symfony\Component\HttpFoundation\ParameterBag)#3522 (1) {
+      ["parameters":protected]=>
+      array(0) {
+      }
+    }
+    ["query"]=>
+    object(Symfony\Component\HttpFoundation\ParameterBag)#3521 (1) {
+      ["parameters":protected]=>
+      array(0) {
+      }
+    }
+    ["server"]=>
+    object(Symfony\Component\HttpFoundation\ServerBag)#3528 (1) {
+      ["parameters":protected]=>
+      array(16) {
+        ["SERVER_NAME"]=>
+        string(9) "localhost"
+        ["SERVER_PORT"]=>
+        int(80)
+        ["HTTP_HOST"]=>
+        string(9) "localhost"
+        ["HTTP_USER_AGENT"]=>
+        string(19) "Symfony2 BrowserKit"
+        ["HTTP_ACCEPT"]=>
+        string(63) "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+        ["HTTP_ACCEPT_LANGUAGE"]=>
+        string(14) "en-us,en;q=0.5"
+        ["HTTP_ACCEPT_CHARSET"]=>
+        string(30) "ISO-8859-1,utf-8;q=0.7,*;q=0.7"
+        ["REMOTE_ADDR"]=>
+        string(9) "127.0.0.1"
+        ["SCRIPT_NAME"]=>
+        string(0) ""
+        ["SCRIPT_FILENAME"]=>
+        string(0) ""
+        ["SERVER_PROTOCOL"]=>
+        string(8) "HTTP/1.1"
+        ["REQUEST_TIME"]=>
+        int(1411367768)
+        ["PATH_INFO"]=>
+        string(0) ""
+        ["REQUEST_METHOD"]=>
+        string(3) "GET"
+        ["REQUEST_URI"]=>
+        string(9) "/messages"
+        ["QUERY_STRING"]=>
+        string(0) ""
+      }
+    }
+    ["files"]=>
+    object(Symfony\Component\HttpFoundation\FileBag)#3527 (1) {
+      ["parameters":protected]=>
+      array(0) {
+      }
+    }
+    ["cookies"]=>
+    object(Symfony\Component\HttpFoundation\ParameterBag)#3526 (1) {
+      ["parameters":protected]=>
+      array(0) {
+      }
+    }
+    ["headers"]=>
+    object(Symfony\Component\HttpFoundation\HeaderBag)#3529 (2) {
+      ["headers":protected]=>
+      array(5) {
+        ["host"]=>
+        array(1) {
+          [0]=>
+          string(9) "localhost"
+        }
+        ["user-agent"]=>
+        array(1) {
+          [0]=>
+          string(19) "Symfony2 BrowserKit"
+        }
+        ["accept"]=>
+        array(1) {
+          [0]=>
+          string(63) "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+        }
+        ["accept-language"]=>
+        array(1) {
+          [0]=>
+          string(14) "en-us,en;q=0.5"
+        }
+        ["accept-charset"]=>
+        array(1) {
+          [0]=>
+          string(30) "ISO-8859-1,utf-8;q=0.7,*;q=0.7"
+        }
+      }
+      ["cacheControl":protected]=>
+      array(0) {
+      }
+    }
+    ["content":protected]=>
+    NULL
+    ["languages":protected]=>
+    NULL
+    ["charsets":protected]=>
+    NULL
+    ["encodings":protected]=>
+    NULL
+    ["acceptableContentTypes":protected]=>
+    NULL
+    ["pathInfo":protected]=>
+    string(9) "/messages"
+    ["requestUri":protected]=>
+    string(9) "/messages"
+    ["baseUrl":protected]=>
+    string(0) ""
+    ["basePath":protected]=>
+    NULL
+    ["method":protected]=>
+    string(3) "GET"
+    ["format":protected]=>
+    string(4) "html"
+    ["session":protected]=>
+    object(Illuminate\Session\Store)#3174 (8) {
+      ["id":protected]=>
+      string(40) "61ce66cd0b31b6adaf020c9084639511c59d455c"
+      ["name":protected]=>
+      string(15) "laravel_session"
+      ["attributes":protected]=>
+      array(1) {
+        ["_token"]=>
+        string(40) "5f7Xs9Vcxyhh1tqoRPELG0ovoqDINqT7HQkOPaLl"
+      }
+      ["bags":protected]=>
+      array(0) {
+      }
+      ["metaBag":protected]=>
+      object(Symfony\Component\HttpFoundation\Session\Storage\MetadataBag)#3177 (5) {
+        ["name":"Symfony\Component\HttpFoundation\Session\Storage\MetadataBag":private]=>
+        string(10) "__metadata"
+        ["storageKey":"Symfony\Component\HttpFoundation\Session\Storage\MetadataBag":private]=>
+        string(9) "_sf2_meta"
+        ["meta":protected]=>
+        &array(3) {
+          ["u"]=>
+          int(1411367768)
+          ["c"]=>
+          int(1411367768)
+          ["l"]=>
+          string(1) "0"
+        }
+        ["lastUsed":"Symfony\Component\HttpFoundation\Session\Storage\MetadataBag":private]=>
+        int(1411367768)
+        ["updateThreshold":"Symfony\Component\HttpFoundation\Session\Storage\MetadataBag":private]=>
+        int(0)
+      }
+      ["bagData":protected]=>
+      array(1) {
+        ["_sf2_meta"]=>
+        &array(3) {
+          ["u"]=>
+          int(1411367768)
+          ["c"]=>
+          int(1411367768)
+          ["l"]=>
+          string(1) "0"
+        }
+      }
+      ["handler":protected]=>
+      object(Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler)#3173 (0) {
+      }
+      ["started":protected]=>
+      bool(true)
+    }
+    ["locale":protected]=>
+    NULL
+    ["defaultLocale":protected]=>
+    string(2) "en"
+  }
+  ["session":protected]=>
+  object(Illuminate\Session\Store)#3174 (8) {
+    ["id":protected]=>
+    string(40) "61ce66cd0b31b6adaf020c9084639511c59d455c"
+    ["name":protected]=>
+    string(15) "laravel_session"
+    ["attributes":protected]=>
+    array(1) {
+      ["_token"]=>
+      string(40) "5f7Xs9Vcxyhh1tqoRPELG0ovoqDINqT7HQkOPaLl"
+    }
+    ["bags":protected]=>
+    array(0) {
+    }
+    ["metaBag":protected]=>
+    object(Symfony\Component\HttpFoundation\Session\Storage\MetadataBag)#3177 (5) {
+      ["name":"Symfony\Component\HttpFoundation\Session\Storage\MetadataBag":private]=>
+      string(10) "__metadata"
+      ["storageKey":"Symfony\Component\HttpFoundation\Session\Storage\MetadataBag":private]=>
+      string(9) "_sf2_meta"
+      ["meta":protected]=>
+      &array(3) {
+        ["u"]=>
+        int(1411367768)
+        ["c"]=>
+        int(1411367768)
+        ["l"]=>
+        string(1) "0"
+      }
+      ["lastUsed":"Symfony\Component\HttpFoundation\Session\Storage\MetadataBag":private]=>
+      int(1411367768)
+      ["updateThreshold":"Symfony\Component\HttpFoundation\Session\Storage\MetadataBag":private]=>
+      int(0)
+    }
+    ["bagData":protected]=>
+    array(1) {
+      ["_sf2_meta"]=>
+      &array(3) {
+        ["u"]=>
+        int(1411367768)
+        ["c"]=>
+        int(1411367768)
+        ["l"]=>
+        string(1) "0"
+      }
+    }
+    ["handler":protected]=>
+    object(Symfony\Component\HttpFoundation\Session\Storage\Handler\NullSessionHandler)#3173 (0) {
+    }
+    ["started":protected]=>
+    bool(true)
+  }
+  ["targetUrl":protected]=>
+  string(16) "http://localhost"
+  ["headers"]=>
+  object(Symfony\Component\HttpFoundation\ResponseHeaderBag)#3538 (5) {
+    ["computedCacheControl":protected]=>
+    array(1) {
+      ["no-cache"]=>
+      bool(true)
+    }
+    ["cookies":protected]=>
+    array(0) {
+    }
+    ["headerNames":protected]=>
+    array(4) {
+      ["cache-control"]=>
+      string(13) "Cache-Control"
+      ["date"]=>
+      string(4) "Date"
+      ["location"]=>
+      string(8) "Location"
+      ["content-type"]=>
+      string(12) "Content-Type"
+    }
+    ["headers":protected]=>
+    array(4) {
+      ["cache-control"]=>
+      array(1) {
+        [0]=>
+        string(8) "no-cache"
+      }
+      ["date"]=>
+      array(1) {
+        [0]=>
+        string(29) "Mon, 22 Sep 2014 06:36:08 GMT"
+      }
+      ["location"]=>
+      array(1) {
+        [0]=>
+        string(16) "http://localhost"
+      }
+      ["content-type"]=>
+      array(1) {
+        [0]=>
+        string(24) "text/html; charset=UTF-8"
+      }
+    }
+    ["cacheControl":protected]=>
+    array(0) {
+    }
+  }
+  ["content":protected]=>
+  string(353) "<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta http-equiv="refresh" content="1;url=http://localhost" />
+
+        <title>Redirecting to http://localhost</title>
+    </head>
+    <body>
+        Redirecting to <a href="http://localhost">http://localhost</a>.
+    </body>
+</html>"
+  ["version":protected]=>
+  string(3) "1.1"
+  ["statusCode":protected]=>
+  int(302)
+  ["statusText":protected]=>
+  string(5) "Found"
+  ["charset":protected]=>
+  NULL
+}
+.
+
+Time: 14.3 seconds, Memory: 14.75Mb
+
+[30;42mOK (7 tests, 19 assertions)[0m
