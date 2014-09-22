@@ -79,15 +79,14 @@ class Transaction extends Eloquent {
 			$userM->TransactionID = $tranID;
 			$userM->Message = $msg;
 			$userM->save();
-
-			DB::commit();
-			return $tranID;
 		}
 		catch (Exception $e)
 		{
 			DB::rollback();
 			throw $e;
 		}
+		DB::commit();
+		return $tranID;
 	}
 
 	public static function reply($tranID, $fromUserID, $toUserID, $msg)
@@ -107,7 +106,7 @@ class Transaction extends Eloquent {
 			$userM = new UserMessage;
 			$userM->MsgID = $msgID;
 			$userM->UserID = $fromUserID;
-			$userM->FromTo = MESSAGE_FROM;
+			$userM->FromTo = TransactionMessage::MsgFromValue();;
 			$userM->OtherUserID = $toUserID;
 			$userM->TransactionID = $tranID;
 			$userM->Message = $msg;
@@ -117,7 +116,7 @@ class Transaction extends Eloquent {
 			$userM = new UserMessage;
 			$userM->MsgID = $msgID;
 			$userM->UserID = $toUserID;
-			$userM->FromTo = MESSAGE_TO;
+			$userM->FromTo = TransactionMessage::MsgToValue();;
 			$userM->OtherUserID = $fromUserID;
 			$userM->TransactionID = $tranID;
 			$userM->Message = $msg;
@@ -231,7 +230,7 @@ class Transaction extends Eloquent {
 					->lists('TransactionID');
 
 		// transaction details for unread messages
-		if (!empty($booksIDs))
+		if (!empty($tranIDs))
 		{
 			$trans = Transaction::whereIn('ID',$tranIDs)
 						->with('LenderUser','BorrowerUser','Book')

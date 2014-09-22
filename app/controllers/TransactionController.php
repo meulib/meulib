@@ -32,18 +32,22 @@ class TransactionController extends BaseController
     {
         $loggedIn = false;
         if (!Session::has('loggedInUser'))
-            return Redirect::to(URL::to('/'));
-
+            var_dump("no user logged in");
+            //return Redirect::to(URL::to('/'));
+        
         $userID = Session::get('loggedInUser')->UserID;
 
         $msgTransactions = Transaction::openMsgTransactions($userID);
         $msgs = NULL;
         
-        if ($tranID > 0)
-            $msgs = Transaction::tMessages($tranID,$userID);
+        if ($msgTransactions)
+        {
+            if ($tranID > 0)
+                $msgs = Transaction::tMessages($tranID,$userID);
+        }
 
         return View::make("messages",array('msgTransactions' => $msgTransactions,'msgs' => $msgs));
-        //var_dump($result);
+        //var_dump($msgTransactions);
     }
 
     public function reply()
@@ -56,6 +60,7 @@ class TransactionController extends BaseController
         $toUserID = Input::get('toUserID');
         $tranID = Input::get('tranID');
         $msg = Input::get('msg');
+        $msgID = 0;
 
         try
         {

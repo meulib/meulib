@@ -44,7 +44,7 @@
 					@foreach ($msgs as $msg)
 						<?php $i++; ?>
 						<tr>
-						@if ($msg->FromTo == MESSAGE_FROM)
+						@if ($msg->FromTo == TransactionMessage::MsgFromValue())
 							<td>@if ($msg->UserID == $userID) Me @else {{{$msg->User->FullName}}} @endif</td>
 							<td>@if ($msg->OtherUserID == $userID) Me @else {{{$msg->OtherUser->FullName}}} @endif</td>
 							<td style='background-color:#99FFFF'>
