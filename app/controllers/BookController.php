@@ -6,7 +6,7 @@ class BookController extends BaseController
     {
         if (is_null($category))
         {
-        	$books = FlatBook::all();
+        	$books = FlatBook::orderBy('Title', 'asc')->get();
         }
         if ($category == 'mine')
         {
