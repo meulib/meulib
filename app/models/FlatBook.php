@@ -76,6 +76,7 @@ class FlatBook extends Eloquent {
 		if (!empty($booksIDs))
 		{
 			$books = FlatBook::whereIn('ID',$booksIDs)
+						->orderBy('Title', 'asc')
 						->with('Copies')
 						->get();
 			return $books;
@@ -97,6 +98,7 @@ class FlatBook extends Eloquent {
 		if (!empty($booksIDs))
 		{
 			$books = FlatBook::whereIn('ID',$booksIDs)
+						->orderBy('Title', 'asc')
 						->with('Copies')
 						->get();
 			return $books;
