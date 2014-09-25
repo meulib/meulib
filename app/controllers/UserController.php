@@ -77,6 +77,7 @@ class UserController extends BaseController
             'locality' => 'required',
             'city' => 'required',
             'state' => 'required',
+            'country' => 'required',
             'username' => 'required|alpha_num|between:2,64|unique:user_access,Username',
             'password' => 'required|confirmed|min:6',
             'captcha' => 'captcha'

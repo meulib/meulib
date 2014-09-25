@@ -41,6 +41,10 @@
 			<td>{{ Form::label('l_state', 'State'); }}</td>
 			<td>{{ Form::text('state', '', ['required']) }}</td>
 		</tr>
+		<tr>
+			<td>{{ Form::label('l_country', 'Country'); }}</td>
+			<td>{{ Form::text('country', '', ['required']) }}</td>
+		</tr>
 		<!--
 		<tr>
 			<td>{{ Form::label('l_phone', 'Phone number'); }}<br/>

@@ -36,6 +36,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
    */
   private function prepareForTests()
   {
+    $_SERVER["REMOTE_ADDR"] = 'localhost';
     Artisan::call('db:seed');
     $this->ownerUser = User::find("OZJM1549672278");
     $this->borrowerUser = User::find("CICN2554151496");
