@@ -117,9 +117,11 @@ class UserAccess extends Eloquent {
 			$user->Locality = $data['locality'];
 			$user->City = $data['city'];
 			$user->State = $data['state'];
+			$user->Country = $data['country'];
 			$user->EMail = $data['email'];
 			//$user->PhoneNumber = $data['phone'];
 			$user->save();
+
 		}
 		catch (Exception $e)
 		{
@@ -142,6 +144,7 @@ class UserAccess extends Eloquent {
 		}
 		catch (Exception $e)
 		{
+			// TODO: DELETE RECORD FROM DB!!!
 			return false;
 		}
 		return true;
