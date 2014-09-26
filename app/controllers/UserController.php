@@ -23,6 +23,7 @@ class UserController extends BaseController
     {
         $userNameEmail = Input::get('user_name');
         $pwd = Input::get('user_password');
+        $fromURL = Input::get('fromURL');
         try
         {
             $result = UserAccess::login($userNameEmail, $pwd);
@@ -30,10 +31,15 @@ class UserController extends BaseController
             {
                 $loggedInUser = User::find($result);
                 Session::put('loggedInUser',$loggedInUser);
-                if (strpos(URL::previous(),'activate')) 
-                    return Redirect::to(URL::to('/'));
+                if (strlen($fromURL)>0)
+                    return Redirect::to($fromURL);
                 else
-                    return Redirect::to(URL::previous());
+                {
+                    if (strpos(URL::previous(),'activate')) 
+                        return Redirect::to(URL::to('/'));
+                    else
+                        return Redirect::to(URL::previous());
+                }
             }
             else
                 throw new Exception("Something Wrong In Login", 1);               

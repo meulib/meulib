@@ -11,6 +11,7 @@ class TransactionController extends BaseController
         $userID = Session::get('loggedInUser')->UserID;
         $bookCopyID = Input::get('bookCopyID');
         $msg = Input::get('requestMessage');
+        $tranID = 0;
         try
         {
             $tranID = Transaction::request($userID,$bookCopyID,$msg);
@@ -32,8 +33,7 @@ class TransactionController extends BaseController
     {
         $loggedIn = false;
         if (!Session::has('loggedInUser'))
-            var_dump("no user logged in");
-            //return Redirect::to(URL::to('/'));
+           return Redirect::to(URL::to('/'))->with('LoginMessage',array('from'=>'Messages','fromURL'=>URL::current()));
         
         $userID = Session::get('loggedInUser')->UserID;
 
@@ -61,10 +61,10 @@ class TransactionController extends BaseController
         $tranID = Input::get('tranID');
         $msg = Input::get('msg');
         $msgID = 0;
-
+        $transaction = Transaction::findOrFail($tranID);
         try
         {
-            $msgID = Transaction::reply($tranID, $userID, $toUserID, $msg);
+            $msgID = $transaction->reply($userID, $toUserID, $msg);
         }
         catch (Exception $e)
         {

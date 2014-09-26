@@ -35,6 +35,10 @@ class Transaction extends Eloquent {
 		$itemID = $iCopy->BookID;
 		$tranID = 0;
 
+		$owner = User::findOrFail($ownerID);
+		$borrower = User::findOrFail($borrowerID);
+		$item = FlatBook::findOrFail($itemID);
+
 		DB::beginTransaction();
 
 		try 
@@ -79,6 +83,20 @@ class Transaction extends Eloquent {
 			$userM->TransactionID = $tranID;
 			$userM->Message = $msg;
 			$userM->save();
+
+			
+			$data['email'] = $owner->EMail;
+			$data['name'] = $owner->FullName;
+			$msgData['to'] = $owner->FullName;
+			$msgData['from'] = $borrower->FullName;
+			$msgData['bookFullTitle'] = $item->FullTitle();
+			$msgData['tranID'] = $tranID;
+			$msgData['msg'] = $msg;
+			Mail::send('emails.messageRequest',$msgData, function($message) use ($data)
+			{
+				$message->to($data['email'], $data['name'])
+						->subject('A Request For Your Book');
+			});
 		}
 		catch (Exception $e)
 		{
@@ -89,13 +107,13 @@ class Transaction extends Eloquent {
 		return $tranID;
 	}
 
-	public static function reply($tranID, $fromUserID, $toUserID, $msg)
+	public function reply($fromUserID, $toUserID, $msg)
 	{
 		DB::beginTransaction();
 		try
 		{
 			$tranM = new TransactionMessage;
-			$tranM->TransactionID = $tranID;
+			$tranM->TransactionID = $this->ID;
 			$tranM->MessageFrom = $fromUserID;
 			$tranM->MessageTo = $toUserID;
 			$tranM->Message = $msg;
@@ -108,7 +126,7 @@ class Transaction extends Eloquent {
 			$userM->UserID = $fromUserID;
 			$userM->FromTo = TransactionMessage::MsgFromValue();;
 			$userM->OtherUserID = $toUserID;
-			$userM->TransactionID = $tranID;
+			$userM->TransactionID = $this->ID;
 			$userM->Message = $msg;
 			$userM->ReadFlag = 1;
 			$userM->save();
@@ -118,9 +136,33 @@ class Transaction extends Eloquent {
 			$userM->UserID = $toUserID;
 			$userM->FromTo = TransactionMessage::MsgToValue();;
 			$userM->OtherUserID = $fromUserID;
-			$userM->TransactionID = $tranID;
+			$userM->TransactionID = $this->ID;
 			$userM->Message = $msg;
 			$userM->save();
+
+			$this->load('LenderUser','BorrowerUser','Book');
+			if ($fromUserID == $this->Lender)
+				$fromUser = $this->LenderUser;
+			else
+				$fromUser = $this->BorrowerUser;
+			if ($toUserID == $this->Lender)
+				$toUser = $this->LenderUser;
+			else
+				$toUser = $this->BorrowerUser;
+
+			$item = $this->Book;
+			$data['email'] = $toUser->EMail;
+			$data['name'] = $toUser->FullName;
+			$msgData['to'] = $toUser->FullName;
+			$msgData['from'] = $fromUser->FullName;
+			$msgData['bookFullTitle'] = $item->FullTitle();
+			$msgData['tranID'] = $this->ID;
+			$msgData['msg'] = $msg;
+			Mail::send('emails.messagePosted',$msgData, function($message) use ($data)
+			{
+				$message->to($data['email'], $data['name'])
+						->subject('A Message For You');
+			});
 		}
 		catch (Exception $e)
 		{

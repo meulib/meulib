@@ -19,13 +19,7 @@
 			?> | 
 			<a href={{URL::action('UserController@logout')}}>Logout</a>
 		@else
-			{{ Form::open(array('action' => 'UserController@login')) }}
-				{{ Form::label('user_name', 'Username'); }}
-				{{ Form::text('user_name', 'username or email'); }} 
-				{{ Form::label('user_password', 'Password'); }}
-				{{ Form::password('user_password'); }}
-				{{ Form::submit('Login'); }}
-			{{ Form::close() }}
+			@include('templates.loginFormH')
 		@endif
 	</div>
 </div>

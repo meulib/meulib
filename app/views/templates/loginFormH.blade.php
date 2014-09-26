@@ -5,8 +5,8 @@
 		{{ Form::hidden('fromURL', '') }}
 	@endif
 	{{ Form::label('user_name', 'Username'); }}
-	{{ Form::text('user_name', 'username or email'); }}<br/>
+	{{ Form::text('user_name', 'username or email'); }} 
 	{{ Form::label('user_password', 'Password'); }}
-	{{ Form::password('user_password'); }}<br/>
+	{{ Form::password('user_password'); }}
 	{{ Form::submit('Login'); }}
 {{ Form::close() }}

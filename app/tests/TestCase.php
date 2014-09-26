@@ -3,8 +3,8 @@
 class TestCase extends Illuminate\Foundation\Testing\TestCase 
 {
 
-  protected $ownerUser = NULL;
-  protected $borrowerUser = NULL;
+  protected $owner = NULL;
+  protected $borrower = NULL;
   
   /**
    * Default preparation for each test
@@ -38,8 +38,8 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
   {
     $_SERVER["REMOTE_ADDR"] = 'localhost';
     Artisan::call('db:seed');
-    $this->ownerUser = User::find("OZJM1549672278");
-    $this->borrowerUser = User::find("CICN2554151496");
+    $this->owner = User::find("OZJM1549672278");
+    $this->borrower = User::find("CICN2554151496");
     Mail::pretend();
   }
 }
