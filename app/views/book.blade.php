@@ -20,6 +20,12 @@
 ?>
 
 @section('content')
+
+@if (!$loggedIn)
+	Join / Login for more details about the owner(s) and to request this book.
+	<br/><br/>
+@endif
+
 @if ($tMsg[1]!="")
 	<p align='center'><span style="border:2px solid blue;padding:4px;background-color:LemonChiffon">{{{$tMsg[1]}}}</span></p>
 @endif
@@ -36,7 +42,7 @@
 	<br/><br/>
 	Book Copies ({{{count($copies)}}})
 	<br/><br/>
-	<b>Lenders</b><br/><br/>
+	<b>Owners</b><br/><br/>
 	@foreach($copies as $bCopy)
 		@if ($loggedIn)
 			{{{$bCopy->Owner->FullName.': '}}}

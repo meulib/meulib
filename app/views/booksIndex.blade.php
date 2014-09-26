@@ -2,6 +2,9 @@
 @extends('templates.base')
 
 <?php
+	$loggedIn = false;
+	if (Session::has('loggedInUser'))
+		$loggedIn = true;
 	$pendingReqURL = URL::to('pendingRequests');
 	$returnForm = URL::to('returnForm');
 	$tMsg = ["",""];
@@ -16,6 +19,10 @@
 ?>
 
 @section('content')
+
+@if (!$loggedIn)
+	Join / Login to request books, to add your own books to lend.
+@endif
 
 @if ($tMsg[1]!="")
 	<p align='center'>
