@@ -107,6 +107,13 @@ class FlatBook extends Eloquent {
 			return false;
 	}
 
+	public function FullTitle()
+	{
+		$title = $this->Title;
+		if (strlen($this->SubTitle)>0)
+			$title .= ' : ' . $this->SubTitle;
+		return $title;
+	}
 }
 
 ?>
