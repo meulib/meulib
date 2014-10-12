@@ -34,21 +34,6 @@
 		</span>
 	</p>
 @endif
-<hr/>
-<!-- --- LIBRARY LOCATIONS LISTING --- -->
-Locations: 
-@if ($locations)
-	@foreach($locations as $location)
-		<a href={{ URL::action('BookController@showAll', array($location->ID))}}>
-			{{{ $location->Location . ', ' . $location->Country}}}
-		</a>
-		 | 
-	@endforeach
-@endif
-<br/>
-Showing: {{{ $currentLocation }}}
-<hr/>
-<!-- --- BOOK LISTING --- -->
 <ul>
 @if ($books)
 	@foreach($books as $book)
@@ -65,13 +50,26 @@ Showing: {{{ $currentLocation }}}
 			@if ($book->Author2)
 				{{{ ", ".$book->Author2 }}}
 			@endif
-		</li>	
+			<br/>
+			@foreach($book->Copies as $copy)
+				{{{$copy->StatusTxt()}}} 
+				@if ($copy->StatusTxt() == 'Available')
+					<?php $onclick = "showDivBookCopy('".$copy->ID."','".$pendingReqURL."')"; ?>
+					{{ HTML::link('#','Lend', ['onclick'=>$onclick]); }}
+					{{"<div id='showDiv2".$copy->ID."' style='display:none'></div>"}}
+				@endif
+				@if ($copy->StatusTxt() == 'Lent Out')
+					<?php $onclick = "showDivBookCopy('".$copy->ID."','".$returnForm."')"; ?>
+					{{ HTML::link('#','Accept Return', ['onclick'=>$onclick]); }}
+					{{"<div id='showDiv2".$copy->ID."' style='display:none'></div>"}}
+				@endif
+			@endforeach
+			<br/><br/>
 	@endforeach
 @endif
 </ul>
 
 @if (Session::has('loggedInUser'))
-	<hr/>
 	<a name="AddBooks"></a>
 	ADD BOOKS THAT YOU ARE WILLING TO LEND<br/>
 	<br/>

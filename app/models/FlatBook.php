@@ -15,7 +15,9 @@ class FlatBook extends Eloquent {
 		if (!Session::has('loggedInUser'))
             return array(false,'No user logged in.');
 
-        $userID = Session::get('loggedInUser')->UserID;
+        $user = Session::get('loggedInUser');
+        $userID = $user->UserID;
+        $userLocation = $user->LocationID;
 
 		$rules = array(
             'Title' => 'required',
@@ -45,6 +47,7 @@ class FlatBook extends Eloquent {
         	$bookCopy = new BookCopy;
         	$bookCopy->BookID = $book->ID;
         	$bookCopy->UserID = $userID;
+        	$bookCopy->LocationID = $userLocation;
         	$result = $bookCopy->save();
         	if ($result)
         	{
@@ -113,6 +116,26 @@ class FlatBook extends Eloquent {
 		if (strlen($this->SubTitle)>0)
 			$title .= ' : ' . $this->SubTitle;
 		return $title;
+	}
+
+	public static function byLocation($LocationID)
+	{
+		/*DB::table('books_flat')
+            ->join('bookcopies', 'books_flat.ID', '=', 'bookcopies.BookID')
+            ->join('users', 'bookcopies.UserID', '=', 'orders.user_id')
+            ->select('users.id', 'contacts.phone', 'orders.price')
+            ->get();*/
+
+		$books = FlatBook::with('Copies')
+			->whereHas('Copies', function($q) use($LocationID)
+						{
+						    $q->where('LocationID', '=', $LocationID);
+						}
+					)
+			->orderBy('Title', 'asc')
+            ->orderBy('Author1', 'asc')
+			->get();
+		return $books;
 	}
 }
 

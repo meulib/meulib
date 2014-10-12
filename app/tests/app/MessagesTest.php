@@ -28,7 +28,7 @@ class MessagesTest extends TestCase
 		$this->assertViewHas('msgTransactions');
 		$transactions = $response->original->getData()['msgTransactions'];
 		$msgs = $response->original->getData()['msgs'];
-		$this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $transactions);
+		$this->assertInstanceOf($this->eloquentCollectionType, $transactions);
 		
 	}
 }

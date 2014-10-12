@@ -17,10 +17,10 @@
         @if (Session::has('loggedInUser'))
             {{HTML::link(URL::to('/messages'), 'Messages')}}
              | 
-            {{HTML::link(URL::to('/browse/mine'), 'My Books')}} | 
-            {{HTML::link(URL::to('/browse/borrowed'), 'My Borrowed Books')}}
+            {{HTML::link(URL::to('my-books'), 'My Books')}} | 
+            {{HTML::link(URL::to('borrowed-books'), 'Borrowed Books')}}
         @else
-            {{HTML::link(URL::to('account/create'), 'Join')}}
+            {{HTML::link(URL::to('account/create'), 'Become a Member')}}
         @endif
         <br/><br/>
     @show
