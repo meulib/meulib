@@ -13,7 +13,8 @@ class BookSeeder extends Seeder {
         	));
         BookCopy::create(array('ID' => 1,
                     'BookID' => 1,
-                    'UserID' => 'OZJM1549672278'
+                    'UserID' => 'Owner1',
+                    'LocationID' => 1   // udupi-manipal
             ));
     }
 

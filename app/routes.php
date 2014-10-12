@@ -18,11 +18,15 @@ Route::get('/', function()
 
 // ----- BOOK ROUTES --------------
 
-Route::get('browse/{category?}', 'BookController@showAll');
+Route::get('browse/{location?}', 'BookController@showAll');
 
 Route::get('book/{id?}', 'BookController@showSingle');
 
 Route::post('addbook', 'BookController@addBook');
+
+Route::get('my-books', 'BookController@myBooks');
+
+Route::get('borrowed-books', 'BookController@borrowedBooks');
 
 // ----- ACCOUNT CREATION ------------
 

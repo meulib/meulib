@@ -120,6 +120,7 @@ class UserAccess extends Eloquent {
 			$user->Country = $data['country'];
 			$user->EMail = $data['email'];
 			//$user->PhoneNumber = $data['phone'];
+			$user->LocationID = Location::newUserLocationID($data['city'],$data['state'],$data['country']);
 			$user->save();
 
 		}
@@ -159,6 +160,9 @@ class UserAccess extends Eloquent {
 
 		if ($user == NULL)
 			return false;
+		if ($user->Active == 1)
+			return true;
+
 		$user->Active = 1;
 		$user->ActivationHash = NULL;
 		$result = $user->save();
