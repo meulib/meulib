@@ -20,6 +20,7 @@ class Transaction extends Eloquent {
 		return $this->hasOne('FlatBook', 'ID', 'ItemID');
 	}	
 
+	// user sends request for a book to another user
 	public static function request($borrowerID, $itemCopyID, $msg)
 	{
 
@@ -107,6 +108,7 @@ class Transaction extends Eloquent {
 		return $tranID;
 	}
 
+	// user replies to a message
 	public function reply($fromUserID, $toUserID, $msg)
 	{
 		DB::beginTransaction();
@@ -173,6 +175,11 @@ class Transaction extends Eloquent {
 		return $msgID;
 	}
 
+	// user lends a book to another user - via Pending Requests
+	// SUCCESS RETURN:: TransactionID
+	// FAILURE:: Exception
+	// TODO:: Make "lend" and "lendDirect" behave same in return behavior
+	// on success and failure
 	public static function lend($lenderID, $itemCopyID, $borrowerID)
 	{
 		$itemCopy = BookCopy::where('ID','=',$itemCopyID)
@@ -215,6 +222,85 @@ class Transaction extends Eloquent {
 
 	}
 
+	// user lends to a person directly
+	// may or may not be a library member
+	// SUCCESS RETURN: TransactionID in one member array
+	// FAILURE: Array, first element false, other elements reason
+	// TODO:: Make "lend" and "lendDirect" behave same in return behavior
+	// on success and failure
+	public static function lendDirect($lenderID, $itemCopyID, $borrowerName, $borrowerEmail = null, $borrowerPhone = null)
+	{
+
+		// is item available to be lent?
+		$itemCopy = BookCopy::where('ID','=',$itemCopyID)
+					->where('UserID','=',$lenderID)
+					->where('Status','=', BookCopy::StatusVal('Available'))
+					->first();
+		if (!$itemCopy)
+			return [false,'Item Not Available'];
+		$itemID = $itemCopy->BookID;
+
+		$phantomUserResult = UserAccess::addNewPhantomUser($borrowerName,$borrowerEmail,$borrowerPhone);
+		if (!$phantomUserResult['UserID'])	// 1st element of result = false => failure
+			return [false,$phantomUserResult['msg']];	// user did not get created. Some error in borrower details
+		
+		// enter lend direct transaction
+		$borrowerID = $phantomUserResult['UserID'];
+
+		DB::beginTransaction();
+
+		try 
+		{
+			$tran = new Transaction;
+			$tran->Borrower = $borrowerID;
+			$tran->Lender = $lenderID;
+			$tran->ItemCopyID = $itemCopyID;
+			$tran->ItemID = $itemID;
+			$tran->Status = self::tStatusByKey('T_STATUS_LENT');
+			$tran->save();
+			$tranID = $tran->ID;
+
+			$tranH = new TransactionHistory;
+			$tranH->TransactionID = $tranID;
+			$tranH->Status = self::tStatusByKey('T_STATUS_LENT');
+			$tranH->save();
+
+			$itemCopy->Status = BookCopy::StatusVal('Lent Out');
+			$itemCopy->save();
+		}
+		catch (Exception $e)
+		{
+			DB::rollback();
+			return [false,'DB Error '.$e->getMessage()];
+		}
+		DB::commit();
+
+		// SEND EMAIL TO BORROWER IF EMAIL GIVEN
+		if (strlen($borrowerEmail)>0)
+		{
+			$owner = User::find($lenderID);
+
+			$msgData['email'] = $borrowerEmail;
+			$msgData['borrower'] = $borrowerName;
+			$msgData['bookName'] = $itemCopy->Book->FullTitle();
+			$msgData['owner'] = $owner->FullName;
+			if ($phantomUserResult['isPhantom'])
+				$template = 'emails.directLendPhantomUser'; 
+			else
+				$template = 'emails.directLendRealUser'; 
+
+			Mail::send($template,$msgData, function($message) use ($msgData)
+			{
+				$message->to($msgData['email'], $msgData['borrower'])
+						->subject($msgData['owner'].' lent you '.$msgData['bookName']);
+			});	
+			
+		}
+		
+		return [$tranID];
+	}
+
+	// user records the return of an item
 	public static function returnItem($lenderID, $itemCopyID, $borrowerID)
 	{
 		$itemCopy = BookCopy::where('ID','=',$itemCopyID)
@@ -240,17 +326,19 @@ class Transaction extends Eloquent {
 		DB::beginTransaction();
 		try 
 		{
-			$tran->Status = self::tStatusByKey('T_STATUS_RETURNED');
-			$tran->save();
-			// TO DO: active transaction should be removed actually
-
+			// post to history
 			$tranH = new TransactionHistory;
 			$tranH->TransactionID = $tran->ID;
 			$tranH->Status = self::tStatusByKey('T_STATUS_RETURNED');
 			$tranH->save();
 
+			// mark item as available
 			$itemCopy->Status = BookCopy::StatusVal('Available');
 			$itemCopy->save();
+
+			// delete the transaction from active table
+			$tran->Status = self::tStatusByKey('T_STATUS_RETURNED');
+			$tran->delete();
 		}
 		catch (Exception $e)
 		{
@@ -261,6 +349,8 @@ class Transaction extends Eloquent {
 		return $tran->ID;
 	}
 
+	// Retrieve Function - No Action
+	// all transactions which contain some unread messages returned
 	public static function openMsgTransactions($userID)
 	{
 		// unread messages
@@ -283,6 +373,10 @@ class Transaction extends Eloquent {
 			return false;
 	}
 
+	// Retrieve Function - No Action
+	// messages for a particular transaction returned
+	// from the perspective of one of the users
+	// of the transaction
 	public static function tMessages($tranID,$userID)
 	{
 		$msgs = UserMessage::where('TransactionID', '=', $tranID)
@@ -292,6 +386,9 @@ class Transaction extends Eloquent {
 		return $msgs;
 	}
 
+	// Retrieve Function - No Action
+	// returns human readable Transaction Status
+	// for numeric status saved in db
 	public static function tStatusByVal($sVal)
 	{
 		switch ($sVal) 
@@ -314,6 +411,9 @@ class Transaction extends Eloquent {
 		}
 	}
 
+	// Retrieve Function - No Action
+	// returns numeric Transaction Status
+	// for human readable keys
 	public static function tStatusByKey($sKey)
 	{
 		switch ($sKey) 
@@ -336,6 +436,8 @@ class Transaction extends Eloquent {
 		}
 	}
 
+	// Retrieve Function - No Action
+	// all pending requests for a particular item returned
 	public static function pendingRequests($itemCopyID, $lenderID)
 	{
 		$trans = Transaction::where('ItemCopyID','=',$itemCopyID)
@@ -346,6 +448,8 @@ class Transaction extends Eloquent {
 		return $trans;
 	}
 
+	// Retrieve Function - No Action
+	// details of the current borrow transaction for a particular item
 	public static function borrowerByItemCopy($itemCopyID, $ownerID)
 	{
 		$tran = Transaction::where('ItemCopyID','=',$itemCopyID)

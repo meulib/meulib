@@ -99,22 +99,39 @@ class TransactionController extends BaseController
 
         $userID = Session::get('loggedInUser')->UserID;
         $bookCopyID = Input::get('bookCopyID');
-        $borrowerID = Input::get('lendToID');
+        $borrowerID = Input::get('lendToID'.$bookCopyID);
+        $requestsExist = Input::get('existsRequests'.$bookCopyID);
         $tranID = 0;
 
-        try
+
+        if (($borrowerID == -1) || (!$requestsExist))   // Direct Lending via Name, Email, Phone
         {
-            $tranID = Transaction::lend($userID,$bookCopyID,$borrowerID);
+            $borrowerName = Input::get('bName'.$bookCopyID);
+            $borrowerEmail = Input::get('bEmail'.$bookCopyID);
+            $borrowerPhone = Input::get('bPhone'.$bookCopyID);
+
+            $result = Transaction::lendDirect($userID,$bookCopyID,$borrowerName,$borrowerEmail,$borrowerPhone);
+
+            if (is_int($result[0])) // transaction id returned
+                $tranID = $result[0];
+            else
+                Session::put('TransactionMessage',['LendBook',[false,'There was some error. Book lending not recorded. '.$result[1]]]);
         }
-        catch (Exception $e)
+        else  // Lend to a pending request
         {
-            Session::put('TransactionMessage',['LendBook',[false,'There was some error. Book lending not recorded.'.$e->getMessage()]]);
-        }        
+            try
+            {
+                $tranID = Transaction::lend($userID,$bookCopyID,$borrowerID);
+            }
+            catch (Exception $e)
+            {
+                Session::put('TransactionMessage',['LendBook',[false,'There was some error. Book lending not recorded. '.$e->getMessage()]]);
+            }
+        }              
 
         if ($tranID > 0)
-            Session::put('TransactionMessage',['LendBook',[true,'Book Lent.']]);
-        else
-           Session::put('TransactionMessage',['LendBook',[false,'There was some error. Book lending not recorded.'.$e->getMessage()]]);
+            Session::put('TransactionMessage',['LendBook',[true,'Book lending recorded.']]);
+            //return true;
 
         return Redirect::to(URL::previous());
     }
