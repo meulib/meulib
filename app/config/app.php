@@ -38,7 +38,7 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost/ourlib-laravel/public',
+	'url' => 'http://localhost/ourlib/public',
 	'logoUrl' => 'images/logoOurLib50.png',
 	'displayNameOnMast' => true,
 

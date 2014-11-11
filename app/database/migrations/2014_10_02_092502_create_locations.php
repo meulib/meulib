@@ -17,6 +17,7 @@ class CreateLocations extends Migration {
 			$table->increments('ID');
 			$table->string('Location', 100);
 			$table->string('Country', 100);
+			
 			$table->timestamps();
 			$table->engine = 'InnoDB';
 		});

@@ -1,0 +1,26 @@
+browser by location
+----------------
+update db records in bookcopies and users table as per location, in production db
+
+direct lending
+-----------
+ui - 
+below pending req
+direct lending
+name
+phone
+email address
+
+lending transaction -
+add user in user table, but not in user access table - done
+normal transaction - done
+message sent to borrower if email id given - done
+
+new user -
+check for user in user table - done
+
+return item - 
+direct return - might not require any change
+
+* db migration - phonenumber & email nullable, unique in user - done
+* set phonenumber & email explicitly to null when entering new user in current process and new process cause laravel sets it to empty string - done

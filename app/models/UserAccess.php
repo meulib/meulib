@@ -83,7 +83,10 @@ class UserAccess extends Eloquent {
 			$a = chr(rand(1,26)+64).chr(rand(1,26)+64).chr(rand(1,26)+64).chr(rand(1,26)+64);
 			$n = mt_rand()*2;
 			$an = $a.$n;
-			$result = self::where('UserID','=',$an)->count();
+			// check User table for unique userID and 
+			// not UserAccess because there may be 
+			// Users by direct lending in the User table too
+			$result = User::where('UserID','=',$an)->count();
 			if ($result==0)
 				$found = true;
 		}
@@ -119,7 +122,7 @@ class UserAccess extends Eloquent {
 			$user->State = $data['state'];
 			$user->Country = $data['country'];
 			$user->EMail = $data['email'];
-			//$user->PhoneNumber = $data['phone'];
+			$user->PhoneNumber = NULL;
 			$user->LocationID = Location::newUserLocationID($data['city'],$data['state'],$data['country']);
 			$user->save();
 
@@ -149,6 +152,106 @@ class UserAccess extends Eloquent {
 			return false;
 		}
 		return true;
+	}
+
+	// a phantom user is not yet a real user of the system
+	// it gets created via direct lending by a user
+	// record is entered only in user, not in user access
+	public static function addNewPhantomUser($name, $email=null, $phone=null)
+	{
+		$emailGiven = false;
+		$phoneGiven = false;
+		$matchedBy = "";
+
+		// basic parameter format validation
+		$validationRules = array(
+			'Name' => "required|min:2",
+            'Email' => "email",
+            'Phone' => 'regex:/^[0-9]+$/'
+        );
+        $data = array('Phone' => $phone,
+        				'Email' => $email,
+        				'Name' => $name );
+        $validator = Validator::make($data, $validationRules);
+        if ($validator->fails()) 
+            return array('UserID' => false, 
+				'msg' => $validator->messages());
+
+		// either borrower email or phone given?
+		if ((strlen($email)==0)&&(strlen($phone)==0))
+			return array('UserID' => false, 
+				'msg' => "Insufficient Borrower Details. Either email or phone number required.");
+
+		// check if user exists
+		if (strlen($email)>0)
+			$emailGiven = true;
+		if (strlen($phone)>0)
+			$phoneGiven = true;
+
+		$user=NULL;
+		if ($emailGiven)
+		{
+			$user = User::where('EMail','=',$email)->first();
+			if ($user != NULL)
+				$matchedBy = "email";
+		}
+		else
+		{
+			if ($phoneGiven)
+			{
+				$user = User::where('PhoneNumber','=',$phone)->first();
+				if ($user != NULL)
+					$matchedBy = "phone";
+			}
+			else
+				return array('UserID' => false, 
+				'msg' => "Insufficient Borrower Details. Either email or phone number required.");
+		}
+
+		if ($user==NULL)
+		{
+			// add new phantom user
+			$userID = self::generateUserID();
+			$user = new User;
+			$user->UserId = $userID;
+			$user->FullName = $name;
+			if ($emailGiven)
+				$user->EMail = $email;
+			else
+				$user->EMail = NULL;
+			if ($phoneGiven)
+				$user->PhoneNumber = $phone;
+			else
+				$user->PhoneNumber = NULL;
+			$result = $user->save();
+
+			if ($result)	// saved successfully
+				return array('UserID' => $userID, 
+				'msg' => "New User",
+				'isPhantom' => true);
+		}
+		else // some user already exists. overwrite and send existing userid
+		{
+			$isPhantom = true;
+			// check if user is real user by searching in UserAccess
+			$userA = self::where('UserID','=',$user->UserID)->first();
+			if ($userA != NULL)
+				$isPhantom = false;
+
+			if ($isPhantom)	// change these details only for phantom users, not real users
+			{
+				$user->FullName = $name;
+				if ($emailGiven)
+					$user->EMail = $email;
+			}
+			if ($phoneGiven)
+				$user->PhoneNumber = $phone;
+			$result = $user->save();
+
+			return array('UserID' => $user->UserID, 
+				'msg' => "User Existed. Matched by ".$matchedBy,
+				'isPhantom' => $isPhantom);
+		}
 	}
 
 	public static function verifyUserEmail($userid, $activationHash)

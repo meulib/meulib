@@ -11,10 +11,7 @@
 	if (Session::has('TransactionMessage'))
 	{
 		$tMsg = Session::get('TransactionMessage');
-		//if (($tMsg[0] == 'LendBook') || ($tMsg[0] == 'ReturnBook'))
-		//{
-			Session::forget('TransactionMessage');	
-		//}
+			Session::forget('TransactionMessage');
 	}
 ?>
 
@@ -26,7 +23,7 @@
 
 @if ($tMsg[1]!="")
 	<p align='center'>
-		<span style="border:2px solid blue;padding:4px;background-color:LemonChiffon">
+		<span style="border:1px solid blue;padding:4px;background-color:LemonChiffon">
 			{{{$tMsg[1][1] }}}
 			@if ($tMsg[1][0] && ($tMsg[0] == 'AddBook'))
 				<a href="#AddBooks">Add More Books</a>
@@ -54,12 +51,13 @@
 			@foreach($book->Copies as $copy)
 				{{{$copy->StatusTxt()}}} 
 				@if ($copy->StatusTxt() == 'Available')
-					<?php $onclick = "showDivBookCopy('".$copy->ID."','".$pendingReqURL."')"; ?>
+					<?php $onclick = "showLendForm('".$copy->ID."','".$pendingReqURL."')"; ?>
 					{{ HTML::link('#','Lend', ['onclick'=>$onclick]); }}
-					{{"<div id='showDiv2".$copy->ID."' style='display:none'></div>"}}
+					<br/>
+					{{"<div id='showDiv2".$copy->ID."' style='display:none; border:2px grey solid;padding: 5px;'></div>"}}
 				@endif
 				@if ($copy->StatusTxt() == 'Lent Out')
-					<?php $onclick = "showDivBookCopy('".$copy->ID."','".$returnForm."')"; ?>
+					<?php $onclick = "showLendForm('".$copy->ID."','".$returnForm."')"; ?>
 					{{ HTML::link('#','Accept Return', ['onclick'=>$onclick]); }}
 					{{"<div id='showDiv2".$copy->ID."' style='display:none'></div>"}}
 				@endif
