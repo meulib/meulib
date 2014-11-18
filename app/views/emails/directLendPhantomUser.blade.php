@@ -18,6 +18,7 @@
 			<br/><br/>
 			We invite you to come and have a look:<br>
 			<a href="'"{{Config::get('app.url');}}"'">{{Config::get('app.url');}}</a>
+			<br/><br/>
 			Admin<br/>
 			{{Config::get('app.name');}}<br/>			
 			<!-- This link will expire in {{ Config::get('auth.reminder.expire', 60) }} minutes. -->
