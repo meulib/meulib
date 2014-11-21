@@ -1,5 +1,6 @@
-<div id='head' style='position:relative;width:100%;margin-bottom:10px;margin-top:0px;'>
-	<div id='sitetitle' style='width:50%;'>
+<div class='head'>
+	<!-- div class='siteTitle' style='width:50%;'-->
+	<div class='siteTitle'>
 		<a href={{URL::to('/')}}>
 			@if (Config::get('app.displayNameOnMast'))
 				<h1>
@@ -13,7 +14,8 @@
 		</a>
 		<b>{{Config::get('app.tag_line')}}</b>
 	</div>
-	<div id='toplinks' style='width:50%;position:absolute;right:0;top:0;text-align:right'>
+	<!-- topLinks style='width:50%;position:absolute;right:0;top:0;text-align:right' -->
+	<div class='topLinks'>
 		@if (Session::has('loggedInUser'))
 			Hello 
 			<?php
