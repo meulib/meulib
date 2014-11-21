@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     @section('htmlHead')
-        {{ HTML::script('js/jquery-1.11.0.min.js'); }}
-        {{ HTML::script('js/ourlib.js'); }}
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{ HTML::style('css/ourlib.css') }}
     	<title>{{Config::get('app.name')}}</title>
     @show
 </head>
+
 <body>
     @section('header')
    		@include('templates.mast')
 	@show
+
     @section('appLinks')
         <a href={{URL::to('/browse')}}>Browse Collection</a> | 
         @if (Session::has('loggedInUser'))
@@ -24,8 +26,13 @@
         @endif
         <br/><br/>
     @show
+
     @yield('content')
-    {{--placeholder for footer--}}
+
+    @section('footer')
+        {{ HTML::script('js/jquery-1.11.0.min.js'); }}
+        {{ HTML::script('js/ourlib.js'); }}
+    @show
 </body>
 </html>
 
