@@ -2,28 +2,57 @@
 
 class BookController extends BaseController
 {
-    public function showAll($location='all')
+    public function showAll($location='all',$language='all')
     {
+        // get the books
         $books = null;
-        if ($location == 'all')
+        if (($location == 'all') && ($language == 'all'))
             $books = FlatBook::orderBy('Title', 'asc')
                             ->orderBy('Author1', 'asc')
                             ->get();
         else
-            $books = FlatBook::byLocation($location);
+            $books = FlatBook::byLocation($location,$language);
 
+        // get the locations
         $locations = Location::havingBooks();
+        // set current location
         $currentLocation = false;
         $currentLocation = $locations->find($location);
         if (get_class($currentLocation) == 'Location')
+        {
             $currentLocation = $currentLocation->Location . ", " . $currentLocation->Country;
+            $currentLocationID = $location;
+        }
         else
+        {
             $currentLocation = $location;
+            $currentLocationID = $location;
+        }
+
+        // get the languages
+        $languages = Language::all();
+        // set current language
+        $currentLanguage = false;
+        $currentLanguage = $languages->find($language);
+        if (get_class($currentLanguage)=='Language')
+        {
+            $currentLanguage = $currentLanguage->LanguageEnglish;
+            $currentLanguageID = $language;
+        }
+        else
+        {
+            $currentLanguage = $language;
+            $currentLanguageID = $language;
+        }
                 
         return View::make('booksIndex',
-            array('books' => $books, 
-                'locations' => $locations, 
-                'currentLocation' => $currentLocation));
+           array('books' => $books, 
+               'locations' => $locations, 
+               'currentLocation' => $currentLocation,
+               'currentLocationID' => $currentLocationID,
+               'languages' => $languages,
+               'currentLanguage' => $currentLanguage,
+               'currentLanguageID' => $currentLanguageID));
     }
 
     public function myBooks()

@@ -18,7 +18,7 @@ Route::get('/', function()
 
 // ----- BOOK ROUTES --------------
 
-Route::get('browse/{location?}', 'BookController@showAll');
+Route::get('browse/{location?}/{language?}', 'BookController@showAll');
 
 Route::get('book/{id?}', 'BookController@showSingle');
 

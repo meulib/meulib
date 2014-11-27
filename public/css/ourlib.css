@@ -1,39 +1,149 @@
+/* meulib palette 
+triad
+http://paletton.com/#uid=32P1b0knWFWnWFW4hNpUvEvAfmz
+complementary
+http://paletton.com/#uid=52P0B0knWFWnWFW4hNpUvEvAfmz
+http://paletton.com/#uid=53q0B0kiTZEiTZElyz97w++j0++
+nice chutney green color
+105 141 45
+*/
+
 body
 {
-	margin-top:2px;
+	margin:0;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+a {
+	font-weight: bold;
+}
+
+a:link {
+    text-decoration: none;
+    /*color: SeaGreen;*/
+    color: #009000;
+}
+
+a:visited {
+    text-decoration: none;
+    /*color: MediumPurple;*/
+    color: #5703C5;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+a:active {
+    text-decoration: underline;
+}
+
+input {
+	/*border: 2px solid #B48700;*/
+	border: none;
+	padding: 4px;
+	background-color: #CAE9CA;
+}
+
+input[type=submit] {
+	background-color: #FFBF00;
+	font-weight: bold;
 }
 
 .head {
 	position:relative;
-	width:100%;
+	/*width:100%;*/
 	margin-bottom:10px;
 	margin-top:0px;
 	overflow: hidden;
+	background-color: #C6EFFF;
+	border-bottom: 2px solid #B48700;
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
+/* stuff on top right corner */
 .topLinks
 {
 	margin-top: 10px;
 	font-size: 80%;
 }
 
+.loginFormH
+{
+	display: none;
+}
+
+.importantLinks
+{
+	font-size: 120%;
+	padding: 10px;
+	margin-bottom: 10px;
+	border-top: 2px solid #B48700;
+	border-bottom: 2px solid #B48700;
+	background-color: #C6EFFF;
+}
+
+.importantLinks a:visited
+{
+	color: #009000;
+}
+
+.filterSection
+{
+	padding: 10px;
+	margin-bottom: 10px;
+	border-top: 2px solid #B48700;
+	border-bottom: 2px solid #B48700;
+	background-color: #6DD4FB;
+}
+
+.filterSection a:link
+{
+	color: #5703C5;
+}
+
+.formDiv
+{
+	padding: 10px;
+	margin-bottom: 10px;
+	border-top: 2px solid #B48700;
+	border-bottom: 2px solid #B48700;
+	background-color: #81AB00;
+}
+
+.formTitle
+{
+	color:#39097A;
+	font-weight: bold;
+}
+
 /* all large */
-@media (min-width: 500px) {
+@media (min-width: 560px) {
 	.topLinks
 	{
 		margin-top:0px;
 		position:absolute;
 		right:0;
 		top:0;
+		padding-right: 10px;
 		text-align:right;
-		width: 50%
+		width: 60%;
+		/*border-left: 1px black solid;*/
+	}
+	.loginFormH
+	{
+		float: none;
+		display: block;
 	}
 }
 
 /* medium large */
-@media (min-width: 500px) and (max-width: 1080px) {
+@media (min-width: 560px) and (max-width: 900px) {
 	.loginFormH
 	{
+		float: right;
 		width:240px;
 	}
 }

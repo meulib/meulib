@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateLocations extends Migration {
+class CreateLanguagesTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,11 +12,11 @@ class CreateLocations extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('locations', function(Blueprint $table)
+		Schema::create('languages', function(Blueprint $table)
 		{
 			$table->increments('ID');
-			$table->string('Location', 100);
-			$table->string('Country', 100);
+			$table->string('LanguageEnglish', 100);
+			$table->string('LanguageNative', 100);
 			
 			$table->timestamps();
 			$table->engine = 'InnoDB';
@@ -30,7 +30,7 @@ class CreateLocations extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('locations');
+		Schema::dropIfExists('languages');
 	}
 
 }

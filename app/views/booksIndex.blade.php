@@ -20,6 +20,46 @@
 
 @section('content')
 
+<!-- --- BROWSE FILTER SECTION --- -->
+<!-- LOCATION -->
+<div class="filterSection">
+<?php $firstElement = true; ?>
+Locations: 
+@if ($locations)
+	@foreach($locations as $location)
+		@if (!$firstElement)
+			| 
+		@else
+			<?php $firstElement = false; ?>
+		@endif
+		<a href={{ URL::action('BookController@showAll', array($location->ID,$currentLanguageID))}}>
+			{{{ $location->Location . ', ' . $location->Country}}}
+		</a>
+	@endforeach
+@endif
+<br/>
+Showing: <b>{{{ $currentLocation }}}</b><br/>
+<!-- LANGUAGE -->
+<br/>
+<?php $firstElement = true; ?>
+Languages:
+@if ($languages)
+	@foreach($languages as $language)
+		@if (!$firstElement)
+			| 
+		@else
+			<?php $firstElement = false; ?>
+		@endif
+		<a href={{ URL::action('BookController@showAll', array($currentLocationID,$language->ID))}}>
+			{{{ $language->LanguageEnglish }}}
+		</a>
+	@endforeach
+@endif
+<br/>
+Showing: <b>{{{ $currentLanguage }}}</b><br/>
+</div>
+<!-- --- END BROWSE FILTER SECTION --- -->
+
 @if (!$loggedIn)
 	Join / Login to request books, to add your own books to lend.
 @endif
@@ -34,20 +74,7 @@
 		</span>
 	</p>
 @endif
-<hr/>
-<!-- --- LIBRARY LOCATIONS LISTING --- -->
-Locations: 
-@if ($locations)
-	@foreach($locations as $location)
-		<a href={{ URL::action('BookController@showAll', array($location->ID))}}>
-			{{{ $location->Location . ', ' . $location->Country}}}
-		</a>
-		 | 
-	@endforeach
-@endif
-<br/>
-Showing: {{{ $currentLocation }}}
-<hr/>
+
 <!-- --- BOOK LISTING --- -->
 <ul>
 @if ($books)
@@ -71,25 +98,7 @@ Showing: {{{ $currentLocation }}}
 </ul>
 
 @if (Session::has('loggedInUser'))
-	<hr/>
-	<a name="AddBooks"></a>
-	ADD BOOKS THAT YOU ARE WILLING TO LEND<br/>
-	<br/>
-	{{ Form::open(array('action' => 'BookController@addBook')) }}
-	Title<br/>
-	{{ Form::text('Title', '', ['required','size'=>40,'maxlength'=>100]) }}<br/>
-	Sub Title<br/>
-	{{ Form::text('SubTitle', '', ['size'=>40,'maxlength'=>100]) }}<br/>
-	Author (or editor or series name)<br/>
-	{{ Form::text('Author1', '', ['required','size'=>40,'maxlength'=>100]) }}<br/>
-	Any other authors?<br/>
-	{{ Form::text('Author2', '', ['size'=>40,'maxlength'=>100]) }}<br/>
-	Language<br/>
-	{{ Form::text('Language1', 'English', ['required','maxlength'=>50]) }}<br/>
-	Any other language? (for multi-lingual books)<br/>
-	{{ Form::text('Language2', '', ['maxlength'=>50]) }}<br/>
-	{{ Form::submit('Add'); }}
-	{{ Form::close() }}
+	@include('templates.addBooks')
 @endif
 
 @stop

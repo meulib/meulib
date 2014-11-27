@@ -10,6 +10,16 @@ class FlatBook extends Eloquent {
 		return $this->hasMany('BookCopy', 'BookID', 'ID');
 	}
 
+	public function MainLanguage()
+	{
+		return $this->belongsTo('Language', 'Language1ID', 'ID');
+	}
+
+	public function SecondaryLanguage()
+	{
+		return $this->hasOne('Language', 'Language2ID', 'ID');
+	}
+
 	public static function addBook($bookDetails)
 	{
 		if (!Session::has('loggedInUser'))
@@ -118,23 +128,60 @@ class FlatBook extends Eloquent {
 		return $title;
 	}
 
-	public static function byLocation($LocationID)
+	public function scopeLocation($query,$LocationID)
+	{
+		return $query->whereHas('Copies', function($q) use($LocationID)
+						{
+						    $q->where('LocationID', '=', $LocationID);
+						}
+					);
+	}
+
+	public function scopeLanguage($query,$LanguageID)
+	{
+		return $query->where(function ($query) use($LanguageID)
+						{
+						$query->where('Language1ID','=', $LanguageID)
+							->orWhere('Language2ID','=',$LanguageID);
+						});
+
+	}
+
+	public static function byLocation($LocationID=0,$LanguageID=0)
 	{
 		/*DB::table('books_flat')
             ->join('bookcopies', 'books_flat.ID', '=', 'bookcopies.BookID')
             ->join('users', 'bookcopies.UserID', '=', 'orders.user_id')
             ->select('users.id', 'contacts.phone', 'orders.price')
             ->get();*/
+		//$books = FlatBook::with('Copies');
 
-		$books = FlatBook::with('Copies')
-			->whereHas('Copies', function($q) use($LocationID)
-						{
-						    $q->where('LocationID', '=', $LocationID);
-						}
-					)
-			->orderBy('Title', 'asc')
+        $books = NULL;
+
+        if (!is_numeric($LocationID))
+        	$LocationID = 0;
+        if (!is_numeric($LanguageID))
+        	$LanguageID = 0;
+
+		if ($LocationID>0)
+			$books = FlatBook::location($LocationID);
+
+		if ($LanguageID>0)
+		{
+			if (is_null($books))
+				$books = FlatBook::language($LanguageID);
+			else
+				$books = $books->language($LanguageID);
+		}
+
+		$books = $books->orderBy('Title', 'asc')
             ->orderBy('Author1', 'asc')
 			->get();
+
+		/*$queries = DB::getQueryLog();
+		$last_query = end($queries);
+		var_dump($last_query);*/
+
 		return $books;
 	}
 }

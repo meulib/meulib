@@ -15,6 +15,7 @@
 	@show
 
     @section('appLinks')
+        <div class="importantLinks">
         <a href={{URL::to('/browse')}}>Browse Collection</a> | 
         @if (Session::has('loggedInUser'))
             {{HTML::link(URL::to('/messages'), 'Messages')}}
@@ -24,7 +25,7 @@
         @else
             {{HTML::link(URL::to('account/create'), 'Become a Member')}}
         @endif
-        <br/><br/>
+        </div>
     @show
 
     @yield('content')
