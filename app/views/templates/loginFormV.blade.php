@@ -1,6 +1,6 @@
 {{ Form::open(array('action' => 'UserController@login')) }}
-	@if (isset($msg))
-		{{ Form::hidden('fromURL', $msg['fromURL']) }}
+	@if (isset($fromURL))
+		{{ Form::hidden('fromURL', $fromURL) }}
 	@else
 		{{ Form::hidden('fromURL', '') }}
 	@endif
@@ -20,3 +20,5 @@
 		</td></tr>
 	</table>
 {{ Form::close() }}
+<br/>
+<a href={{URL::to('forgot-password')}}>Forgot your password?</a>

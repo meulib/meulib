@@ -6,6 +6,7 @@
 	{
 		$msg = Session::get('LoginMessage');
 		Session::forget('LoginMessage');
+		$fromURL = $msg['fromURL'];
 	}
 ?>
 

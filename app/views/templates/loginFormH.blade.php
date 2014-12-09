@@ -1,7 +1,7 @@
 <div class="loginFormH">
 {{ Form::open(array('action' => 'UserController@login')) }}
-	@if (isset($msg))
-		{{ Form::hidden('fromURL', $msg['fromURL']) }}
+	@if (isset($fromURL))
+		{{ Form::hidden('fromURL', $fromURL) }}
 	@else
 		{{ Form::hidden('fromURL', '') }}
 	@endif

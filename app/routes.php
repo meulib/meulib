@@ -11,9 +11,23 @@
 |
 */
 
+/*Artisan::call('migrate', [
+	        '--force' => true
+	        ]);
+echo 'migration done';*/
+//Artisan::call('up');
+//echo 'maintenance ended';
+
+// -------- APP ROUTES --------------------------
+
 Route::get('/', function()
 {
 	return View::make('home');
+});
+
+Route::get('generic-error', function()
+{
+	return View::make('genericError');
 });
 
 // ----- BOOK ROUTES --------------
@@ -42,9 +56,20 @@ Route::get('showCaptcha', 'UtilityController@showCaptcha');
 
 // ------ LOGIN LOGOUT ---------------
 
+Route::get('login', array('as' => 'login', 
+	'uses' => 'UserController@loginView'));
+
 Route::post('login', 'UserController@login');
 
 Route::get('logout', 'UserController@logout');
+
+Route::get('forgot-password', 'UserController@forgotPwdView');
+
+Route::post('forgot-password', 'UserController@forgotPwd');
+
+Route::get('reset-password/{id}/{resetCode}', 'UserController@resetPwdView');
+
+Route::post('reset-password', 'UserController@resetPwd');
 
 // ------- TRANSACTIONS --------------
 
@@ -62,7 +87,7 @@ Route::post('acceptReturn', 'TransactionController@acceptReturn');
 
 Route::get('/messages/{tranID?}', 'TransactionController@messages');
 
-// -------- CALL ARTISAN --------------
+// -------- CALL ARTISAN MIGRATION --------------
 
 /*Route::get('/xxx/{key?}',  array('as' => 'install', function($key = null)
 {
