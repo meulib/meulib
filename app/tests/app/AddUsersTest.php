@@ -2,7 +2,7 @@
 
 class AddUsersTest extends TestCase 
 {
-	public function testCountrySaved()
+	public function testUserSaved()
 	{
 		$userData = array('email'=>'catchall@manaskriti.com',
 						'name'=>'Someone',
@@ -14,7 +14,7 @@ class AddUsersTest extends TestCase
 						'password'=>'abracadabra');
 		$result = UserAccess::addNew($userData);
 		// user should be saved
-		$this->assertTrue($result); 
+		$this->assertTrue($result[0]); 
 		// retrive user
 		$users = User::where('EMail', '=', 'catchall@manaskriti.com')->get();
 		$user = $users->first();

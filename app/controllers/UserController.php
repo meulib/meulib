@@ -19,6 +19,14 @@ Validator::extend('captcha', function($field, $value, $params)
 class UserController extends BaseController
 {
 
+    public function loginView()
+    {
+        if (Session::has('loggedInUser'))
+            return Redirect::to(URL::to('/'));
+
+        return View::make('login');
+    }
+
     public function login()
     {
         $userNameEmail = Input::get('user_name');
@@ -35,10 +43,7 @@ class UserController extends BaseController
                     return Redirect::to($fromURL);
                 else
                 {
-                    if (strpos(URL::previous(),'activate')) 
-                        return Redirect::to(URL::to('/'));
-                    else
-                        return Redirect::to(URL::previous());
+                    return Redirect::to(URL::to('/'));
                 }
             }
             else
@@ -46,7 +51,7 @@ class UserController extends BaseController
         }
         catch (LoginException $e)
         {
-            echo $e->getMessage();
+            return View::make('login', array('result' => [false,$e->getMessage()]));
         }
     }
 
@@ -54,6 +59,73 @@ class UserController extends BaseController
     {
         Session::flush();
         return Redirect::to(URL::previous());
+    }
+
+    public function forgotPwdView()
+    {
+        return View::make('forgotPwd');
+    }
+
+    public function forgotPwd()
+    {
+        $appName = Config::get('app.name');
+        $email = Input::get('email');
+        $result = UserAccess::sendResetPwdLink($email);
+        if ($result[0])
+        {
+            $result[1] = "A password reset link has been emailed to you.<br/>Please check your email.";
+        }
+        else
+        {
+            if ($result[1] == "Email Not Found")
+                $result[1] = "This email address not found in ".$appName.".<br/>Please try again.";
+            if ($result[1] == "Unable To Send Email")
+                $result[1] = $appName." is having trouble sending emails at present.<br/>Please try later.";
+        }
+        return View::make('forgotPwd', array('result' => $result));
+    }
+
+    public function resetPwdView($id,$resetCode)
+    {
+        $result = UserAccess::verifyPwdResetLink($id,$resetCode);
+        if ($result[0])
+            return View::make('resetPwd', array('id'=>$id,'resetCode'=>$resetCode));
+        else
+        {
+            if ($result[1]=="Expired")
+            {
+                $result = [false,'The password reset link has expired.<br/>Please generate a new one using the form below.'];
+                return View::make('forgotPwd', array('result' => $result));
+            }
+            else
+                App::abort(404);
+        }
+            
+    }
+
+    public function resetPwd()
+    {
+        $data = Input::all();
+
+        $rules = array(
+            'password' => 'required|confirmed|min:6',
+        );
+
+        $validator = Validator::make($data, $rules);
+
+        if ($validator->fails()) 
+        {
+            return Redirect::back()->withErrors($validator);
+        }
+
+        $result = UserAccess::resetPwd($data['id'],$data['resetCode'],$data['password']);
+        if ($result[0])
+            return View::make('login', array('result' => 
+                [false,"Password Reset successful.<br/>You can now 
+                login with your new password."]));
+        else
+            return Redirect::back()->withErrors(['msg', 'Password Reset not successful.<br/>The system is encountering some problems.']);
+            
     }
 
     public function signup()
@@ -102,10 +174,10 @@ class UserController extends BaseController
         }
 
         $result = UserAccess::addNew($data);
-        if ($result)
+        if ($result[0])
             return View::make('signupSubmit');
         else
-            return "Some error occurred";
+            return Redirect::to(URL::previous())->withErrors([$result[1]]);;
     }
 }
 ?>

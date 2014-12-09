@@ -3,7 +3,7 @@
 
 @section('content')
 
-Sorry! Could not find what you are looking for.
+<p align="center">Sorry! Could not find what you are looking for.</p>
 
 @stop
 
