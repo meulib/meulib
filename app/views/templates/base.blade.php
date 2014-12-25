@@ -31,6 +31,7 @@
     @yield('content')
 
     @section('footer')
+        
         {{ HTML::script('js/jquery-1.11.0.min.js'); }}
         {{ HTML::script('js/ourlib.js'); }}
     @show

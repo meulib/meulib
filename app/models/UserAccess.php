@@ -339,6 +339,7 @@ class UserAccess extends Eloquent {
 			}
 			catch (Exception $e)
 			{
+				echo($e->getMessage());
 				return [false,'Unable To Send Email'];
 			}
 			return [true,''];			
