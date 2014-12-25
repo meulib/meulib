@@ -11,10 +11,13 @@
 |
 */
 
-/*Artisan::call('migrate', [
-	        '--force' => true
-	        ]);
-echo 'migration done';*/
+// Artisan::call('migrate', [
+// 	        '--force' => true
+// 	        ]);
+// echo 'migration done';
+
+//Artisan::call('down');
+
 //Artisan::call('up');
 //echo 'maintenance ended';
 
