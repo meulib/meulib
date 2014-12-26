@@ -23,7 +23,10 @@
             {{HTML::link(URL::to('my-books'), 'My Books')}} | 
             {{HTML::link(URL::to('borrowed-books'), 'Borrowed Books')}}
         @else
-            {{HTML::link(URL::to('account/create'), 'Become a Member')}}
+            {{HTML::link(URL::to('account/create'), 'Become a Member')}} | 
+            {{HTML::link(URL::to('/how-it-works'), 'How It Works')}} | 
+            {{HTML::link(URL::to('/faq'), 'FAQ')}} | 
+            {{HTML::link(URL::to('/vision'), 'Vision')}}
         @endif
         </div>
     @show

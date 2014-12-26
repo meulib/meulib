@@ -80,15 +80,42 @@ Route::post('request', 'TransactionController@request');
 
 Route::post('reply', 'TransactionController@reply');
 
-Route::post('pendingRequests', 'TransactionController@pendingRequests');
+Route::post('pending-requests', 'TransactionController@pendingRequests');
 
-Route::post('returnForm', 'TransactionController@returnForm');
+Route::post('return-form', 'TransactionController@returnForm');
 
 Route::post('lend', 'TransactionController@lend');
 
-Route::post('acceptReturn', 'TransactionController@acceptReturn');
+Route::post('accept-return', 'TransactionController@acceptReturn');
 
 Route::get('/messages/{tranID?}', 'TransactionController@messages');
+
+// ------- INFO PAGES --------------
+
+Route::get('/how-it-works', function()
+{
+	return View::make('howorks');
+});
+
+Route::get('/how-it-works-borrower', function()
+{
+	return View::make('howorksborrower');
+});
+
+Route::get('/how-it-works-owner', function()
+{
+	return View::make('howorksowner');
+});
+
+Route::get('/faq', function()
+{
+	return View::make('faq');
+});
+
+Route::get('/vision', function()
+{
+	return View::make('vision');
+});
 
 // -------- CALL ARTISAN MIGRATION --------------
 
