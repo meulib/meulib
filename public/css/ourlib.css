@@ -53,6 +53,16 @@ input[type=submit] {
 	font-weight: bold;
 }
 
+textarea {
+  /*background: url(images/benice.png) center center no-repeat; /* This ruins default border */
+  /*border: 1px solid #888; */
+	border: none;
+	padding: 4px;
+	background-color: #CAE9CA;
+	font-size   : 120%;
+	margin:2px;
+}
+
 .head {
 	position:relative;
 	/*width:100%;*/
@@ -83,7 +93,7 @@ input[type=submit] {
 	display: none;
 }
 
-.importantLinks
+.appLinks
 {
 	font-size: 120%;
 	padding: 10px;
@@ -93,9 +103,38 @@ input[type=submit] {
 	background-color: #C6EFFF;
 }
 
-.importantLinks a:visited
+.appLinks a:visited
 {
 	color: #009000;
+}
+
+.footer
+{
+	font-size: 80%;
+	padding: 10px;
+	margin-top: 10px;
+	border-top: 2px solid #B48700;
+	border-bottom: 2px solid #B48700;
+	/*background-color: #C6EFFF;*/
+	background-color: #B48700;
+}
+
+.footer a
+{
+	color: #FFF6DD;
+}
+
+.pageTitle
+{
+	font-size:150%;
+	font-weight:bold;
+	display:table;
+	margin:20px auto;
+}
+
+.errors
+{
+	color: #FF0000;
 }
 
 .filterSection

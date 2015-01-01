@@ -293,7 +293,17 @@ class UserAccess extends Eloquent {
 		$user->ActivationHash = NULL;
 		$result = $user->save();
 
-		$body = array('body'=>'New User Activated ' . $userid);
+		$humanUser = $user->getHumanUser();
+
+		$bodyText = 'New User Activated ' . $userid . ' | ' .
+					$humanUser->FullName . ' | ' .
+					$humanUser->Locality . ' | ' .
+					$humanUser->City . ' | ' .
+					$humanUser->State . ' | ' .
+					$humanUser->Country . ' | ' .
+					$humanUser->EMail;
+
+		$body = array('body'=>$bodyText);
 
 		Mail::send(array('text' => 'emails.raw'), $body, function($message)
 		{

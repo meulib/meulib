@@ -1,6 +1,18 @@
 <?php 
 
-//require_once('MyExceptions.php');
+Validator::extend('captcha', function($field, $value, $params)
+{
+    if (Session::has('captcha'))
+    {
+        $generatedCaptcha = Session::pull('captcha');
+        if (strtoupper($value) == strtoupper($generatedCaptcha))
+            return true;
+        else
+            return false;
+    }
+    else
+        return false;
+});
 
 class UtilityController extends BaseController
 {
@@ -79,6 +91,46 @@ class UtilityController extends BaseController
         imagepng($im);
         imagedestroy($im);
 
+    }
+
+    public function submitContactForm()
+    {
+        $data = Input::all();
+        $rules = array(
+            'email' => 'required|email',
+            'message' => 'required',
+            'captcha' => 'captcha'
+        );
+        $messages = array(
+            'captcha' => 'Entered :attribute characters do not match the generated image.'
+        );
+        $validator = Validator::make($data, $rules, $messages);
+        if ($validator->fails()) 
+        {
+            return Redirect::to(URL::previous())->withErrors($validator);
+        }
+
+        $body = 'Name: ' . $data['name'] . "\n" .
+                'Email: ' . $data['email'] . "\n" .
+                'Msg: ' . $data['message'];
+        $body = array('body'=>$body);
+
+        try
+        {
+            Mail::send(array('text' => 'emails.raw'), $body, function($message)
+            {
+                $message->to(Config::get('mail.admin'))
+                        ->subject(Config::get('app.name') . ' Contact Form');
+            });
+        }
+        catch (Exception $e)
+        {
+            //var_dump('seems to have failed'.$e);
+            return Redirect::to(URL::previous())->withErrors('Unable to send this message right now. Please try later.');
+        }
+        //var_dump('seems to be success');
+        return Redirect::to(URL::previous())->with('result', [true,'']);
+        
     }
 }
 ?>
