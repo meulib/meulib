@@ -4,14 +4,17 @@ class BookController extends BaseController
 {
     public function showAll($location='all',$language='all')
     {
+        $paginationItemCount = Config::get('view.pagination-itemcount');
         // get the books
         $books = null;
         if (($location == 'all') && ($language == 'all'))
             $books = FlatBook::orderBy('Title', 'asc')
                             ->orderBy('Author1', 'asc')
-                            ->get();
+                            ->paginate($paginationItemCount);
         else
-            $books = FlatBook::byLocation($location,$language);
+            $books = FlatBook::filtered($location,$language);
+
+        //$books = $books->paginate(50);
 
         // get the locations
         $locations = Location::havingBooks();

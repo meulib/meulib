@@ -68,4 +68,24 @@ class AddBookTest extends TestCase
 		$this->assertEquals($bookCopy,1); 	
 	}
 
+	public function testLanguageIDSaved()
+	{
+		$english = Language::where('LanguageNative','=','English')->first();
+		$hindi = Language::where('LanguageNative','=','हिन्दी')->first();
+		Session::put('loggedInUser',$this->owner);
+		$bookDetails = array('Author1'=>'Me',
+						'Title'=>'My Full Book!',
+						'Author2' => 'My Collaborator',
+						'Language1' => 'English',
+						'Language2' => 'हिन्दी',
+						'SubTitle' => 'More words needed');
+		$result = FlatBook::addBook($bookDetails);
+		$this->assertTrue($result[0]); // should have saved
+		$bookID = $result[1];
+		$book = FlatBook::find($bookID);
+		$this->assertEquals($bookID, $book->ID);
+		$this->assertEquals($english->ID, $book->Language1ID);
+		$this->assertEquals($hindi->ID, $book->Language2ID);
+	}
+
 }

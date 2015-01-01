@@ -5,8 +5,8 @@
 	$loggedIn = false;
 	if (Session::has('loggedInUser'))
 		$loggedIn = true;
-	$pendingReqURL = URL::to('pendingRequests');
-	$returnForm = URL::to('returnForm');
+	$pendingReqURL = URL::to('pending-requests');
+	$returnForm = URL::to('return-form');
 	$tMsg = ["",""];
 	if (Session::has('TransactionMessage'))
 	{

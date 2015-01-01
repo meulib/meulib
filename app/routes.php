@@ -117,6 +117,13 @@ Route::get('/vision', function()
 	return View::make('vision');
 });
 
+Route::get('/contact-admin', function()
+{
+	return View::make('contactAdmin');
+});
+
+Route::post('submit-contact', 'UtilityController@submitContactForm');
+
 // -------- CALL ARTISAN MIGRATION --------------
 
 /*Route::get('/xxx/{key?}',  array('as' => 'install', function($key = null)

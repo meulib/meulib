@@ -22,7 +22,7 @@ class BrowseTest extends TestCase
 		$bookDetails = array('Author1'=>'Me',
 						'Title'=>'I Miss You');
 		$result = FlatBook::addBook($bookDetails);
-		$result = FlatBook::byLocation(1);	// udupi-manipal
+		$result = FlatBook::filtered(1);	// udupi-manipal
 		//var_dump(get_class($result));	// eloquent collection
 		$result = $result->all();
 		$this->assertEquals(2,count($result));	// one from seeder, one added here
@@ -30,7 +30,7 @@ class BrowseTest extends TestCase
 		$this->assertEquals('My Real Book!',$result[1]->Title);
 		$this->assertEquals('Me',$result[1]->Author1);
 
-		$result = FlatBook::byLocation(2);	// kolkata
+		$result = FlatBook::filtered(2);	// kolkata
 		$result = $result->all();
 		$this->assertEquals(1,count($result));	// one added here
 		$this->assertEquals('I Miss You',$result[0]->Title);

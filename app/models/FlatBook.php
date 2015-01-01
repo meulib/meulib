@@ -39,15 +39,27 @@ class FlatBook extends Eloquent {
             return array(false,$validator->messages());
         }
 
+
+
         $book = new FlatBook;
         $book->Title = $bookDetails['Title'];
         $book->Author1 = $bookDetails['Author1'];
         if (isset($bookDetails['Author2']))
         	$book->Author2 = $bookDetails['Author2'];
         if (isset($bookDetails['Language1']))
-	        $book->Language1 = $bookDetails['Language1'];
+        {
+        	$book->Language1 = $bookDetails['Language1'];
+        	$language1 = Language::where('LanguageNative','=',$bookDetails['Language1'])->first();
+        	if ($language1 != NULL)
+        		$book->Language1ID = $language1->ID;
+        }	        
         if (isset($bookDetails['Language2']))
+        {
         	$book->Language2 = $bookDetails['Language2'];
+        	$language2 = Language::where('LanguageNative','=',$bookDetails['Language2'])->first();
+        	if ($language2 != NULL)
+        		$book->Language2ID = $language2->ID;
+        }
         if (isset($bookDetails['SubTitle']))
         	$book->SubTitle = $bookDetails['SubTitle'];
 
@@ -147,7 +159,7 @@ class FlatBook extends Eloquent {
 
 	}
 
-	public static function byLocation($LocationID=0,$LanguageID=0)
+	public static function filtered($LocationID=0,$LanguageID=0)
 	{
 		/*DB::table('books_flat')
             ->join('bookcopies', 'books_flat.ID', '=', 'bookcopies.BookID')
@@ -174,9 +186,11 @@ class FlatBook extends Eloquent {
 				$books = $books->language($LanguageID);
 		}
 
+		$paginationItemCount = Config::get('view.pagination-itemcount');
+
 		$books = $books->orderBy('Title', 'asc')
             ->orderBy('Author1', 'asc')
-			->get();
+			->paginate($paginationItemCount);
 
 		/*$queries = DB::getQueryLog();
 		$last_query = end($queries);

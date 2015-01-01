@@ -15,7 +15,7 @@
 	@show
 
     @section('appLinks')
-        <div class="importantLinks">
+        <div class="appLinks">
         <a href={{URL::to('/browse')}}>Browse Collection</a> | 
         @if (Session::has('loggedInUser'))
             {{HTML::link(URL::to('/messages'), 'Messages')}}
@@ -34,7 +34,12 @@
     @yield('content')
 
     @section('footer')
-        
+        <div class="footer">
+            {{HTML::link('https://github.com/meulib/meulib', 'github')}} | 
+            <!-- {{HTML::link('https://abc.com', 'founding members')}}
+            founding members | -->
+            {{HTML::link(URL::to('/contact-admin'), 'contact support')}}
+        </div>
         {{ HTML::script('js/jquery-1.11.0.min.js'); }}
         {{ HTML::script('js/ourlib.js'); }}
     @show

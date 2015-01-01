@@ -76,8 +76,11 @@ Showing: <b>{{{ $currentLanguage }}}</b><br/>
 @endif
 
 <!-- --- BOOK LISTING --- -->
+
 <ul>
 @if ($books)
+{{ $books->links() }}
+<br/>
 	@foreach($books as $book)
 		<li>
 			<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
@@ -94,6 +97,8 @@ Showing: <b>{{{ $currentLanguage }}}</b><br/>
 			@endif
 		</li>	
 	@endforeach
+<br/>
+{{ $books->links() }}
 @endif
 </ul>
 
