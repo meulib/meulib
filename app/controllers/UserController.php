@@ -141,7 +141,17 @@ class UserController extends BaseController
         if ($result)
             return View::make('accountActivated');
         else
-            return var_dump($result);
+        {
+            $bodyText = "Account Activation Failed: " . $id . " | " . $verification_code;
+            $body = array('body'=>$bodyText);
+
+            Mail::send(array('text' => 'emails.raw'), $body, function($message)
+            {
+                $message->to(Config::get('mail.admin'))
+                        ->subject('New ' . Config::get('app.name') . ' Ac Failed');
+            });
+            return View::make('accountActivationFail');
+        }
     }
 
     public function submitSignup()

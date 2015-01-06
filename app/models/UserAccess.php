@@ -169,7 +169,8 @@ class UserAccess extends Eloquent {
 		catch (Exception $e)
 		{
 			// TODO: DELETE RECORD FROM DB!!!
-			//$user->delete();
+			if (!userExists)
+				$user->delete();
 			$userA->delete();
 			var_dump('mail not sent '.$e->getMessage());
 			return [false,"Unable to send activation email. Please try later."];
@@ -281,13 +282,14 @@ class UserAccess extends Eloquent {
 	{
 		$user = NULL;
 		$user = self::where('UserID','=',$userid)
-						->where('ActivationHash','=',$activationHash)
 						->first();
 
 		if ($user == NULL)
 			return false;
 		if ($user->Active == 1)
 			return true;
+		if ($user->ActivationHash != $activationHash)
+			return false;
 
 		$user->Active = 1;
 		$user->ActivationHash = NULL;

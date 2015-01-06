@@ -10,6 +10,11 @@ class FlatBook extends Eloquent {
 		return $this->hasMany('BookCopy', 'BookID', 'ID');
 	}
 
+	public function Categories()
+    {
+        return $this->belongsToMany('Category','book_categories','BookID','CategoryID');
+    }
+
 	public function MainLanguage()
 	{
 		return $this->belongsTo('Language', 'Language1ID', 'ID');
@@ -159,15 +164,22 @@ class FlatBook extends Eloquent {
 
 	}
 
-	public static function filtered($LocationID=0,$LanguageID=0)
+	public function scopeCategory($query,$CategoryID)
 	{
-		/*DB::table('books_flat')
-            ->join('bookcopies', 'books_flat.ID', '=', 'bookcopies.BookID')
-            ->join('users', 'bookcopies.UserID', '=', 'orders.user_id')
-            ->select('users.id', 'contacts.phone', 'orders.price')
-            ->get();*/
-		//$books = FlatBook::with('Copies');
+		return $query->whereHas('Categories', function($q) use($CategoryID)
+				{
+					$q->where('CategoryID','=',$CategoryID);
+				});
+	}
 
+	// retrieve books that have the $checked flag 0 or 1
+	public function scopeChecked($query,$checked)
+	{
+		return $query->whereChecked($checked);
+	}
+
+	public static function filtered($LocationID=0,$LanguageID=0,$CategoryID=0)
+	{
         $books = NULL;
 
         if (!is_numeric($LocationID))
@@ -175,16 +187,32 @@ class FlatBook extends Eloquent {
         if (!is_numeric($LanguageID))
         	$LanguageID = 0;
 
-		if ($LocationID>0)
-			$books = FlatBook::location($LocationID);
-
-		if ($LanguageID>0)
+        if ($LanguageID>0)
 		{
 			if (is_null($books))
 				$books = FlatBook::language($LanguageID);
 			else
 				$books = $books->language($LanguageID);
 		}
+
+		if ($LocationID>0)
+		{
+			if (is_null($books))
+				$books = FlatBook::location($LocationID);
+			else
+				$books = $books->location($LocationID);
+		}
+
+		if ($CategoryID>0)
+		{
+			if (is_null($books))
+				$books = FlatBook::category($CategoryID);
+			else
+				$books = $books->category($CategoryID);
+		}
+
+		// get only checked books
+		$books = $books->checked(1);
 
 		$paginationItemCount = Config::get('view.pagination-itemcount');
 
