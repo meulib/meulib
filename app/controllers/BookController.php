@@ -2,60 +2,95 @@
 
 class BookController extends BaseController
 {
-    public function showAll($location='all',$language='all')
+    public function showAll($location='all',$language='all',$category='all')
     {
-        $paginationItemCount = Config::get('view.pagination-itemcount');
-        // get the books
-        $books = null;
-        if (($location == 'all') && ($language == 'all'))
-            $books = FlatBook::orderBy('Title', 'asc')
-                            ->orderBy('Author1', 'asc')
-                            ->paginate($paginationItemCount);
-        else
-            $books = FlatBook::filtered($location,$language);
-
-        //$books = $books->paginate(50);
-
-        // get the locations
+        // -------------- get the locations -----------------
         $locations = Location::havingBooks();
         // set current location
         $currentLocation = false;
-        $currentLocation = $locations->find($location);
-        if (get_class($currentLocation) == 'Location')
+        //$currentLocation = $locations->find($location);
+        $currentLocation = $locations->filter(function($thisLocation) use ($location)
+            {
+                if ($thisLocation->Location == $location) {
+                    return true;
+                }
+            });
+        if ($currentLocation->count() == 1)
         {
-            $currentLocation = $currentLocation->Location . ", " . $currentLocation->Country;
-            $currentLocationID = $location;
+            $currentLocation = $currentLocation->first(); 
+            $cLocationID = $currentLocation->ID;
         }
         else
         {
             $currentLocation = $location;
-            $currentLocationID = $location;
+            $cLocationID = 0;
         }
 
-        // get the languages
-        $languages = Language::all();
+        // --------------- get the languages ---------------
+        $languages = Language::orderBy('LanguageEnglish')
+                                ->get();
         // set current language
         $currentLanguage = false;
-        $currentLanguage = $languages->find($language);
-        if (get_class($currentLanguage)=='Language')
+        //$currentLanguage = $languages->find($language);
+        $currentLanguage = $languages->filter(function($thisLanguage) use ($language)
+            {
+                if ($thisLanguage->LanguageEnglish == $language) {
+                    return true;
+                }
+            });
+        if ($currentLanguage->count()==1)
         {
-            $currentLanguage = $currentLanguage->LanguageEnglish;
-            $currentLanguageID = $language;
+            $currentLanguage = $currentLanguage->first();
+            $cLanguageID = $currentLanguage->ID;
         }
         else
         {
             $currentLanguage = $language;
-            $currentLanguageID = $language;
+            $cLanguageID = 0;
         }
+
+        // ----------------- get the categories ------------------
+        $categories = Category::orderBy('Category')
+                                ->get();
+        // set current category
+        $currentCategory = false;
+        $currentCategory = $categories->filter(function($thisCategory) use ($category)
+            {
+                if ($thisCategory->Category == $category) {
+                    return true;
+                }
+            });
+        if ($currentCategory->count()==1)
+        {
+            $currentCategory = $currentCategory->first();
+            $cCategoryID = $currentCategory->ID;
+        }
+        else
+        {
+            $currentCategory = $category;
+            $cCategoryID = 0;
+        }
+
+        // ------------- get the books -----------------
+        $paginationItemCount = Config::get('view.pagination-itemcount');
+
+        $books = null;
+        if (($location == 'all') && ($language == 'all') && ($category == 'all'))
+            $books = FlatBook::checked(1)
+                            ->orderBy('Title', 'asc')
+                            ->orderBy('Author1', 'asc')
+                            ->paginate($paginationItemCount);
+        else
+            $books = FlatBook::filtered($cLocationID,$cLanguageID,$cCategoryID);
                 
         return View::make('booksIndex',
            array('books' => $books, 
                'locations' => $locations, 
                'currentLocation' => $currentLocation,
-               'currentLocationID' => $currentLocationID,
                'languages' => $languages,
                'currentLanguage' => $currentLanguage,
-               'currentLanguageID' => $currentLanguageID));
+               'categories' => $categories,
+               'currentCategory' => $currentCategory));
     }
 
     public function myBooks()

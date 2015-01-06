@@ -11,12 +11,12 @@
 |
 */
 
+//Artisan::call('down');
+
 // Artisan::call('migrate', [
 // 	        '--force' => true
 // 	        ]);
 // echo 'migration done';
-
-//Artisan::call('down');
 
 //Artisan::call('up');
 //echo 'maintenance ended';
@@ -35,7 +35,7 @@ Route::get('generic-error', function()
 
 // ----- BOOK ROUTES --------------
 
-Route::get('browse/{location?}/{language?}', 'BookController@showAll');
+Route::get('browse/{location?}/{language?}/{category?}', 'BookController@showAll');
 
 Route::get('book/{id?}', 'BookController@showSingle');
 

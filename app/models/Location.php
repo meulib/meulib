@@ -45,6 +45,11 @@ class Location extends Eloquent {
 			return 0;
 	}
 
+	public function scopeLocation($query,$location)
+	{
+		return $query->whereLocation($location);
+	}
+
 }
 
 ?>

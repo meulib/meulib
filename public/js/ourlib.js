@@ -16,7 +16,7 @@ function showLendForm(id,callURL)
 {
   if (shownDiv != "")
     document.getElementById(shownDiv).style.display = "none";
-  alert(callURL);
+  //alert(callURL);
 
   $j.ajax({
          url:callURL,

@@ -28,6 +28,6 @@ return array(
 
 	//'pagination' => 'pagination::slider-3',
 	'pagination' => 'pagination.custompagination',
-	'pagination-itemcount' => 50,
+	'pagination-itemcount' => 30,
 
 );

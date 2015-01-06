@@ -16,47 +16,96 @@
 			Session::forget('TransactionMessage');	
 		//}
 	}
+	if ($currentLanguage == 'all')
+		$currentLanguageLinkValue = 'all';
+	else
+		$currentLanguageLinkValue = $currentLanguage->LanguageEnglish;
+
+	if ($currentLocation == 'all')
+		$currentLocationLinkValue = 'all';
+	else
+		$currentLocationLinkValue = $currentLocation->Location;
+
+	if ($currentCategory == 'all')
+		$currentCategoryLinkValue = 'all';
+	else
+		$currentCategoryLinkValue = $currentCategory->Category;
 ?>
 
 @section('content')
 
 <!-- --- BROWSE FILTER SECTION --- -->
-<!-- LOCATION -->
 <div class="filterSection">
-<?php $firstElement = true; ?>
-Locations: 
+
+<!-- --- LOCATION --- -->
 @if ($locations)
+Location: 
+	@if ($currentLocation != 'all')
+		<a href={{ URL::action('BookController@showAll', array('all',$currentLanguageLinkValue,$currentCategoryLinkValue))}}>
+			all
+		</a>
+	@else
+		<b>all</b>
+	@endif
 	@foreach($locations as $location)
-		@if (!$firstElement)
 			| 
+		@if (($currentLocation == 'all') || ($currentLocation->ID != $location->ID))
+			<a href={{ URL::action('BookController@showAll', array($location->Location,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>
+				{{{ $location->Location}}}
+			</a>
 		@else
-			<?php $firstElement = false; ?>
+			<b>{{{ $location->Location }}}</b>
 		@endif
-		<a href={{ URL::action('BookController@showAll', array($location->ID,$currentLanguageID))}}>
-			{{{ $location->Location . ', ' . $location->Country}}}
-		</a>
 	@endforeach
 @endif
-<br/>
-Showing: <b>{{{ $currentLocation }}}</b><br/>
-<!-- LANGUAGE -->
-<br/>
-<?php $firstElement = true; ?>
-Languages:
+<!--<br/>
+Showing: <b>{{{ $currentLocation }}}</b><br/>-->
+
+<!-- --- LANGUAGE --- -->
 @if ($languages)
-	@foreach($languages as $language)
-		@if (!$firstElement)
-			| 
-		@else
-			<?php $firstElement = false; ?>
-		@endif
-		<a href={{ URL::action('BookController@showAll', array($currentLocationID,$language->ID))}}>
-			{{{ $language->LanguageEnglish }}}
+<br/>
+Language: 
+	@if ($currentLanguage != 'all')
+		<a href={{ URL::action('BookController@showAll', array($currentLocationLinkValue,'all',$currentCategoryLinkValue))}}>
+			all
 		</a>
+	@else
+		<b>all</b>
+	@endif
+	@foreach($languages as $language)
+			| 
+		@if (($currentLanguage == 'all') || ($currentLanguage->ID != $language->ID))
+			<a href={{ URL::action('BookController@showAll', array($currentLocationLinkValue,$language->LanguageEnglish,$currentCategoryLinkValue))}}>
+				{{{ $language->LanguageEnglish}}}
+			</a>
+		@else
+			<b>{{{ $language->LanguageEnglish }}}</b>
+		@endif
 	@endforeach
 @endif
+
+<!-- --- CATEGORY --- -->
 <br/>
-Showing: <b>{{{ $currentLanguage }}}</b><br/>
+@if ($categories)
+Category: 
+	@if ($currentLanguage != 'all')
+		<a href={{ URL::action('BookController@showAll', array($currentLocationLinkValue,$currentLanguageLinkValue,'all'))}}>
+			all
+		</a>
+	@else
+		<b>all</b>
+	@endif
+	@foreach($categories as $category)
+			| 
+		@if (($currentCategory == 'all') || ($currentCategory->ID != $category->ID))
+			<a href={{ URL::action('BookController@showAll', array($currentLocationLinkValue,$currentLanguageLinkValue,$category->Category))}}>
+				{{{ $category->Category}}}
+			</a>
+		@else
+			<b>{{{ $category->Category }}}</b>
+		@endif
+	@endforeach
+@endif
 </div>
 <!-- --- END BROWSE FILTER SECTION --- -->
 
