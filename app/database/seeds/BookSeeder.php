@@ -7,11 +7,16 @@ class BookSeeder extends Seeder {
         DB::table('books_flat')->delete();
         DB::table('bookcopies')->delete();
         DB::table('languages')->delete();
+        DB::table('categories')->delete();
+        DB::table('book_categories')->delete();
 
         Language::create(array('ID' => 1, 'LanguageEnglish' => 'English',
                     'LanguageNative' => 'English'));
         Language::create(array('ID' => 2, 'LanguageEnglish' => 'Hindi',
                     'LanguageNative' => 'हिन्दी'));
+
+        Category::create(array('ID' => 1,'Category'=>'Comics'));
+        Category::create(array('ID' => 2,'Category'=>"Biography"));
 
         FlatBook::create(array('ID' => 1,
 					'Title' => 'Dennis',

@@ -24,8 +24,9 @@ return array(
 	|
 	*/
 
-	'name' => 'OurLib Demo Library',
-	'tag_line' => 'For demo and testing only. Data will be frequently deleted.',
+	'name' => 'OurLib',
+	//'tag_line' => 'For demo and testing only. Data will be frequently deleted.',
+	'tag_line' => 'The Public Library by Me and You',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -38,9 +39,12 @@ return array(
 	|
 	*/
 
-	'url' => 'http://localhost/ourlib/public',
-	'logoUrl' => 'images/logoOurLib50.png',
-	'displayNameOnMast' => true,
+	//'url' => 'http://localhost/ourlib/public',
+	//'logoUrl' => 'images/logoOurLib50.png',
+	//'displayNameOnMast' => true,
+	'url' => 'http://meulib.com',
+	'logoUrl' => 'images/meulibLogo141126.png',
+	'displayNameOnMast' => false,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -205,4 +209,16 @@ return array(
 
 	),
 
+	/*
+	|--------------------------------------------------------------------------
+	| What's New
+	|--------------------------------------------------------------------------
+	|
+	| There must be a better place to keep this
+	|
+	*/
+
+	'whatsnew' => array("Specify categories when adding books",
+		"Browse Collection by Category",
+		"A beginning made in USA (Charlotte NC) too")
 );

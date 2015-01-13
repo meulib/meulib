@@ -12,7 +12,7 @@ class FlatBook extends Eloquent {
 
 	public function Categories()
     {
-        return $this->belongsToMany('Category','book_categories','BookID','CategoryID');
+        return $this->belongsToMany('Category','book_categories','BookID','CategoryID')->withTimestamps();
     }
 
 	public function MainLanguage()
@@ -23,6 +23,14 @@ class FlatBook extends Eloquent {
 	public function SecondaryLanguage()
 	{
 		return $this->hasOne('Language', 'Language2ID', 'ID');
+	}
+
+	public function FullTitle()
+	{
+		$title = $this->Title;
+		if (strlen($this->SubTitle)>0)
+			$title .= ' : ' . $this->SubTitle;
+		return $title;
 	}
 
 	public static function addBook($bookDetails)
@@ -43,8 +51,6 @@ class FlatBook extends Eloquent {
         {
             return array(false,$validator->messages());
         }
-
-
 
         $book = new FlatBook;
         $book->Title = $bookDetails['Title'];
@@ -67,6 +73,7 @@ class FlatBook extends Eloquent {
         }
         if (isset($bookDetails['SubTitle']))
         	$book->SubTitle = $bookDetails['SubTitle'];
+        $book->Checked = 0;
 
         $result = $book->save();
         if ($result)
@@ -95,6 +102,165 @@ class FlatBook extends Eloquent {
         }
         return array(false,'Book not saved. DB save error 1.');
 	}
+
+	// set 1 or more categories for a book
+	public function setCategory($givenCategories)
+	{
+		if (is_int($givenCategories) && ($givenCategories > 0))
+		{
+			$this->load('Categories');
+			$exists = $this->Categories->contains($givenCategories);
+			if ($exists)
+				return [true,''];
+			
+			$foundCategory = Category::find($givenCategories);
+			//var_dump('abc');
+			//var_dump($foundCategory);
+			if (is_null($foundCategory))
+				return [false,'Category Not Found'];
+
+			$result = $this->Categories()->attach($givenCategories, array('Suggested' => 1));
+			return [true,''];
+		}
+
+		if (is_array($givenCategories) && (count($givenCategories) > 0))
+		{
+			$this->load('Categories');
+			$existingCategories = $this->Categories->lists('ID');
+			$remainingCategories = array_diff($givenCategories,$existingCategories);
+			if (count($remainingCategories) == 0)
+				return [true,''];
+
+			$foundCategories = Category::whereIn('ID', $remainingCategories)->lists('ID');
+			if (count($foundCategories) == 0)
+				return [false,'Category Not Found'];
+			$result = $this->Categories()->attach($foundCategories, array('Suggested' => 1));
+			return [true,''];
+		}
+
+		return [false,'Incorrect Parameter'];
+	}
+
+	// suggest 1 or more categories for a book
+	// suggested categories are simply emailed to admin for review
+	// not added to db
+	public function suggestCategory($categories)
+	{
+		$byUser = false;
+		if (Session::has('loggedInUser'))
+		{
+			$byUser = true;
+	        $user = Session::get('loggedInUser');
+		}
+
+		$bodyText = $this->FullTitle() . " | " . 
+			$this->Author1 . " | " .
+			"BookID: " . $this->ID . " | " .
+			"Suggested category: " . $categories . " | " ;
+		if ($byUser)
+		{
+			$bodyText .= "Suggested by: " . $user->userID . " " .
+			$user->FullName . " " . $user->City;
+		}
+		else
+		{
+			$bodyText .= "Suggested by: Anonymous User";
+		}
+
+
+		$body = array('body'=>$bodyText);
+
+		Mail::send(array('text' => 'emails.raw'), $body, function($message)
+		{
+			$message->to(Config::get('mail.admin'))
+					->subject('New Category Suggested');
+		});
+
+		return [true,''];
+	}
+
+	public function scopeLocation($query,$LocationID)
+	{
+		return $query->whereHas('Copies', function($q) use($LocationID)
+						{
+						    $q->where('LocationID', '=', $LocationID);
+						}
+					);
+	}
+
+	public function scopeLanguage($query,$LanguageID)
+	{
+		return $query->where(function ($query) use($LanguageID)
+						{
+						$query->where('Language1ID','=', $LanguageID)
+							->orWhere('Language2ID','=',$LanguageID);
+						});
+
+	}
+
+	public function scopeCategory($query,$CategoryID)
+	{
+		return $query->whereHas('Categories', function($q) use($CategoryID)
+				{
+					$q->where('CategoryID','=',$CategoryID);
+				});
+	}
+
+	// retrieve books that have the $checked flag 0 or 1
+	public function scopeChecked($query)
+	{
+		return $query->where('Checked','!=','-1');
+	}
+
+	public static function filtered($LocationID=0,$LanguageID=0,$CategoryID=0)
+	{
+        $books = NULL;
+
+        if (!is_numeric($LocationID))
+        	$LocationID = 0;
+        if (!is_numeric($LanguageID))
+        	$LanguageID = 0;
+
+        if ($LanguageID>0)
+		{
+			if (is_null($books))
+				$books = FlatBook::language($LanguageID);
+			else
+				$books = $books->language($LanguageID);
+		}
+
+		if ($LocationID>0)
+		{
+			if (is_null($books))
+				$books = FlatBook::location($LocationID);
+			else
+				$books = $books->location($LocationID);
+		}
+
+		if ($CategoryID>0)
+		{
+			if (is_null($books))
+				$books = FlatBook::category($CategoryID);
+			else
+				$books = $books->category($CategoryID);
+		}
+
+		// get only checked books
+		$books = $books->checked();
+
+		$paginationItemCount = Config::get('view.pagination-itemcount');
+
+		$books = $books->orderBy('Title', 'asc')
+            ->orderBy('Author1', 'asc')
+			->paginate($paginationItemCount);
+
+		/*$queries = DB::getQueryLog();
+		$last_query = end($queries);
+		var_dump($last_query);*/
+
+		return $books;
+	}
+
 
 	public static function myBooks($userID)
 	{
@@ -137,95 +303,6 @@ class FlatBook extends Eloquent {
 			return false;
 	}
 
-	public function FullTitle()
-	{
-		$title = $this->Title;
-		if (strlen($this->SubTitle)>0)
-			$title .= ' : ' . $this->SubTitle;
-		return $title;
-	}
-
-	public function scopeLocation($query,$LocationID)
-	{
-		return $query->whereHas('Copies', function($q) use($LocationID)
-						{
-						    $q->where('LocationID', '=', $LocationID);
-						}
-					);
-	}
-
-	public function scopeLanguage($query,$LanguageID)
-	{
-		return $query->where(function ($query) use($LanguageID)
-						{
-						$query->where('Language1ID','=', $LanguageID)
-							->orWhere('Language2ID','=',$LanguageID);
-						});
-
-	}
-
-	public function scopeCategory($query,$CategoryID)
-	{
-		return $query->whereHas('Categories', function($q) use($CategoryID)
-				{
-					$q->where('CategoryID','=',$CategoryID);
-				});
-	}
-
-	// retrieve books that have the $checked flag 0 or 1
-	public function scopeChecked($query,$checked)
-	{
-		return $query->whereChecked($checked);
-	}
-
-	public static function filtered($LocationID=0,$LanguageID=0,$CategoryID=0)
-	{
-        $books = NULL;
-
-        if (!is_numeric($LocationID))
-        	$LocationID = 0;
-        if (!is_numeric($LanguageID))
-        	$LanguageID = 0;
-
-        if ($LanguageID>0)
-		{
-			if (is_null($books))
-				$books = FlatBook::language($LanguageID);
-			else
-				$books = $books->language($LanguageID);
-		}
-
-		if ($LocationID>0)
-		{
-			if (is_null($books))
-				$books = FlatBook::location($LocationID);
-			else
-				$books = $books->location($LocationID);
-		}
-
-		if ($CategoryID>0)
-		{
-			if (is_null($books))
-				$books = FlatBook::category($CategoryID);
-			else
-				$books = $books->category($CategoryID);
-		}
-
-		// get only checked books
-		$books = $books->checked(1);
-
-		$paginationItemCount = Config::get('view.pagination-itemcount');
-
-		$books = $books->orderBy('Title', 'asc')
-            ->orderBy('Author1', 'asc')
-			->paginate($paginationItemCount);
-
-		/*$queries = DB::getQueryLog();
-		$last_query = end($queries);
-		var_dump($last_query);*/
-
-		return $books;
-	}
 }
 
 ?>
