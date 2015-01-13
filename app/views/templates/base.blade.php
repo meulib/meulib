@@ -35,10 +35,17 @@
 
     @section('footer')
         <div class="footer">
+        <div style="vertical-align: middle;width:50px;display:inline-block">
+            <a href="https://www.facebook.com/Meulib">{{ HTML::image('images/misc/06-facebook.png') }}</a>
+            <a href="https://twitter.com/meulib">{{ HTML::image('images/misc/03-twitter.png') }}</a>
+        </div>
+        <div style="vertical-align:middle;text-align:right;display:inline-block;position:absolute;padding-right: 20px;
+        right:0;">
             {{HTML::link('https://github.com/meulib/meulib', 'github')}} | 
             <!-- {{HTML::link('https://abc.com', 'founding members')}}
             founding members | -->
             {{HTML::link(URL::to('/contact-admin'), 'contact support')}}
+            
         </div>
         {{ HTML::script('js/jquery-1.11.0.min.js'); }}
         {{ HTML::script('js/ourlib.js'); }}

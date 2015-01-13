@@ -39,11 +39,15 @@ Route::get('browse/{location?}/{language?}/{category?}', 'BookController@showAll
 
 Route::get('book/{id?}', 'BookController@showSingle');
 
-Route::post('addbook', 'BookController@addBook');
-
 Route::get('my-books', 'BookController@myBooks');
 
 Route::get('borrowed-books', 'BookController@borrowedBooks');
+
+Route::post('add-book', 'BookController@addBook');
+
+Route::post('add-book-info', 'BookController@setBookInfo');
+
+// Route::get('added-book/{bookID}/', 'BookController@addBookThanks');
 
 // ----- ACCOUNT CREATION ------------
 

@@ -56,11 +56,9 @@
 			@endforeach
 			<br/><br/>			
 	@endforeach
+@else
+	You do not have any borrowed books right now.
 @endif
 </ul>
-
-@if (Session::has('loggedInUser'))
-	@include('templates.addBooks')
-@endif
 
 @stop

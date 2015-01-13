@@ -66,7 +66,7 @@ App::error(function(Exception $exception, $code)
 
 App::down(function()
 {
-	return Response::make("This application is currently under Maintenance Mode. Be right back!", 503);
+	return Response::make("<p align='center'><br/><br/>We are adding some cool new features to this application.<br/>Will be back in about 2 hours.</p>", 503);
 });
 
 /*

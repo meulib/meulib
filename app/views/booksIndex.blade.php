@@ -30,6 +30,8 @@
 		$currentCategoryLinkValue = 'all';
 	else
 		$currentCategoryLinkValue = $currentCategory->Category;
+
+	$bookCount = $books->count();
 ?>
 
 @section('content')
@@ -88,7 +90,7 @@ Language:
 <br/>
 @if ($categories)
 Category: 
-	@if ($currentLanguage != 'all')
+	@if ($currentCategory != 'all')
 		<a href={{ URL::action('BookController@showAll', array($currentLocationLinkValue,$currentLanguageLinkValue,'all'))}}>
 			all
 		</a>
@@ -127,27 +129,29 @@ Category:
 <!-- --- BOOK LISTING --- -->
 
 <ul>
-@if ($books)
-{{ $books->links() }}
-<br/>
-	@foreach($books as $book)
-		<li>
-			<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
-			{{{ $book->Title }}}
-			@if ($book->SubTitle)
-				{{{ ": ".$book->SubTitle }}}
-			@endif
-			</a>
-			@if ($book->Author1)
-				{{{ "&nbsp;by ".$book->Author1 }}}
-			@endif
-			@if ($book->Author2)
-				{{{ ", ".$book->Author2 }}}
-			@endif
-		</li>	
-	@endforeach
-<br/>
-{{ $books->links() }}
+@if ($bookCount > 0)
+	{{ $books->links() }}
+	<br/>
+		@foreach($books as $book)
+			<li>
+				<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
+				{{{ $book->Title }}}
+				@if ($book->SubTitle)
+					{{{ ": ".$book->SubTitle }}}
+				@endif
+				</a>
+				@if ($book->Author1)
+					{{{ "&nbsp;by ".$book->Author1 }}}
+				@endif
+				@if ($book->Author2)
+					{{{ ", ".$book->Author2 }}}
+				@endif
+			</li>	
+		@endforeach
+	<br/>
+	{{ $books->links() }}
+@else
+		No books found in Location <b>{{$currentLocationLinkValue}}</b> in Language <b>{{$currentLanguageLinkValue}}</b> of Category <b>{{$currentCategoryLinkValue}}</b>
 @endif
 </ul>
 

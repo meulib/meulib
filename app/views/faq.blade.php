@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div style='margin:0 auto;display:table;max-width:700px;'>
+<div class='contentDiv'>
 	<div class='pageTitle'>
 		Frequently Asked Questions<br/>
 		Frequently Voiced Concerns

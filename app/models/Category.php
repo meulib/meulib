@@ -7,7 +7,7 @@ class Category extends Eloquent {
 
 	public function Books()
     {
-        return $this->belongsToMany('FlatBook','book_categories','CategoryID','BookID');
+        return $this->belongsToMany('FlatBook','book_categories','CategoryID','BookID')->withTimestamps();
     }
 
 }

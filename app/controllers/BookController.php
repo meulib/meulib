@@ -76,13 +76,13 @@ class BookController extends BaseController
 
         $books = null;
         if (($location == 'all') && ($language == 'all') && ($category == 'all'))
-            $books = FlatBook::checked(1)
+            $books = FlatBook::checked()
                             ->orderBy('Title', 'asc')
                             ->orderBy('Author1', 'asc')
                             ->paginate($paginationItemCount);
         else
             $books = FlatBook::filtered($cLocationID,$cLanguageID,$cCategoryID);
-                
+        
         return View::make('booksIndex',
            array('books' => $books, 
                'locations' => $locations, 
@@ -138,11 +138,51 @@ class BookController extends BaseController
     public function addBook()
     {
         $result = FlatBook::addBook(Input::all());
+
         if ($result[0])
-            Session::put('TransactionMessage',['AddBook',[true,'Book added successfully.']]);
+            return $this->addBookThanks($result[1]);
         else
+        {
             Session::put('TransactionMessage',['AddBook',$result]);
-        return Redirect::to(URL::previous());
+            return Redirect::to(URL::previous());
+        }
+    }
+
+    // show thanks screen
+    // ask for more info or give option to add more books
+    public function addBookThanks($bookID)
+    {
+        $book = FlatBook::find($bookID);
+        $categories = Category::orderBy('Category', 'asc')
+                                ->lists('Category','ID');
+
+        return View::make('added-book',
+                array('addedBook' => true,
+                    'doAddInfo' => true,
+                    'categories' => $categories,
+                    'book' => $book,
+                    'addMoreBooks' => true));
+    }
+
+    public function setBookInfo()
+    {
+        $bookID = Input::get('bookID');
+        $book = FlatBook::find($bookID);
+
+        $resultSetExistingCategory = $resultSuggestCategory = null;
+        if (is_array(Input::get('CategoryID')))
+        {   
+            $intCategoryIDs = array_map('intval',Input::get('CategoryID'));
+            $resultSetExistingCategory = $book->setCategory($intCategoryIDs);
+        }
+        
+        if (strlen(Input::get('SuggestedCategories'))>0)
+            $resultSuggestCategory = $book->suggestCategory(Input::get('SuggestedCategories'));
+
+        return View::make('added-book',
+                array('addedInfo' => true,
+                    'book' => $book,
+                    'addMoreBooks' => true));
     }
 }
 ?>

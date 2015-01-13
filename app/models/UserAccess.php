@@ -12,7 +12,7 @@ class UserAccess extends Eloquent {
 		return $user;
 	}
 
-	private function getHumanUser()
+	public function getHumanUser()
 	{
 		$huser = User::where('EMail','=',$this->EMail)->first();
 		return $huser;	

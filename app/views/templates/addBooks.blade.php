@@ -1,6 +1,12 @@
 <div class="formDiv">
 	<a name="AddBooks"></a>
-	<span class="formTitle">ADD BOOKS THAT YOU ARE WILLING TO LEND</span><br/>
+	<span class="formTitle">
+		@if (isset($addMoreBooks) && ($addMoreBooks))
+			ADD MORE BOOKS
+		@else
+			ADD BOOKS THAT YOU ARE WILLING TO LEND
+		@endif
+		</span><br/>
 	<br/>
 	{{ Form::open(array('action' => 'BookController@addBook')) }}
 	Title<br/>

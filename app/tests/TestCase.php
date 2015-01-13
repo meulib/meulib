@@ -39,6 +39,9 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
   private function prepareForTests()
   {
     $_SERVER["REMOTE_ADDR"] = 'localhost';
+    // Artisan::call('migrate', [
+    //       '--force' => true
+    //       ]);
     Artisan::call('db:seed');
     $this->owner = User::find("Owner1");
     $this->otherOwner = User::find("Owner2");
