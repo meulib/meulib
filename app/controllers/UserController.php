@@ -189,5 +189,19 @@ class UserController extends BaseController
         else
             return Redirect::to(URL::previous())->withErrors([$result[1]]);;
     }
+
+    // display founding members
+    // i.e. member who opened lib in xyz location, 
+    // member who first shared 1000 books and so on
+    public function foundingMembers()
+    {
+        $appName = Config::get('app.name');
+        $founders = Founder::orderBy('When', 'desc')->get();
+        $founders->each(function($founder) use ($appName)
+        {
+            $founder->ClaimToFame = str_replace('appName', $appName, $founder->ClaimToFame);
+        });
+        return View::make('founders', array('founders'=>$founders));
+    }
 }
 ?>

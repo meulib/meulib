@@ -17,6 +17,7 @@
 	<!-- topLinks style='width:50%;position:absolute;right:0;top:0;text-align:right' -->
 	<div class='topLinks'>
 		<div style='font-size:120%;margin-bottom:2px;'>
+			{{HTML::link(URL::to('/founding-members'), 'Founding Members')}} | 
 			{{HTML::link(URL::to('/how-it-works'), 'How It Works')}} | 
 			{{HTML::link(URL::to('/faq'), 'FAQ')}} | 
 			{{HTML::link(URL::to('/vision'), 'Vision')}}

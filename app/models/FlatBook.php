@@ -87,7 +87,7 @@ class FlatBook extends Eloquent {
         	{
         		if (!Session::has('AddBookAdminMail'))
 				{
-				    $body = array('body'=>'New Book Added ' . $userID);
+				    $body = array('body'=>'New Book Added ' . $userID . ' ' . $user->FullName);
 
 					Mail::send(array('text' => 'emails.raw'), $body, function($message)
 					{

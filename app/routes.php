@@ -18,8 +18,8 @@
 // 	        ]);
 // echo 'migration done';
 
-//Artisan::call('up');
-//echo 'maintenance ended';
+// Artisan::call('up');
+// echo 'maintenance ended';
 
 // -------- APP ROUTES --------------------------
 
@@ -125,6 +125,8 @@ Route::get('/contact-admin', function()
 {
 	return View::make('contactAdmin');
 });
+
+Route::get('founding-members', 'UserController@foundingMembers');
 
 Route::post('submit-contact', 'UtilityController@submitContactForm');
 
