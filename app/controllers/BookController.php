@@ -129,8 +129,12 @@ class BookController extends BaseController
                 App::abort(404);
             else
             {
+                $bookCategories = $book->Categories()->get();
                 $copies = BookCopy::where('BookID', '=', $book->ID)->get();
-                return View::make("book",array('book' => $book, 'copies' => $copies));
+                return View::make("book",
+                    array('book' => $book, 
+                        'bookCategories' => $bookCategories,
+                        'copies' => $copies));
             }
 	    }
     }
@@ -184,5 +188,46 @@ class BookController extends BaseController
                     'book' => $book,
                     'addMoreBooks' => true));
     }
+
+    public function serveDeleteBookConfirmation()
+    {
+        if (!Session::has('loggedInUser'))
+            return "";
+
+        $bookCopyID = Input::get('idVal');
+        // var_dump($bookCopyID);
+        $userID = Session::get('loggedInUser')->UserID;
+        $activeTransactions = Transaction::itemCopy($bookCopyID)->count();
+        return View::make("templates.deleteConfirmForm",
+            array('bookCopyID'=>$bookCopyID,
+                'activeTransactions' => $activeTransactions));
+    }
+
+    public function deleteBookCopy()
+    {
+        if (!Session::has('loggedInUser'))
+            return "";
+
+        $bookCopyID = Input::get('bookCopyID');
+        $bookCopy = BookCopy::find($bookCopyID);
+        $bookID = $bookCopy->BookID;
+        $result = $bookCopy->delete(true);
+        if ($result[0])
+        {
+            if ($result[1]) // book itself deleted, return to my-books
+            {
+                Session::put('TransactionMessage',['DeleteBook',[true,'Book copy deleted.']]);   
+                return Redirect::to(URL::to('my-books'));
+            }                
+            else
+            {
+                Session::put('TransactionMessage',['DeleteBook','Book copy deleted']);
+               return Redirect::to(URL::to('book/'.$bookID));
+            }
+        }
+        else
+            return $result; // TODO: make this more elegant, rather than just showing $result
+    }
+    
 }
 ?>

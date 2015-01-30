@@ -36,7 +36,6 @@
 				Please login to access {{{$msg['from']}}}.<br/><br/>
 			@else
 				<br/>
-				<b>Login</b>
 			@endif
 			@include('templates.loginFormV')
 		@endif

@@ -53,16 +53,16 @@
 				@if ($copy->StatusTxt() == 'Available')
 					<?php $onclick = "showLendForm('".$copy->ID."','".$pendingReqURL."')"; ?>
 					{{ HTML::link('#','Lend', ['onclick'=>$onclick]); }}
-					<br/>
-					{{"<div id='showDiv2".$copy->ID."' style='display:none; border:2px grey solid;padding: 5px;'></div>"}}
+					{{--"<div id='showDiv2".$copy->ID."' style='display:none; border:2px grey solid;padding: 5px;'></div>"--}}
+					{{"<div id='showDiv2".$copy->ID."' style='display:none;' class='formDiv'></div>"}}
 				@endif
 				@if ($copy->StatusTxt() == 'Lent Out')
 					<?php $onclick = "showLendForm('".$copy->ID."','".$returnForm."')"; ?>
 					{{ HTML::link('#','Accept Return', ['onclick'=>$onclick]); }}
-					{{"<div id='showDiv2".$copy->ID."' style='display:none'></div>"}}
+					{{"<div id='showDiv2".$copy->ID."' style='display:none' class='formDiv'></div>"}}
 				@endif
 			@endforeach
-			<br/><br/>
+			<br/>
 	@endforeach
 @endif
 </ul>

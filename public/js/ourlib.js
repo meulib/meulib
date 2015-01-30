@@ -6,8 +6,42 @@ function showDiv(divid)
 	if (shownDiv != "")
 		document.getElementById(shownDiv).style.display = "none";
 
-	document.getElementById(divid).style.display = "block";
+	document.getElementById(divid).style.display = "inline-block";
 	shownDiv = divid;
+}
+
+// to show divs where content will come from a post
+// ajax call
+function showPostDiv(id,callURL)
+{
+  // alert('in showPostDiv '+id+' '+callURL);
+  if (shownDiv != "")
+    document.getElementById(shownDiv).style.display = "none";
+  $j.ajax({
+         url:callURL,
+         data: {idVal: id},
+         type: "POST",
+         dataType: "html",
+         success: function(result) 
+         {
+            shownDiv = "postDiv"+id;  
+            var div = document.getElementById(shownDiv);
+            div.innerHTML = result;
+  //          div.innerHTML = 'abc';
+            div.style.display = "inline-block";
+         },
+         error: function( xhr, status )
+         {
+            alert( "Sorry, there was a problem! " +status );
+         },
+         async:   false
+  });
+}
+
+function hideDiv(id)
+{
+    divid = 'postDiv'+id;
+    document.getElementById(divid).style.display = "none";
 }
 
 // makes db query for pending requests

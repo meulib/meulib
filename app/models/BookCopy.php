@@ -2,6 +2,8 @@
 
 class BookCopy extends Eloquent {
 
+	use SoftDeletingTrait;
+
 	protected $table = 'bookcopies';
 	protected $primaryKey = 'ID';
 
@@ -49,6 +51,102 @@ class BookCopy extends Eloquent {
 				return -1;
 				break;
 		}
+	}
+
+	public function scopeAllCopies($query,$BookID)
+	{
+		return $query->where(function ($query) use($BookID)
+				{
+					$query->where('BookID','=', $BookID);
+				});
+	}
+
+	// force delete = true aborts transactions if any exist
+	// force delete = false prevents delete if transactions exist
+	// if no active transactions exist, force delete false and true
+	// are same
+	// SUCCESS RETURN: Array[trueIfSuccessfullyDeleted,trueIfBookItselfDelete]
+	public function delete($forceDelete = false)
+	{
+
+		if (!Session::has('loggedInUser'))
+            return array(false,'No user logged in.');
+
+        $user = Session::get('loggedInUser');
+        if ($user->UserID != $this->UserID)
+        	return array(false,'User not authorized to delete.');
+
+        $BookID = $this->BookID;
+		$BookCopyID = $this->ID;
+		$bookItself = FlatBook::find($BookID);
+		$emailBody = "Book Copy Deleted: " . $BookCopyID . " : " .
+			$bookItself->FullTitle() . " : " . $bookItself->Author1 . " : " .
+			$user->UserID . " : " . $user->FullName;
+
+		// figure out of transactions are to be aborted
+		$abortTransactions = false;
+		$activeTransactions = Transaction::itemCopy($this->ID)->get();
+		if (count($activeTransactions) > 0)
+		{
+			// transactions exist but attempt to delete without
+			// force = true
+			if (!$forceDelete)
+			{
+				return array(false,'Active Transactions exist');
+			}
+			else 
+			{
+				$abortTransactions = true;	
+			}				
+		}
+
+		// figure out if the basic book itself is to be deleted
+		$deleteBookItself = false;
+		$bookCopiesCount = self::allCopies($this->BookID)->count();
+		if ($bookCopiesCount == 1)
+			$deleteBookItself = true;
+
+		// now do the needful
+		DB::beginTransaction();
+		try 
+		{
+			if ($abortTransactions)
+			{
+				foreach ($activeTransactions as $transaction) 
+				{
+					// false flag means abort is not independent
+					// abort is part of this larger ongoing db transaction
+					$transaction->abort(false);
+				}
+			}
+
+			// delete book copy
+			parent::delete();
+
+			// delete book itself and book category
+			if ($deleteBookItself)
+			{
+				$bookItself = FlatBook::find($BookID);
+				// delete book itself, call with independent = false
+				$bookItself->delete(false); 
+			}
+		}
+		catch (Exception $e)
+		{
+			DB::rollback();
+			throw $e;
+		}
+		DB::commit();
+
+		// email admin notification
+		if ($deleteBookItself)
+			$emailBody .= " : Base book itself deleted.";
+		if ($abortTransactions)
+			$emailBody .= " : Transactions aborted.";
+
+		AppMailer::MailToAdmin("Book Copy Deleted",$emailBody);
+		
+		return [true,$deleteBookItself];
 	}
 }
 

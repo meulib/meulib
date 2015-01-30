@@ -54,7 +54,7 @@ return array(
 	|
 	*/
 
-	'from' => array('address' => 'publibtest@gmail.com', 'name' => 'OurLib Demo Library Admin'),
+	'from' => array('address' => 'publibtest@gmail.com', 'name' => 'OurLib Demo Library'),
 	'admin' => 'vani.murarka@gmail.com',
 
 	/*
@@ -82,6 +82,7 @@ return array(
 	*/
 
 	'username' => 'publibtest@gmail.com',
+	
 
 	/*
 	|--------------------------------------------------------------------------
@@ -94,7 +95,7 @@ return array(
 	|
 	*/
 
-	'password' => '45minutes',
+	'password' => 'xxx',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -120,6 +121,16 @@ return array(
 	|
 	*/
 
-	'pretend' => false,
+	'pretend' => true,
+
+	/*
+	|--------------------------------------------------------------------------
+	| Mail "useQueue"
+	|--------------------------------------------------------------------------
+	|
+	| When this option is enabled, e-mail will be sent to enabled queue.
+	|
+	*/
+	'useQueue' => false,
 
 );

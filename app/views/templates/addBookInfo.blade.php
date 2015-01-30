@@ -16,6 +16,6 @@
 	Suggest other categories <br/>
 	(separate multiple categories by comma)<br/>
 	{{ Form::text('SuggestedCategories', '', ['size'=>40,'maxlength'=>500]) }}<br/>
-	{{ Form::submit('Submit'); }}
+	{{ Form::submit('Submit', array('class' => 'richButton')); }}
 	{{ Form::close() }}
 </div>

@@ -12,7 +12,7 @@
 	<div class="loginFormHPwd" style="display:inline-block;padding-left:2px;">
 		{{ Form::label('user_password', 'Password'); }}
 		{{ Form::password('user_password'); }}
-		{{ Form::submit('Login'); }}
+		{{ Form::submit('Login', array('class' => 'normalButton')); }}
 	</div>
 {{ Form::close() }}
 </div>

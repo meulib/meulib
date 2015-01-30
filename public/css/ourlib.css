@@ -5,7 +5,7 @@ complementary
 http://paletton.com/#uid=52P0B0knWFWnWFW4hNpUvEvAfmz
 http://paletton.com/#uid=53q0B0kiTZEiTZElyz97w++j0++
 nice chutney green color
-105 141 45
+105 141 45 = 69 8D 2D
 */
 
 body
@@ -56,9 +56,21 @@ select {
 	margin:2px;
 }
 
-input[type=submit] {
+.richButton {
 	background-color: #FFBF00;
+	color: black;
 	font-weight: bold;
+	border: 2px solid #B48700;
+	font-size   : 120%;
+}
+
+.normalButton
+{
+	background-color: #7B40C9;
+	color: white;
+	font-weight: bold;
+	border: 2px solid #B48700;
+	font-size   : 120%;
 }
 
 textarea {
@@ -70,6 +82,55 @@ textarea {
 	font-size   : 120%;
 	margin:2px;
 }
+
+.formDiv
+{
+	padding: 10px;
+	margin-bottom: 10px;
+	/*border: 5px solid #B48700;*/
+	border: 5px solid #81AB00;
+	/*background-color: #81AB00;*/
+	/*font-weight: bold;*/
+	border-radius: 20px;
+}
+
+.formTitle
+{
+	color:#39097A;	/* purple */
+	/*color: #FFBF00;*/
+	font-size: 120%;
+	font-weight: bold;
+	text-align: center;
+}
+
+.carefulDiv
+{
+	padding: 10px;
+	margin-bottom: 10px;
+	border: 2px solid black;
+	border-radius: 20px;
+}
+
+.carefulButton
+{
+	background-color: black;
+	color: white;
+	font-weight: bold;
+	border: 2px solid red;
+	font-size   : 120%;
+}
+
+.aTreadCarefully
+{
+	font-size: 80%;
+	text-decoration: none;
+    color: red;
+}
+.aTreadCarefully a:link {color: red;}
+.aTreadCarefully a:visited {color: red;}
+.aTreadCarefully a:hover {color: red;}
+.aTreadCarefully a:focus {color: red;}
+.aTreadCarefully a:active {color: red;}
 
 .head {
 	position:relative;
@@ -88,6 +149,7 @@ textarea {
 {
 	margin-top: 10px;
 	font-size: 80%;
+	display: none;
 }
 
 .topLinks input
@@ -179,25 +241,7 @@ textarea {
 	color: #5703C5;
 }
 
-.formDiv
-{
-	padding: 10px;
-	margin-bottom: 10px;
-	/*border: 5px solid #B48700;*/
-	border: 5px solid #81AB00;
-	/*background-color: #81AB00;*/
-	/*font-weight: bold;*/
-	border-radius: 20px;
-}
 
-.formTitle
-{
-	color:#39097A;	/* purple */
-	/*color: #FFBF00;*/
-	font-size: 120%;
-	font-weight: bold;
-	text-align: center;
-}
 
 .homeLoginWelcome
 {
@@ -232,6 +276,7 @@ textarea {
 		padding-right: 10px;
 		text-align:right;
 		width: 60%;
+		display: block;
 		/*border-left: 1px black solid;*/
 	}
 	.loginFormH

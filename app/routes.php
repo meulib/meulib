@@ -11,7 +11,7 @@
 |
 */
 
-//Artisan::call('down');
+// Artisan::call('down');
 
 // Artisan::call('migrate', [
 // 	        '--force' => true
@@ -33,6 +33,11 @@ Route::get('generic-error', function()
 	return View::make('genericError');
 });
 
+Route::post('queue/receive', function()
+{
+    return Queue::marshal();
+});
+
 // ----- BOOK ROUTES --------------
 
 Route::get('browse/{location?}/{language?}/{category?}', 'BookController@showAll');
@@ -40,14 +45,13 @@ Route::get('browse/{location?}/{language?}/{category?}', 'BookController@showAll
 Route::get('book/{id?}', 'BookController@showSingle');
 
 Route::get('my-books', 'BookController@myBooks');
-
 Route::get('borrowed-books', 'BookController@borrowedBooks');
 
 Route::post('add-book', 'BookController@addBook');
-
 Route::post('add-book-info', 'BookController@setBookInfo');
 
-// Route::get('added-book/{bookID}/', 'BookController@addBookThanks');
+Route::post('delete-book-confirmation', 'BookController@serveDeleteBookConfirmation');
+Route::post('delete-bookcopy', 'BookController@deleteBookCopy');
 
 // ----- ACCOUNT CREATION ------------
 
@@ -81,15 +85,12 @@ Route::post('reset-password', 'UserController@resetPwd');
 // ------- TRANSACTIONS --------------
 
 Route::post('request', 'TransactionController@request');
-
 Route::post('reply', 'TransactionController@reply');
 
 Route::post('pending-requests', 'TransactionController@pendingRequests');
-
-Route::post('return-form', 'TransactionController@returnForm');
-
 Route::post('lend', 'TransactionController@lend');
 
+Route::post('return-form', 'TransactionController@returnForm');
 Route::post('accept-return', 'TransactionController@acceptReturn');
 
 Route::get('/messages/{tranID?}', 'TransactionController@messages');

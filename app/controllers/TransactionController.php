@@ -144,7 +144,8 @@ class TransactionController extends BaseController
         $bookCopyID = Input::get('bookCopyID');
         $userID = Session::get('loggedInUser')->UserID;
         $tran = Transaction::borrowerByItemCopy($bookCopyID, $userID);
-        return View::make("templates.acceptReturnForm",array('bookCopyID' => $bookCopyID,'lentRecord' => $tran));
+        return View::make("templates.acceptReturnForm",
+            array('bookCopyID' => $bookCopyID,'lentRecord' => $tran));
         //return $tran;
     }
 
@@ -153,21 +154,25 @@ class TransactionController extends BaseController
         if (!Session::has('loggedInUser'))
             return Redirect::to(URL::to('/'));
 
-        $userID = Session::get('loggedInUser')->UserID;
-        $bookCopyID = Input::get('bookCopyID');
-        $borrowerID = Input::get('returnFromID');
-        $tranID = 0;
+        // $userID = Session::get('loggedInUser')->UserID;
+        // $bookCopyID = Input::get('bookCopyID');
+        // $borrowerID = Input::get('returnFromID');
+        $tranID = Input::get('transactionID');
+        $tran = Transaction::find($tranID);
+        $returnedTranID = 0;
 
         try
         {
-            $tranID = Transaction::returnItem($userID,$bookCopyID,$borrowerID);
+            // $tranID = Transaction::returnItem($userID,$bookCopyID,$borrowerID);
+            $returnedTranID = $tran->returnItem();
+
         }
         catch (Exception $e)
         {
             Session::put('TransactionMessage',['ReturnBook',[false,'There was some error. Book return not recorded.'.$e->getMessage()]]);
         }        
 
-        if ($tranID > 0)
+        if ($tranID == $returnedTranID)
             Session::put('TransactionMessage',['ReturnBook',[true,'Book return recorded.']]);
         else
             Session::put('TransactionMessage',['ReturnBook',[false,'There was some error. Book return not recorded.'.$e->getMessage()]]);
