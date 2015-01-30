@@ -1,32 +1,28 @@
 <?php
 
-class AddBookTest extends TestCase 
+class BookTest extends TestCase 
 {
 
+	// -----------------------------------------
+	// -------- ADD BOOK -----------------------
+	// -----------------------------------------
 	public function testValidUser()
 	{
+		// test valid user
 		$bookDetails = array('Author1'=>'Me',
 						'Title'=>'My First Book!');
 		$this->assertFalse(FlatBook::addBook($bookDetails)[0]); // should not save
-	}
 
-	public function testTitleGiven()
-	{
+		// test title given
 		Session::put('loggedInUser',$this->owner);
 		$bookDetails = array('Author1'=>'Me');
 		$this->assertFalse(FlatBook::addBook($bookDetails)[0]); // should not save
-	}
 
-	public function testAuthorGiven()
-	{
-        Session::put('loggedInUser',$this->owner);
+		// test author given
 		$bookDetails = array('Title'=>'My Third Book!');
 		$this->assertFalse(FlatBook::addBook($bookDetails)[0]); // should not save
-	}
 
-	public function testBasicSaved()
-	{
-		Session::put('loggedInUser',$this->owner);
+		// test basic saved
 		$bookDetails = array('Author1'=>'Me',
 						'Title'=>'My Real Book!');
 		$result = FlatBook::addBook($bookDetails);
@@ -39,12 +35,9 @@ class AddBookTest extends TestCase
 		$bookCopy = BookCopy::where('BookID', '=', $bookID)
 								->where('UserID', '=', $this->owner->UserID)
 								->count();
-		$this->assertEquals($bookCopy,1); 
-	}
+		$this->assertEquals($bookCopy,1);
 
-	public function testFullSaved()
-	{
-		Session::put('loggedInUser',$this->owner);
+		// test full saved
 		$bookDetails = array('Author1'=>'Me',
 						'Title'=>'My Full Book!',
 						'Author2' => 'My Collaborator',
@@ -65,7 +58,7 @@ class AddBookTest extends TestCase
 		$bookCopy = BookCopy::where('BookID', '=', $bookID)
 								->where('UserID', '=', $this->owner->UserID)
 								->count();
-		$this->assertEquals($bookCopy,1); 	
+		$this->assertEquals($bookCopy,1);
 	}
 
 	public function testLanguageIDSaved()
@@ -88,4 +81,78 @@ class AddBookTest extends TestCase
 		$this->assertEquals($hindi->ID, $book->Language2ID);
 	}
 
+	// -----------------------------------------
+	// -------- BOOK INFO ----------------------
+	// -----------------------------------------
+	public function testSetCategory()
+	{
+		Session::put('loggedInUser',$this->owner);
+		$bookDetails = array('Author1'=>'Me',
+						'Title'=>'My Expanded Book!');
+		$result = FlatBook::addBook($bookDetails);
+		$bookID = $result[1];
+		$book = FlatBook::find($bookID);
+
+		$result = $book->setCategory(768);	// wrong category
+		$this->assertFalse($result[0]);	// should not save
+		//var_dump($result[1]);	// error msg
+
+		$result = $book->setCategory(1);	// correct category
+		$this->assertTrue($result[0]);	// should save
+
+		$result = $book->setCategory(1);	// give again
+		$this->assertTrue($result[0]);	// no issue
+
+		$bookDetails = array('Author1'=>'Me',
+						'Title'=>'My Multifaceted Book!');
+		$result = FlatBook::addBook($bookDetails);
+		$bookID = $result[1];
+		$book = FlatBook::find($bookID);
+
+		$result = $book->setCategory([5,10]); // test multiple save, wrong category
+		$this->assertFalse($result[0]);	// should not save
+		//var_dump($result[1]);	// error msg
+
+		$result = $book->setCategory([1,2]); // test multiple save
+		$this->assertTrue($result[0]);
+
+		$result = $book->setCategory([1,2]);
+		$this->assertTrue($result[0]);
+	}
+
+	public function testSuggestCategory()
+	{
+		Session::put('loggedInUser',$this->owner);
+		$bookDetails = array('Author1'=>'Me',
+						'Title'=>'My New Type Book!');
+		$result = FlatBook::addBook($bookDetails);
+		$bookID = $result[1];
+		$book = FlatBook::find($bookID);
+
+		$result = $book->suggestCategory('History');
+		$this->assertTrue($result[0]);
+	}
+
+	// -----------------------------------------
+	// -------- DELETE BOOKCOPY-----------------
+	// -----------------------------------------
+	public function testDeleteBookCopy()
+	{
+		// create a transaction for book
+		$msg = 'May I borrow this book please? When and where can I meet you?';
+		$result = Transaction::request($this->borrower->UserID,1,$msg);
+
+		Session::put('loggedInUser',$this->owner);
+		$bookCopy = BookCopy::find(1);
+		$deleteResult = $bookCopy->delete();
+		// should not delete without force = true
+		// when active transactions exist
+		$this->assertFalse($deleteResult[0]);
+
+		$deleteResult = $bookCopy->delete(true);	
+		$this->assertTrue($deleteResult[0]);
+		
+		$bookCopyAgain = BookCopy::find(1);
+		$this->assertFalse(isset($bookCopyAgain));
+	}
 }

@@ -4,6 +4,7 @@ class AddUsersTest extends TestCase
 {
 	public function testUserSaved()
 	{
+		// DB::statement('SET NAMES utf8');
 		$userData = array('email'=>'catchall@manaskriti.com',
 						'name'=>'Someone',
 						'locality'=>'Chandni Chowk',

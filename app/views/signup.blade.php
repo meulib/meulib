@@ -2,12 +2,15 @@
 
 @section('content')
 <!-- TO DO: break this form into several pages/tabs with heading so that it is easier for user. Form does not feel too long. -->
+<div class='contentDiv'>
+<div class='formDiv' style='display:inline-block'>
 {{ Form::open(array('action' => 'UserController@submitSignup')) }}
 <ul class="errors">
 @foreach($errors->all() as $message)
     <li>{{ $message }}</li>
 @endforeach
 </ul>
+<span class='pageTitle'>Become a Member!</span>
 	<table>
 		<tr>
 			<td>{{ Form::label('l_email', 'Email'); }}</td>
@@ -83,8 +86,10 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td>{{ Form::submit('Join!'); }}</td>
+			<td>{{ Form::submit('Join!', array('class' => 'richButton')); }}</td>
 		</tr>
 	</table>
 {{ Form::close() }}
+</div>
+</div>
 @stop

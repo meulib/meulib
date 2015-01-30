@@ -3,7 +3,7 @@
 
 @section('content')
 
-<div style="margin: 0 auto; display:table;" id="loginDiv">
+<div style="margin: 0 auto; display:table;" id="loginDiv" class='formDiv'>
 	@foreach($errors->all() as $message)
     	{{ $message }}</br>
 	@endforeach
@@ -26,7 +26,7 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td>{{ Form::submit('Reset'); }}</td>
+			<td>{{ Form::submit('Reset', array('class' => 'normalButton')); }}</td>
 		</tr>
 	</table>
 	{{ Form::close() }}

@@ -21,6 +21,6 @@
 	{{ Form::text('Language1', 'English', ['required','maxlength'=>50]) }}<br/>
 	Any other language? (for multi-lingual books)<br/>
 	{{ Form::text('Language2', '', ['maxlength'=>50]) }}<br/>
-	{{ Form::submit('Add'); }}
+	{{ Form::submit('Add', array('class' => 'richButton')); }}
 	{{ Form::close() }}
 </div>

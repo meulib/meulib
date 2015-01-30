@@ -15,7 +15,7 @@ if (isset($result))
 }
 ?>
 
-<div style="margin: 0 auto; display:table;" id="forgotPwdDiv">
+<div style="margin: 0 auto; display:table;" id="forgotPwdDiv" class='formDiv'>
 	{{ $msg }}
 	@if (!$success)
 	<b>Forgot your password?</b><br/>
@@ -24,7 +24,7 @@ if (isset($result))
 		to reset password:
 		{{ Form::open(array('action' => 'UserController@forgotPwd')) }}
 			{{ Form::text('email', ''); }}<br/>
-			{{ Form::submit('Get Password Reset Link'); }}
+			{{ Form::submit('Get Password Reset Link', array('class' => 'normalButton')); }}
 		{{ Form::close() }}
 	@endif
 </div>

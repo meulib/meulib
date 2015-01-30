@@ -1,4 +1,4 @@
-<div id=requestBook{{{$bCopy->ID}}} style="display:none">
+<div id=requestBook{{{$bCopy->ID}}} style="display:none" class="formDiv">
 {{ Form::open(array('action' => 'TransactionController@request')) }}
 	{{ Form::hidden('bookCopyID',$bCopy->ID) }}
 	Message: <br/>
@@ -10,6 +10,6 @@
 	<!-- <img src="tools/showCaptcha.php" alt="captcha" /><br/>
       <label>Please enter these characters</label><br/>
       <input type="text" name="captcha" required /> -->
-    {{ Form::submit('Request'); }}
+    {{ Form::submit('Request', array('class' => 'normalButton')) }}
 {{ Form::close() }}
 </div>

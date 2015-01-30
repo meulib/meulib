@@ -301,34 +301,37 @@ class Transaction extends Eloquent {
 	}
 
 	// user records the return of an item
-	public static function returnItem($lenderID, $itemCopyID, $borrowerID)
+	// public static function returnItem($lenderID, $itemCopyID, $borrowerID)
+	public function returnItem()
 	{
-		$itemCopy = BookCopy::where('ID','=',$itemCopyID)
-					->where('UserID','=',$lenderID)
+		$itemCopy = BookCopy::where('ID','=',$this->ItemCopyID)
+					->where('UserID','=',$this->Lender)
 					->where('Status','=', BookCopy::StatusVal('Lent Out'))
-					->first();
+					->first();		
 
 		if (!$itemCopy)
 		{
-			//$ql = DB::getQueryLog();
-			//$q = serialize($ql);
-			throw new TransactionException('Item Not Available');
+			throw new TransactionException('Item Not Found');
 		}
 
-		$tran = Transaction::where('Borrower','=',$borrowerID)
-					->where('itemCopyID','=',$itemCopyID)
-					->where('Status','=',self::tStatusByKey('T_STATUS_LENT'))
-					->first();
-
-		if (!$tran)
-			throw new TransactionException('TransactionID Not Found');
+		$tranID = $this->ID;
 
 		DB::beginTransaction();
 		try 
 		{
+			// post to transaction archive
+			$tranArchive = new TransactionArchived;
+			$tranArchive->ID = $this->ID;
+  			$tranArchive->Borrower = $this->Borrower;
+  			$tranArchive->Lender = $this->Lender;
+  			$tranArchive->ItemCopyID = $this->ItemCopyID;
+  			$tranArchive->ItemID = $this->ItemID;
+  			$tranArchive->Status = self::tStatusByKey('T_STATUS_RETURNED');
+  			$tranArchive->save();
+
 			// post to history
 			$tranH = new TransactionHistory;
-			$tranH->TransactionID = $tran->ID;
+			$tranH->TransactionID = $this->ID;
 			$tranH->Status = self::tStatusByKey('T_STATUS_RETURNED');
 			$tranH->save();
 
@@ -337,8 +340,8 @@ class Transaction extends Eloquent {
 			$itemCopy->save();
 
 			// delete the transaction from active table
-			$tran->Status = self::tStatusByKey('T_STATUS_RETURNED');
-			$tran->delete();
+			// $tran->Status = self::tStatusByKey('T_STATUS_RETURNED');
+			$this->delete();
 		}
 		catch (Exception $e)
 		{
@@ -346,7 +349,55 @@ class Transaction extends Eloquent {
 			throw $e;
 		}				
 		DB::commit();
-		return $tran->ID;
+		return $tranID;
+	}
+
+	// for some reason just cut a transaction short
+	// just delete it - record it in archive and history
+	// and just delete
+	// MAKES NO CHANGE TO ITEMCOPY STATUS
+	// $independent: if this is being called from another 
+	// already active db transaction then call this with 
+	// independent = false
+	// then DB begintransaction, commit will not be called here
+	// and operations performed here will be part of larger transaction
+	public function abort($independent = true)
+	{
+		$tranID = $this->ID;
+		if ($independent)
+			DB::beginTransaction();
+		try 
+		{
+			// post to transaction archive
+			$tranArchive = new TransactionArchived;
+			$tranArchive->ID = $this->ID;
+  			$tranArchive->Borrower = $this->Borrower;
+  			$tranArchive->Lender = $this->Lender;
+  			$tranArchive->ItemCopyID = $this->ItemCopyID;
+  			$tranArchive->ItemID = $this->ItemID;
+  			$tranArchive->Status = self::tStatusByKey('T_STATUS_ABORTED');
+  			$tranArchive->save();
+
+			// post to history
+			$tranH = new TransactionHistory;
+			$tranH->TransactionID = $this->ID;
+			$tranH->Status = self::tStatusByKey('T_STATUS_ABORTED');
+			$tranH->save();
+
+			// delete the transaction from active table
+			// $tran->Status = self::tStatusByKey('T_STATUS_RETURNED');
+			$this->delete();
+		}
+		catch (Exception $e)
+		{
+			if ($independent)
+				DB::rollback();
+			throw $e;
+		}
+		if ($independent)				
+			DB::commit();
+
+		return $tranID;
 	}
 
 	// Retrieve Function - No Action
@@ -404,6 +455,10 @@ class Transaction extends Eloquent {
 			case 10:
 				return 'T_STATUS_RETURNED';
 				break;
+
+			case -10:
+				return 'T_STATUS_ABORTED';
+				break;
 			
 			default:
 				return '';
@@ -428,6 +483,10 @@ class Transaction extends Eloquent {
 
 			case 'T_STATUS_RETURNED':
 				return 10;
+				break;
+
+			case 'T_STATUS_ABORTED':
+				return -10;
 				break;
 			
 			default:
@@ -460,6 +519,16 @@ class Transaction extends Eloquent {
 		return $tran;
 		/*$q = DB::getQueryLog();
 		return $q;*/
+	}
+
+	// Retrieve Function - No Action
+	// Transactions for an ItemCopy
+	public function scopeItemCopy($query,$ItemCopyID)
+	{
+		return $query->where(function ($query) use($ItemCopyID)
+						{
+						$query->where('ItemCopyID','=', $ItemCopyID);
+						});
 	}
 }
 

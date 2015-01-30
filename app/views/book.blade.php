@@ -4,10 +4,13 @@
 <?php
 	$loggedIn = false;
 	if (Session::has('loggedInUser'))
+	{
 		$loggedIn = true;
-	$title = $book->Title;
-	if ($book->SubTitle)
-		$title .= ': '.$book->SubTitle;
+		$loggedInUser = Session::get('loggedInUser');
+	}
+	$title = $book->FullTitle();
+	// if ($book->SubTitle)
+	// 	$title .= ': '.$book->SubTitle;
 	$tMsg = ["",""];
 	if (Session::has('TransactionMessage'))
 	{
@@ -17,6 +20,7 @@
 			Session::forget('TransactionMessage');	
 		}
 	}
+	$deleteFormURL = URL::to('delete-book-confirmation');
 ?>
 
 @section('content')
@@ -40,19 +44,36 @@
 		@endif		
 	@endif
 	<br/><br/>
+	@if (count($bookCategories)>0)
+		Categorised as: 
+		@foreach($bookCategories as $bCategory)
+			{{$bCategory->Category}}
+		@endforeach
+		<br/><br/>
+	@endif
 	Book Copies ({{{count($copies)}}})
 	<br/><br/>
-	<b>Owners</b><br/><br/>
+	<b>Owners</b><br/>
 	@foreach($copies as $bCopy)
 		@if ($loggedIn)
 			{{{$bCopy->Owner->FullName.': '}}}
 		@endif
+		in 
 		{{{$bCopy->Owner->City.', '.$bCopy->Owner->Locality}}}<br/>
+		Book Status: {{ $bCopy->StatusTxt() }}<br/>
 		@if ($loggedIn)
-			<?php $onclick = "showDiv('requestBook".$bCopy->ID."')"; ?>
-			{{ HTML::link('#','Request Book', ['onclick'=>$onclick]); }}
-			@include('templates.requestBookForm')
+			@if ($bCopy->Owner->UserID != $loggedInUser->UserID)
+				<?php $onclick = "showDiv('requestBook".$bCopy->ID."')"; ?>
+				{{ HTML::link('#','Request Book', ['onclick'=>$onclick]); }}
+				@include('templates.requestBookForm')
+			@else
+				This is you!<br/>
+				<?php $onclick = "showPostDiv('".$bCopy->ID."','".$deleteFormURL."')"; ?>
+				<span class="aTreadCarefully">{{ HTML::link('#','Delete This Copy', ['onclick'=>$onclick]) }}</span>
+				{{"<div id='postDiv".$bCopy->ID."' style='display:none;' class='carefulDiv'></div>"}}
+			@endif
 		@endif
+		<br/><br/>
 	@endforeach
 @stop
 

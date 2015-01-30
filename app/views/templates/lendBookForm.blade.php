@@ -48,5 +48,5 @@
 		</td></tr></table>
 	@endif
 	<br/>
-	<input class="btn" type="button" id="lendBookButton" value="Lend" onclick=lendFormSubmit({{$bookCopyID}},'{{{URL::to('lend')}}}')>
+	<input class="normalButton" type="button" id="lendBookButton" value="Lend" onclick=lendFormSubmit({{$bookCopyID}},'{{{URL::to('lend')}}}')>
 {{ Form::close() }}

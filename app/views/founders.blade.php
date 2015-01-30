@@ -24,7 +24,12 @@
 		<br/>
 		{{$founder->ClaimToFame}}
 	</div>
-
 	@endforeach
+	<p align="center">
+		<br/><br/>
+		You can be a part of this too.
+		<br/>
+		There are many ways to be a founding member.<br/>
+		Participate and you will discover.</p>
 	</div>
 @stop

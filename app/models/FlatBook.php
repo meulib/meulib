@@ -2,8 +2,12 @@
 
 class FlatBook extends Eloquent {
 
+	use SoftDeletingTrait;
+
 	protected $table = 'books_flat';
 	protected $primaryKey = 'ID';
+
+	// ------------------ RELATIONSHIPS ----------------------
 
 	public function Copies()
 	{
@@ -25,6 +29,8 @@ class FlatBook extends Eloquent {
 		return $this->hasOne('Language', 'Language2ID', 'ID');
 	}
 
+	// ------------- HELPER FUNCTION ---------------------------
+
 	public function FullTitle()
 	{
 		$title = $this->Title;
@@ -32,6 +38,8 @@ class FlatBook extends Eloquent {
 			$title .= ' : ' . $this->SubTitle;
 		return $title;
 	}
+
+	// -------------- ACTION FUNCTIONS -----------------------
 
 	public static function addBook($bookDetails)
 	{
@@ -87,13 +95,15 @@ class FlatBook extends Eloquent {
         	{
         		if (!Session::has('AddBookAdminMail'))
 				{
-				    $body = array('body'=>'New Book Added ' . $userID . ' ' . $user->FullName);
+				    $bodyText = 'New Book Added ' . $userID . ' ' . $user->FullName;
+				    $subject = 'New ' . Config::get('app.name') . ' Book';
+				    AppMailer::MailToAdmin($subject,$bodyText);
 
-					Mail::send(array('text' => 'emails.raw'), $body, function($message)
+					/*Mail::queue(array('text' => 'emails.raw'), $body, function($message)
 					{
 						$message->to(Config::get('mail.admin'))
 								->subject('New ' . Config::get('app.name') . ' Book');
-					});
+					});*/
 					Session::put('AddBookAdminMail','sent');
 				}     		
 	        	return array(true,$book->ID);
@@ -103,9 +113,44 @@ class FlatBook extends Eloquent {
         return array(false,'Book not saved. DB save error 1.');
 	}
 
+	// $independent: if this is being called from another 
+	// already active db transaction then call this with 
+	// independent = false
+	// then DB begintransaction, commit will not be called here
+	// and operations performed here will be part of larger transaction
+	// BOOKS ARE SOFT DELETED
+	// BOOK-CATEGORY HARD DELETED
+	public function delete($independent = true)
+	{
+		//$this->load('Categories');
+		$BookID = $this->ID;
+		//$categories = $this->Categories();
+		if ($independent)
+			DB::beginTransaction();
+		try 
+		{
+			$this->Categories()->detach();	// delete book_categories recs
+			parent::delete();	// delete itself
+		}
+		catch (Exception $e)
+		{
+			if ($independent)
+				DB::rollback();
+			throw $e;
+		}
+		if ($independent)
+		{
+			DB::commit();
+			// send admin notification mail
+		}
+
+		return $BookID;
+	}
+
 	// set 1 or more categories for a book
 	public function setCategory($givenCategories)
 	{
+		// only 1 given category
 		if (is_int($givenCategories) && ($givenCategories > 0))
 		{
 			$this->load('Categories');
@@ -123,6 +168,7 @@ class FlatBook extends Eloquent {
 			return [true,''];
 		}
 
+		// multiple categories given
 		if (is_array($givenCategories) && (count($givenCategories) > 0))
 		{
 			$this->load('Categories');
@@ -168,16 +214,20 @@ class FlatBook extends Eloquent {
 		}
 
 
-		$body = array('body'=>$bodyText);
+		// $body = array('body'=>$bodyText);
+		$subject = 'New Category Suggested';
+		AppMailer::MailToAdmin($subject,$bodyText);
 
-		Mail::send(array('text' => 'emails.raw'), $body, function($message)
+		/*Mail::queue(array('text' => 'emails.raw'), $body, function($message)
 		{
 			$message->to(Config::get('mail.admin'))
 					->subject('New Category Suggested');
-		});
+		});*/
 
 		return [true,''];
 	}
+
+	// ------------------ QUERY SCOPES ------------------
 
 	public function scopeLocation($query,$LocationID)
 	{
@@ -211,6 +261,8 @@ class FlatBook extends Eloquent {
 	{
 		return $query->where('Checked','!=','-1');
 	}
+
+	// ------------------- RETRIEVE FUNCTIONS --------------
 
 	public static function filtered($LocationID=0,$LanguageID=0,$CategoryID=0)
 	{

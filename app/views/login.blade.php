@@ -8,8 +8,9 @@
 		<br/>
 	@endif
 	
-	
-	@include('templates.loginFormV')
+	<div class='formDiv'>
+		@include('templates.loginFormV')
+	</div>
 </div>
 
 @stop

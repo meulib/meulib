@@ -58,7 +58,7 @@ class UserController extends BaseController
     public function logout()
     {
         Session::flush();
-        return Redirect::to(URL::previous());
+        return Redirect::to(URL::to('/'));
     }
 
     public function forgotPwdView()

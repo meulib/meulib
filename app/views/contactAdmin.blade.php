@@ -24,7 +24,7 @@
 	Send in your questions, suggestions, issues you are facing.
 	<br/>
 	We are a friendly sort. Eager to hear from you!
-
+<div class='formDiv'>
 {{ Form::open(array('action' => 'UtilityController@submitContactForm')) }}
 <ul class="errors">
 @foreach($errors->all() as $message)
@@ -53,10 +53,11 @@
 		</tr>
 		<tr>
 			<td></td>
-			<td>{{ Form::submit('Yes! Send it in!'); }}</td>
+			<td>{{ Form::submit('Yes! Send it in!', array('class' => 'normalButton')); }}</td>
 		</tr>
 	</table>
 {{ Form::close() }}
+</div>
 @endif
 
 </div>

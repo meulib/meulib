@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTransactionsActive extends Migration {
+class CreateTransactionsArchived extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -15,20 +15,16 @@ class CreateTransactionsActive extends Migration {
 		$connSettings = Config::get('database.connections');
 		$tblPrefix = '';
 		$tblPrefix = $connSettings['mysql']['prefix'];
-		$sql = "CREATE TABLE `".$tblPrefix."transactions_active` ("
-  				."`ID` bigint(20) NOT NULL AUTO_INCREMENT,"
+		$sql = "CREATE TABLE `".$tblPrefix."transactions_archived` ("
+  				."`ID` bigint(20) NOT NULL,"
   				."`Borrower` varchar(15) NOT NULL,"
   				."`Lender` varchar(15) NOT NULL,"
   				."`ItemCopyID` bigint(20) NOT NULL,"
   				."`ItemID` int(11) NOT NULL,"
-  				."`Status` tinyint(4) NOT NULL COMMENT "
-  				."'1: Requested 2: Lent 10: Returned -10: Aborted',"
-  				."`CreatedOn` datetime NOT NULL,"
-  				."`LastChangeOn` datetime NOT NULL,"
+  				."`Status` tinyint(4) NOT NULL COMMENT '1: Requested 2: Lent 10: Returned',"
   				."`created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,"
   				."`updated_at` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',"
-  				."PRIMARY KEY (`ID`),"
-  				."UNIQUE KEY `Borrower-ItemCopy` (`Borrower`,`ItemCopyID`)"
+  				."PRIMARY KEY (`ID`)"
 				.") ENGINE=InnoDB  DEFAULT CHARSET=utf8 ;";
 		DB::statement($sql);
 	}
@@ -40,7 +36,7 @@ class CreateTransactionsActive extends Migration {
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('transactions_active');
+		Schema::dropIfExists('transactions_archived');
 	}
 
 }

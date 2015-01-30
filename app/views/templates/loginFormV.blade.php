@@ -1,3 +1,4 @@
+<b>Login</b>
 {{ Form::open(array('action' => 'UserController@login')) }}
 	@if (isset($fromURL))
 		{{ Form::hidden('fromURL', $fromURL) }}
@@ -16,7 +17,7 @@
 			{{ Form::password('user_password'); }}<br/>
 		</td></tr>
 		<tr><td></td><td>
-			{{ Form::submit('Login'); }}
+			{{ Form::submit('Login', array('class' => 'normalButton')); }}
 		</td></tr>
 	</table>
 {{ Form::close() }}
