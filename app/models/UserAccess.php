@@ -304,14 +304,16 @@ class UserAccess extends Eloquent {
 					$humanUser->State . ' | ' .
 					$humanUser->Country . ' | ' .
 					$humanUser->EMail;
+		$subject = 'New ' . Config::get('app.name') . ' User';
+		AppMailer::MailToAdmin($subject,$bodyText);
 
-		$body = array('body'=>$bodyText);
+		// $body = array('body'=>$bodyText);
 
-		Mail::send(array('text' => 'emails.raw'), $body, function($message)
-		{
-			$message->to(Config::get('mail.admin'))
-					->subject('New ' . Config::get('app.name') . ' User');
-		});
+		// Mail::send(array('text' => 'emails.raw'), $body, function($message)
+		// {
+		// 	$message->to(Config::get('mail.admin'))
+		// 			->subject('New ' . Config::get('app.name') . ' User');
+		// });
 
 		return $result;
 	}
