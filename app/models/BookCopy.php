@@ -35,6 +35,18 @@ class BookCopy extends Eloquent {
 		}
 	}
 
+	public function niceLentOutDt()
+	{
+		return date("jS M",strtotime($this->LentOutDt));
+	}
+
+	public function daysAgoLentOut()
+	{
+		$now = time();
+	    $datediff = $now - strtotime($this->LentOutDt);
+     	return floor($datediff/(60*60*24));
+	}
+
 	public static function StatusVal($val)
 	{
 		switch ($val) 
@@ -147,6 +159,18 @@ class BookCopy extends Eloquent {
 		AppMailer::MailToAdmin("Book Copy Deleted",$emailBody);
 		
 		return [true,$deleteBookItself];
+	}
+
+	public static function myBooks($UserID)
+	{
+		$paginationItemCount = Config::get('view.pagination-itemcount');
+
+		return BookCopy::with('Book')
+			->where('UserID', $UserID)
+			->join('books_flat', 'bookcopies.BookID', '=', 'books_flat.ID')
+			->orderBy('books_flat.Title', 'ASC')
+			->select('books_flat.ID as BookID','bookcopies.ID as BookCopyID','Title','SubTitle','Author1','Author2','Status','LentOutDt')
+			->paginate($paginationItemCount);
 	}
 }
 

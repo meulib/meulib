@@ -99,8 +99,9 @@ class BookController extends BaseController
                 return Redirect::to(URL::to('/'));
 
         $userID = Session::get('loggedInUser')->UserID;
-        $books = FlatBook::myBooks($userID);
-
+        // $books = FlatBook::myBooks($userID);
+        $books = BookCopy::myBooks($userID);
+        //var_dump(count($books));
         return View::make('myBooks',array('books' => $books));
     }
 

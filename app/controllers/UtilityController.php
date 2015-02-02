@@ -113,15 +113,17 @@ class UtilityController extends BaseController
         $body = 'Name: ' . $data['name'] . "\n" .
                 'Email: ' . $data['email'] . "\n" .
                 'Msg: ' . $data['message'];
-        $body = array('body'=>$body);
+        // $body = array('body'=>$body);
+        $subject = Config::get('app.name') . ' Contact Form';
 
         try
         {
-            Mail::send(array('text' => 'emails.raw'), $body, function($message)
-            {
-                $message->to(Config::get('mail.admin'))
-                        ->subject(Config::get('app.name') . ' Contact Form');
-            });
+            // Mail::send(array('text' => 'emails.raw'), $body, function($message)
+            // {
+            //     $message->to(Config::get('mail.admin'))
+            //             ->subject(Config::get('app.name') . ' Contact Form');
+            // });
+            AppMailer::MainToAdmin($subject,$body);
         }
         catch (Exception $e)
         {

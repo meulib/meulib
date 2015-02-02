@@ -31,11 +31,12 @@
 		</span>
 	</p>
 @endif
-<ul>
 @if ($books)
+	{{ $books->links() }}
+	<ul>
 	@foreach($books as $book)
 		<li>
-			<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
+			<a href={{  URL::action('BookController@showSingle', array($book->BookID))}}>
 			{{{ $book->Title }}}
 			@if ($book->SubTitle)
 				{{{ ": ".$book->SubTitle }}}
@@ -47,25 +48,27 @@
 			@if ($book->Author2)
 				{{{ ", ".$book->Author2 }}}
 			@endif
-			<br/>
-			@foreach($book->Copies as $copy)
-				{{{$copy->StatusTxt()}}} 
-				@if ($copy->StatusTxt() == 'Available')
-					<?php $onclick = "showLendForm('".$copy->ID."','".$pendingReqURL."')"; ?>
-					{{ HTML::link('#','Lend', ['onclick'=>$onclick]); }}
-					{{--"<div id='showDiv2".$copy->ID."' style='display:none; border:2px grey solid;padding: 5px;'></div>"--}}
-					{{"<div id='showDiv2".$copy->ID."' style='display:none;' class='formDiv'></div>"}}
-				@endif
-				@if ($copy->StatusTxt() == 'Lent Out')
-					<?php $onclick = "showLendForm('".$copy->ID."','".$returnForm."')"; ?>
-					{{ HTML::link('#','Accept Return', ['onclick'=>$onclick]); }}
-					{{"<div id='showDiv2".$copy->ID."' style='display:none' class='formDiv'></div>"}}
-				@endif
-			@endforeach
-			<br/>
+			<!--br/-->
+			(
+			@if ($book->StatusTxt() == 'Available')
+				<?php $onclick = "showLendForm('".$book->BookCopyID."','".$pendingReqURL."')"; ?>
+				{{ HTML::link('#','Lend', ['onclick'=>$onclick]); }}
+				{{--"<div id='showDiv2".$copy->ID."' style='display:none; border:2px grey solid;padding: 5px;'></div>"--}}
+				{{"<div id='showDiv2".$book->BookCopyID."' style='display:none;' class='formDiv'></div>"}}
+			@endif
+			@if ($book->StatusTxt() == 'Lent Out')
+				{{{$book->StatusTxt()}}}
+				{{ 'on '.$book->niceLentOutDt().'. '.$book->daysAgoLentOut().' days ago'}}
+				<?php $onclick = "showLendForm('".$book->BookCopyID."','".$returnForm."')"; ?>
+				{{ HTML::link('#','Accept Return', ['onclick'=>$onclick]); }}
+				{{"<div id='showDiv2".$book->BookCopyID."' style='display:none' class='formDiv'></div>"}}
+			@endif
+			)
 	@endforeach
+	</ul>
+	{{ $books->links() }}
 @endif
-</ul>
+
 
 @if (Session::has('loggedInUser'))
 	@include('templates.addBooks')

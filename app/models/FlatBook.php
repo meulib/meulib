@@ -313,7 +313,7 @@ class FlatBook extends Eloquent {
 		return $books;
 	}
 
-
+/*
 	public static function myBooks($userID)
 	{
 		$booksIDs = DB::table('bookcopies')
@@ -333,7 +333,7 @@ class FlatBook extends Eloquent {
 		{
 			return false;
 		}
-	}
+	}*/
 
 	public static function myBorrowedBooks($borrowerID)
 	{
