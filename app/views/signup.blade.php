@@ -10,7 +10,7 @@
     <li>{{ $message }}</li>
 @endforeach
 </ul>
-<span class='pageTitle'>Become a Member!</span>
+<span class='pageTitle'>Become a Member</span>
 	<table>
 		<tr>
 			<td>{{ Form::label('l_email', 'Email'); }}</td>

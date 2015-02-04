@@ -210,6 +210,7 @@ class Transaction extends Eloquent {
 			$tranH->save();
 
 			$itemCopy->Status = BookCopy::StatusVal('Lent Out');
+			$itemCopy->LentOutDt = date("Y-m-d");
 			$itemCopy->save();
 		}
 		catch (Exception $e)
@@ -266,6 +267,7 @@ class Transaction extends Eloquent {
 			$tranH->save();
 
 			$itemCopy->Status = BookCopy::StatusVal('Lent Out');
+			$itemCopy->LentOutDt = date("Y-m-d");
 			$itemCopy->save();
 		}
 		catch (Exception $e)
@@ -337,6 +339,7 @@ class Transaction extends Eloquent {
 
 			// mark item as available
 			$itemCopy->Status = BookCopy::StatusVal('Available');
+			$itemCopy->LentOutDt = null;
 			$itemCopy->save();
 
 			// delete the transaction from active table

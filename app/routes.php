@@ -38,6 +38,15 @@ Route::post('queue/receive', function()
     return Queue::marshal();
 });
 
+Route::get('signup-or-login',function()
+{
+	if(Input::get('btnMember')) {
+    	return Redirect::to('become-a-member');
+	} elseif(Input::get('btnLogin')) {
+    	return Redirect::to('login');
+	}
+});
+
 // ----- BOOK ROUTES --------------
 
 Route::get('browse/{location?}/{language?}/{category?}', 'BookController@showAll');
@@ -55,7 +64,7 @@ Route::post('delete-bookcopy', 'BookController@deleteBookCopy');
 
 // ----- ACCOUNT CREATION ------------
 
-Route::get('account/create', 'UserController@signup');
+Route::get('become-a-member', 'UserController@signup');
 
 Route::post('account/submit', 'UserController@submitSignup');
 
