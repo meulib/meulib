@@ -58,10 +58,13 @@ select {
 
 .richButton {
 	background-color: #FFBF00;
-	color: black;
+	color: #0f0f0f;
 	font-weight: bold;
-	border: 2px solid #B48700;
+	border: 1px solid #B48700;
 	font-size   : 120%;
+	-moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
 }
 
 .normalButton
@@ -69,8 +72,11 @@ select {
 	background-color: #7B40C9;
 	color: white;
 	font-weight: bold;
-	border: 2px solid #B48700;
+	border: 1px solid #B48700;
 	font-size   : 120%;
+	-moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
 }
 
 textarea {
@@ -116,8 +122,11 @@ textarea {
 	background-color: black;
 	color: white;
 	font-weight: bold;
-	border: 2px solid red;
+	border: 1px solid red;
 	font-size   : 120%;
+	-moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
 }
 
 .aTreadCarefully
@@ -154,7 +163,7 @@ textarea {
 
 .topLinks input
 {
-	font-size: inherit;
+	font-size: 140%;
 	margin: 0;
 }
 
@@ -233,15 +242,13 @@ textarea {
 	margin-bottom: 10px;
 	border-top: 2px solid #B48700;
 	border-bottom: 2px solid #B48700;
-	background-color: #6DD4FB;
+	background-color: #e4f7ff;
 }
 
 .filterSection a:link
 {
 	color: #5703C5;
 }
-
-
 
 .homeLoginWelcome
 {

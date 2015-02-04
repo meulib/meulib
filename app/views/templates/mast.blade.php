@@ -30,7 +30,15 @@
 			?> | 
 			<a href={{URL::action('UserController@logout')}}>Logout</a>
 		@else
-			@include('templates.loginFormH')
+			<form action={{URL::to('/signup-or-login')}}>
+				{{ Form::submit('Become a Member', 
+					array('class' => 'richButton',
+					'name'=>'btnMember')); }}
+				{{ Form::submit('Login', 
+					array('class' => 'normalButton',
+					'name'=>'btnLogin')); }}
+			</form>
+			<!-- @include('templates.loginFormH') -->
 		@endif
 	</div>
 </div>
