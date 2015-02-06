@@ -24,9 +24,17 @@
 ?>
 
 @section('content')
+<div class='contentDiv' style='margin:0;display:block;'>
 
 @if (!$loggedIn)
-	Join / Login for more details about the owner(s) and to request this book.
+	<form action={{URL::to('/signup-or-login')}}>
+		{{ Form::submit('Become a Member', 
+			array('class' => 'richButton',
+			'name'=>'btnMember')); }}
+		{{ Form::submit('Login', 
+			array('class' => 'normalButton',
+			'name'=>'btnLogin')); }} for more details about the owner(s) and to request this book.
+	</form>	
 	<br/><br/>
 @endif
 
@@ -60,14 +68,20 @@
 		@endif
 		in 
 		{{{$bCopy->Owner->City.', '.$bCopy->Owner->Locality}}}<br/>
-		Book Status: {{ $bCopy->StatusTxt() }}<br/>
 		@if ($loggedIn)
 			@if ($bCopy->Owner->UserID != $loggedInUser->UserID)
+				Book Status: {{ $bCopy->StatusTxt() }}
+				<br/>
 				<?php $onclick = "showDiv('requestBook".$bCopy->ID."')"; ?>
 				{{ HTML::link('#','Request Book', ['onclick'=>$onclick]); }}
 				@include('templates.requestBookForm')
 			@else
 				This is you!<br/>
+				Book Status: {{ $bCopy->StatusTxt() }}
+				@if ($bCopy->StatusTxt() == 'Lent Out')
+					{{ 'on '.$bCopy->niceLentOutDt().'. '.$bCopy->daysAgoLentOut().' days ago'}}
+				@endif
+				<br/>
 				<?php $onclick = "showPostDiv('".$bCopy->ID."','".$deleteFormURL."')"; ?>
 				<span class="aTreadCarefully">{{ HTML::link('#','Delete This Copy', ['onclick'=>$onclick]) }}</span>
 				{{"<div id='postDiv".$bCopy->ID."' style='display:none;' class='carefulDiv'></div>"}}
@@ -75,5 +89,6 @@
 		@endif
 		<br/><br/>
 	@endforeach
+</div>
 @stop
 

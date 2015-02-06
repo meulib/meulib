@@ -2,7 +2,7 @@
 @extends('templates.base')
 
 @section('content')
-<div class='contentDiv'>
+<div class='contentDiv' style='text-align:center'>
 	<div class='pageTitle'>
 		Founding Members
 	</div>

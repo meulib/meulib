@@ -49,12 +49,13 @@ Route::get('signup-or-login',function()
 
 // ----- BOOK ROUTES --------------
 
-Route::get('browse/{location?}/{language?}/{category?}', 'BookController@showAll');
+Route::get('browse/{location?}/{language?}/{category?}', array('as' => 'browse', 'uses' => 'BookController@showAll'));
 
-Route::get('book/{id?}', 'BookController@showSingle');
+Route::get('book/{id?}', array('as' => 'single-book', 'uses' => 'BookController@showSingle'));
 
-Route::get('my-books', 'BookController@myBooks');
-Route::get('borrowed-books', 'BookController@borrowedBooks');
+Route::get('my-books', array('as' => 'my-books', 'uses' => 'BookController@myBooks'));
+// Route::get('my-book', array('as' => 'my-single-book', 'uses' => 'BookController@showSingle'));
+Route::get('borrowed-books', array('as' => 'borrowed', 'uses' => 'BookController@borrowedBooks'));
 
 Route::post('add-book', 'BookController@addBook');
 Route::post('add-book-info', 'BookController@setBookInfo');
@@ -102,14 +103,19 @@ Route::post('lend', 'TransactionController@lend');
 Route::post('return-form', 'TransactionController@returnForm');
 Route::post('accept-return', 'TransactionController@acceptReturn');
 
-Route::get('/messages/{tranID?}', 'TransactionController@messages');
+Route::get('/messages/{tranID?}', array('as' => 'messages', 'uses' => 'TransactionController@messages'));
 
 // ------- INFO PAGES --------------
 
-Route::get('/how-it-works', function()
+Route::get('/membership-rules', array('as' => 'membership-rules', function()
+{
+	return View::make('membershipRules');
+}));
+
+Route::get('/how-it-works', array('as' => 'how-it-works', function()
 {
 	return View::make('howorks');
-});
+}));
 
 Route::get('/how-it-works-borrower', function()
 {
@@ -121,15 +127,15 @@ Route::get('/how-it-works-owner', function()
 	return View::make('howorksowner');
 });
 
-Route::get('/faq', function()
+Route::get('/faq', array('as' => 'faq', function()
 {
 	return View::make('faq');
-});
+}));
 
-Route::get('/vision', function()
+Route::get('/vision', array('as' => 'vision', function()
 {
 	return View::make('vision');
-});
+}));
 
 Route::get('/contact-admin', function()
 {
@@ -139,32 +145,3 @@ Route::get('/contact-admin', function()
 Route::get('founding-members', 'UserController@foundingMembers');
 
 Route::post('submit-contact', 'UtilityController@submitContactForm');
-
-// -------- CALL ARTISAN MIGRATION --------------
-
-/*Route::get('/xxx/{key?}',  array('as' => 'install', function($key = null)
-{
-    if($key == "xxx")
-    {
-	    try 
-	    {
-	      
-	      echo '<br>init with app tables migrations...';
-	      Artisan::call('migrate', [
-//	        '--path'     => "app/database/migrations",
-	        '--force' => true
-	        ]);
-	      echo '<br>done with app tables migrations';
-	      
-	    } 
-	    catch (Exception $e) 
-	    {
-	      Response::make($e->getMessage(), 500);
-	    }
-	}
-	else
-	{
-    	App::abort(404);
-	}
-}
-));*/

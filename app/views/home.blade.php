@@ -38,6 +38,12 @@
 				<br/>
 			@endif
 			@include('templates.loginFormV')
+			<br/><br/>
+			<form action={{URL::to('/become-a-member')}}>
+				{{ Form::submit('Become a Member', 
+					array('class' => 'richButton',
+					'name'=>'btnMember')); }}
+			</form>
 		@endif
 	</div>
 	<div style="display:inline-block;vertical-align: top;">

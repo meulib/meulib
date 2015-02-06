@@ -18,22 +18,21 @@ Suggested categories sent to Admin for review.
 </div>
 @endif
 
-<p align="center">
+<!--p align="center">
 @if (isset($doAddInfo) && ($doAddInfo))
 <a href="#AdditionalInfo">Add categories for the book</a><br/>
 @endif
 <a href="#AddBooks">Add more books</a><br/>
 {{HTML::link(URL::to('my-books'), 'Go to My Books')}}<br/>
-</p>
-
+</p-->
+<br/>
 @if (isset($doAddInfo) && ($doAddInfo))
 @include('templates.addBookInfo')
-<br/>
 <br/>
 @endif
 
 @include('templates.addBooks')
-
+{{HTML::link(URL::to('my-books'), 'Go to My Books')}}
 </div>
 
 @stop

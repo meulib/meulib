@@ -9,7 +9,7 @@
 		<tr><td>
 			{{ Form::label('user_name', 'Username'); }}
 		</td><td>
-			{{ Form::text('user_name', 'username or email'); }}
+			{{ Form::text('user_name', '',array('placeholder' => 'username or email')) }}
 		</td></tr>
 		<tr><td>
 			{{ Form::label('user_password', 'Password'); }}

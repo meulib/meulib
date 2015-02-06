@@ -60,7 +60,7 @@
 	Please note: Meulib is not responsible for the behavior or actions of any member.<p>
 
 	<b>Is there any franchisee fees or royalty to be paid to Meulib for lending my books?</b><br/><br/>
-	No, you do not need to pay Meulib for lending your books. Going forward, Meulib will have some additional paid features. However, to lend your books for free to people, there are no charges.<p>
+	No, you do not need to pay Meulib for lending your books. Going forward, Meulib may have some additional paid features. However, to lend your books for free to people, there are no charges.<p>
 <p>
 	
 
