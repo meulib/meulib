@@ -112,7 +112,14 @@ Category:
 <!-- --- END BROWSE FILTER SECTION --- -->
 
 @if (!$loggedIn)
-	Join / Login to request books, to add your own books to lend.
+	<form action={{URL::to('/signup-or-login')}}>
+		{{ Form::submit('Become a Member', 
+			array('class' => 'richButton',
+			'name'=>'btnMember')); }}
+		{{ Form::submit('Login', 
+			array('class' => 'normalButton',
+			'name'=>'btnLogin')); }} to request books to borrow, to add your own books to lend.
+	</form>	
 @endif
 
 @if ($tMsg[1]!="")

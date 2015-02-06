@@ -2,9 +2,9 @@
 	<a name="AddBooks"></a>
 	<span class="formTitle">
 		@if (isset($addMoreBooks) && ($addMoreBooks))
-			ADD MORE BOOKS
+			Add More Books
 		@else
-			ADD BOOKS THAT YOU ARE WILLING TO LEND
+			Add Books That You Are Willing To Lend
 		@endif
 		</span><br/>
 	<br/>
@@ -21,6 +21,6 @@
 	{{ Form::text('Language1', 'English', ['required','maxlength'=>50]) }}<br/>
 	Any other language? (for multi-lingual books)<br/>
 	{{ Form::text('Language2', '', ['maxlength'=>50]) }}<br/>
-	{{ Form::submit('Add', array('class' => 'richButton')); }}
+	{{ Form::submit('Yes, Add', array('class' => 'richButton')); }}
 	{{ Form::close() }}
 </div>

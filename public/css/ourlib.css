@@ -11,6 +11,7 @@ nice chutney green color
 body
 {
 	margin:0;
+	font-family:'Lato', sans-serif;
 	padding-left: 10px;
 	padding-right: 10px;
 }
@@ -39,6 +40,13 @@ a:active {
     text-decoration: underline;
 }
 
+/* will show default text simply in bold 
+used with span */
+.currentPageHighlighter
+{
+	font-weight: bold;
+}
+
 input {
 	/*border: 2px solid #B48700;*/
 	border: none;
@@ -58,9 +66,9 @@ select {
 
 .richButton {
 	background-color: #FFBF00;
-	color: #0f0f0f;
+	color: #009000;
 	font-weight: bold;
-	border: 1px solid #B48700;
+	/*border: 1px solid #B48700;*/
 	font-size   : 120%;
 	-moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -72,7 +80,7 @@ select {
 	background-color: #7B40C9;
 	color: white;
 	font-weight: bold;
-	border: 1px solid #B48700;
+	/*border: 1px solid #B48700;*/
 	font-size   : 120%;
 	-moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -102,8 +110,7 @@ textarea {
 
 .formTitle
 {
-	color:#39097A;	/* purple */
-	/*color: #FFBF00;*/
+	color:black;
 	font-size: 120%;
 	font-weight: bold;
 	text-align: center;

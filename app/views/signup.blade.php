@@ -11,6 +11,9 @@
 @endforeach
 </ul>
 <span class='pageTitle'>Become a Member</span>
+Have you read the {{HTML::link(URL::to('/membership-rules'), 'membership rules')}}? Please do.<br/>
+It is short, simple and important that you know them.<br/>
+<br/>
 	<table>
 		<tr>
 			<td>{{ Form::label('l_email', 'Email'); }}</td>
