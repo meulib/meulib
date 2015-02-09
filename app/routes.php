@@ -50,6 +50,7 @@ Route::get('signup-or-login',function()
 // ----- BOOK ROUTES --------------
 
 Route::get('browse/{location?}/{language?}/{category?}', array('as' => 'browse', 'uses' => 'BookController@showAll'));
+Route::get('search-books/{term}', array('as' => 'search-books', 'uses' => 'BookController@search'));
 
 Route::get('book/{id?}', array('as' => 'single-book', 'uses' => 'BookController@showSingle'));
 
@@ -145,3 +146,7 @@ Route::get('/contact-admin', function()
 Route::get('founding-members', 'UserController@foundingMembers');
 
 Route::post('submit-contact', 'UtilityController@submitContactForm');
+
+// ------- MAINTENANCE --------------
+
+Route::get('update-search', 'MaintenanceController@updateSearch');

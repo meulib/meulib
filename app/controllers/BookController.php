@@ -93,6 +93,13 @@ class BookController extends BaseController
                'currentCategory' => $currentCategory));
     }
 
+    public function search($term = 'abc')
+    {
+        // $searchTerm = Input::get('searchTerm');
+        $result = FlatBook::search($term);
+        var_dump($result);
+    }
+
     public function myBooks()
     {
         if (!Session::has('loggedInUser'))

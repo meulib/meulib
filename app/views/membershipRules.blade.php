@@ -7,7 +7,7 @@
 	<div class='pageTitle'>
 		{{Config::get('app.name');}} Membership Rules
 	</div>
-	All features of {{Config::get('app.name');}} are free to use. There is no charge for becoming a member, offering books to lend, or borrowing books. This may change in the future. <br/>
+	All features of {{Config::get('app.name');}} are free to use. There is no charge for becoming a member, offering books to lend, or borrowing books. <br/>
 	If the owner charges for lending a book, that is a matter between the borrower and the owner.<br/>
 	<br/>
 	<b>Member's Responsibility</b><br/>
@@ -22,7 +22,7 @@
 	<br/>
 	To enable you to know of books that are available for borrowing and facilitate communication between book owner and borrower.<br/>
 	<br/>
-	{{Config::get('app.name');}} is not responsible for physically collecting the book from owner and delivering to borrower. The owner and borrower must arrange this within themselves as is mutually convenient for them. ({{HTML::link(URL::route('how-it-works'), 'Read more about how '.Config::get('app.name').' works',
+	{{Config::get('app.name');}} is not responsible for physically delivering books to members. The owner and borrower must arrange this within themselves as is mutually convenient for them. ({{HTML::link(URL::route('how-it-works'), 'Read more about how '.Config::get('app.name').' works',
 	array('style' => 'font-weight:normal'))}})
 	<br/>
 	<br/>
