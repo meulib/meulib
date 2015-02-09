@@ -10,11 +10,13 @@
 	}
 	$appName = Config::get('app.name');
 	$whatsNew = Config::get('app.whatsnew');
+	$randomPromo = rand(1,4);
 ?>
 
 @section('content')
 	<div class="contentDiv">
-	<div class="homeLoginWelcome" style="display:inline-block;">
+	<!--div class="homeLoginWelcome" style="display:inline-block;"-->
+	<div class="homeLeft">
 		@if (Session::has('loggedInUser'))	
 				<p align="center">
 				<b>Welcome!</b><br/>
@@ -34,8 +36,6 @@
 		@else
 			@if ($msg)
 				Please login to access {{{$msg['from']}}}.<br/><br/>
-			@else
-				<br/>
 			@endif
 			@include('templates.loginFormV')
 			<br/><br/>
@@ -46,14 +46,35 @@
 			</form>
 		@endif
 	</div>
-	<div style="display:inline-block;vertical-align: top;">
-		<p align="center">
+	<div class="homeRight">
+		<!-- p align="center">
 			<b>What's new in {{ $appName }}?</b><br/>
 			<br/>
 			@foreach ($whatsNew as $singleNew)
 				{{$singleNew}}<br/><br/>
 			@endforeach
-		</p>
+		</p-->
+		@if ($randomPromo == 1)
+			<a href={{ URL::to('/how-it-works-owner') }}>
+			{{ HTML::image('images/howitworks/o1.png','',array('width'=>287, 'height'=>246)) }}
+			<br/>
+			See how {{Config::get('app.name')}} works<br/>
+			for the book owner</a>
+		@endif
+		@if ($randomPromo == 2)
+			{{HTML::image('images/promo/vision.png','')}}
+		@endif
+		@if ($randomPromo == 3)
+			<a href={{ URL::to('/how-it-works-borrower') }}>
+			{{ HTML::image('images/howitworks/b1.png','',array('width'=>287, 'height'=>246)) }}
+			<br/>
+			See how {{Config::get('app.name')}} works<br/>
+			for the borrower</a>
+		@endif
+		@if ($randomPromo == 4)
+			{{ HTML::image('images/promo/directLending.png','') }}
+		@endif
 	</div>
+	
 	</div>
 @stop

@@ -4,7 +4,10 @@
 <?php
 	$loggedIn = false;
 	if (Session::has('loggedInUser'))
+	{
 		$loggedIn = true;
+		$user = Session::get('loggedInUser');
+	}
 	$pendingReqURL = URL::to('pending-requests');
 	$returnForm = URL::to('return-form');
 	$tMsg = ["",""];
@@ -16,11 +19,7 @@
 ?>
 
 @section('content')
-
-@if (!$loggedIn)
-	Join / Login to request books, to add your own books to lend.
-@endif
-
+<div class='contentDiv'>
 @if ($tMsg[1]!="")
 	<p align='center'>
 		<span style="border:1px solid blue;padding:4px;background-color:LemonChiffon">
@@ -32,6 +31,7 @@
 	</p>
 @endif
 @if ($books)
+	<span class="pageTitle">{{$user->FullName."'s Very Own Collection"}}</span>
 	{{ $books->links() }}
 	<ul>
 	@foreach($books as $book)
@@ -73,5 +73,5 @@
 @if (Session::has('loggedInUser'))
 	@include('templates.addBooks')
 @endif
-
+</div>
 @stop
