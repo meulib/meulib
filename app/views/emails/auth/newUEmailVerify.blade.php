@@ -9,7 +9,7 @@
 		<div>
 			Hi {{$name}},<br/><br/>
 			Please click this link to verify your email and activate your account:<br/>
-			{{ URL::to('account/activate', array($id,$verificationCode)) }}
+			{{ URL::to('account/activate', array($email,$verificationCode)) }}
 			<br/><br/>
 			Admin<br/>
 			{{Config::get('app.name');}}

@@ -97,7 +97,7 @@ class FlatBook extends Eloquent {
 				{
 				    $bodyText = 'New Book Added ' . $userID . ' ' . $user->FullName;
 				    $subject = 'New ' . Config::get('app.name') . ' Book';
-				    AppMailer::MailToAdmin($subject,$bodyText);
+				    Postman::mailToAdmin($subject,$bodyText);
 
 					/*Mail::queue(array('text' => 'emails.raw'), $body, function($message)
 					{
@@ -216,7 +216,7 @@ class FlatBook extends Eloquent {
 
 		// $body = array('body'=>$bodyText);
 		$subject = 'New Category Suggested';
-		AppMailer::MailToAdmin($subject,$bodyText);
+		Postman::mailToAdmin($subject,$bodyText);
 
 		/*Mail::queue(array('text' => 'emails.raw'), $body, function($message)
 		{

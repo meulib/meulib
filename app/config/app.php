@@ -26,7 +26,7 @@ return array(
 
 	'name' => 'OurLib',
 	//'tag_line' => 'For demo and testing only. Data will be frequently deleted.',
-	'tag_line' => 'The Public Library by Me and You',
+	'tag_line' => 'Book Garden Grown by Me and You',
 
 	/*
 	|--------------------------------------------------------------------------
@@ -218,7 +218,8 @@ return array(
 	|
 	*/
 
-	'whatsnew' => array("Specify categories when adding books",
-		"Browse Collection by Category",
-		"A beginning made in USA (Charlotte NC) too")
+	'whatsnew' => array("A beginning made in UK too",
+		"Founding Members",
+		"Specify categories when adding books",
+		"Browse Collection by Category")
 );

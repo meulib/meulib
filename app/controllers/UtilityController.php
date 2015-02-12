@@ -123,7 +123,7 @@ class UtilityController extends BaseController
             //     $message->to(Config::get('mail.admin'))
             //             ->subject(Config::get('app.name') . ' Contact Form');
             // });
-            AppMailer::MailToAdmin($subject,$body);
+            Postman::mailToAdmin($subject,$body);
         }
         catch (Exception $e)
         {
