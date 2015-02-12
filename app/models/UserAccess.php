@@ -155,7 +155,7 @@ class UserAccess extends Eloquent {
 		DB::commit();
 
 		$emailData = array('name'=>$data['name']);
-		$emailData['id'] = $userID;
+		$emailData['email'] = $data['email'];
 		$emailData['verificationCode'] = $activationHash;
 
 		try
@@ -278,10 +278,10 @@ class UserAccess extends Eloquent {
 		}
 	}
 
-	public static function verifyUserEmail($userid, $activationHash)
+	public static function verifyUserEmail($email, $activationHash)
 	{
 		$user = NULL;
-		$user = self::where('UserID','=',$userid)
+		$user = self::where('EMail','=',$email)
 						->first();
 
 		if ($user == NULL)
@@ -297,7 +297,17 @@ class UserAccess extends Eloquent {
 
 		$humanUser = $user->getHumanUser();
 
-		$bodyText = 'New User Activated ' . $userid . ' | ' .
+		$view = 'emails.welcome';
+		$viewData = array('userHumanName'=>$humanUser->FullName);
+		$subject = "Welcome to ".Config::get('app.name')."!";
+		$to = [];
+		$to['email'] = $humanUser->EMail;
+		$to['name'] = $humanUser->FullName;
+		$fromPersonal = true;
+
+		Postman::mailToUser($view,$viewData,$subject,$to,$fromPersonal);
+
+		$bodyText = 'New User Activated ' . $user->UserID . ' | ' .
 					$humanUser->FullName . ' | ' .
 					$humanUser->Locality . ' | ' .
 					$humanUser->City . ' | ' .
@@ -305,15 +315,7 @@ class UserAccess extends Eloquent {
 					$humanUser->Country . ' | ' .
 					$humanUser->EMail;
 		$subject = 'New ' . Config::get('app.name') . ' User';
-		AppMailer::MailToAdmin($subject,$bodyText);
-
-		// $body = array('body'=>$bodyText);
-
-		// Mail::send(array('text' => 'emails.raw'), $body, function($message)
-		// {
-		// 	$message->to(Config::get('mail.admin'))
-		// 			->subject('New ' . Config::get('app.name') . ' User');
-		// });
+		Postman::mailToAdmin($subject,$bodyText);
 
 		return $result;
 	}

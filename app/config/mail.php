@@ -55,6 +55,7 @@ return array(
 	*/
 
 	'from' => array('address' => 'publibtest@gmail.com', 'name' => 'OurLib Demo Library'),
+	'fromHuman' => 'Vani Murarka',
 	'admin' => 'vani.murarka@gmail.com',
 
 	/*
@@ -121,7 +122,7 @@ return array(
 	|
 	*/
 
-	'pretend' => true,
+	'pretend' => false,
 
 	/*
 	|--------------------------------------------------------------------------

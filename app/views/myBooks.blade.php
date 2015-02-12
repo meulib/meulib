@@ -19,7 +19,7 @@
 ?>
 
 @section('content')
-<div class='contentDiv'>
+
 @if ($tMsg[1]!="")
 	<p align='center'>
 		<span style="border:1px solid blue;padding:4px;background-color:LemonChiffon">
@@ -30,8 +30,8 @@
 		</span>
 	</p>
 @endif
-@if ($books)
-	<span class="pageTitle">{{$user->FullName."'s Very Own Collection"}}</span>
+<span class="pageTitle">{{$user->FullName."'s Very Own Collection"}}</span>
+@if (count($books)>0)
 	{{ $books->links() }}
 	<ul>
 	@foreach($books as $book)
@@ -67,11 +67,13 @@
 	@endforeach
 	</ul>
 	{{ $books->links() }}
+@else
+	There are no books yet in your very own {{Config::get('app.name');}} collection.<br/><br/>
 @endif
 
 
 @if (Session::has('loggedInUser'))
 	@include('templates.addBooks')
 @endif
-</div>
+
 @stop

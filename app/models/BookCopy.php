@@ -156,7 +156,7 @@ class BookCopy extends Eloquent {
 		if ($abortTransactions)
 			$emailBody .= " : Transactions aborted.";
 
-		AppMailer::MailToAdmin("Book Copy Deleted",$emailBody);
+		Postman::mailToAdmin("Book Copy Deleted",$emailBody);
 		
 		return [true,$deleteBookItself];
 	}

@@ -133,18 +133,19 @@ class UserController extends BaseController
         return View::make('signup');
     }
 
-    public function activate($id = null, $verification_code = null)
+    public function activate($email = null, $verification_code = null)
     {
         //$id = Input::get('id');
         //$aHash = Input::get('verification_code');
-        $result = UserAccess::verifyUserEmail($id,$verification_code);
+        $result = UserAccess::verifyUserEmail($email,$verification_code);
         if ($result)
             return View::make('accountActivated');
         else
         {
-            $bodyText = "Account Activation Failed: " . $id . " | " . $verification_code;
+            $bodyText = "Account Activation Failed: " . $email . " | " . 
+                $verification_code . " | " . $_SERVER['REMOTE_ADDR'];
             $subject = 'New ' . Config::get('app.name') . ' Ac Failed';
-            AppMailer::MailToAdmin($subject,$bodyText);
+            Postman::mailToAdmin($subject,$bodyText);
             // $body = array('body'=>$bodyText);
 
             // Mail::send(array('text' => 'emails.raw'), $body, function($message)

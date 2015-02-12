@@ -70,7 +70,7 @@ Route::get('become-a-member', 'UserController@signup');
 
 Route::post('account/submit', 'UserController@submitSignup');
 
-Route::get('account/activate/{id?}/{verification_code?}', array(
+Route::get('account/activate/{email?}/{verification_code?}', array(
 	'as' => 'activate',
 	'uses' => 'UserController@activate'));
 
