@@ -16,6 +16,30 @@ Validator::extend('captcha', function($field, $value, $params)
         return false;
 });
 
+Validator::extend('norouteclash', function($field, $value, $params)
+{
+    $routeCollection = Route::getRoutes();
+
+    foreach ($routeCollection as $route) 
+    {
+        $path = $route->getPath();
+        if (substr($path,0,1)=="/")
+            $path = substr($path, 1);
+        $firstPartEnd = strpos($path,'/');
+        if ($firstPartEnd)
+        {
+            $firstPart = substr($path, 0, $firstPartEnd);
+        }
+        else
+        {
+            $firstPart = $path;
+        }
+        if ($firstPart == $value)
+            return false;
+    }
+    return true;
+});
+
 class UserController extends BaseController
 {
 
@@ -169,14 +193,15 @@ class UserController extends BaseController
             'city' => 'required',
             'state' => 'required',
             'country' => 'required',
-            'username' => 'required|alpha_num|between:2,64|unique:user_access,Username',
+            'username' => 'required|alpha_num|norouteclash|between:2,20|unique:user_access,Username',
             'password' => 'required|confirmed|min:6',
             'captcha' => 'captcha'
         );
         
         $messages = array(
             'integer' => 'The :attribute must be number digits only.',
-            'captcha' => 'Entered :attribute characters do not match the generated image.'
+            'captcha' => 'Entered :attribute characters do not match the generated image.',
+            'norouteclash' => 'The :attribute has already been taken.'
         );
 
         $validator = Validator::make($data, $rules, $messages);

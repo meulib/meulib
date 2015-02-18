@@ -11,8 +11,8 @@
          syntaxCheck="false">
     <testsuites>
         <testsuite name="Application Test Suite">
-            <!-- directory>./app/tests/</directory -->
-            <file>./app/tests/app/AddUsersTest.php</file>
+            <directory>./app/tests/</directory>
+            <!-- file>./app/tests/app/UsersTest.php</file -->
         </testsuite>
     </testsuites>
 </phpunit>
