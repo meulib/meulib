@@ -23,11 +23,6 @@
 
 // -------- APP ROUTES --------------------------
 
-Route::get('/', function()
-{
-	return View::make('home');
-});
-
 Route::get('generic-error', function()
 {
 	return View::make('genericError');
@@ -49,8 +44,10 @@ Route::get('signup-or-login',function()
 
 // ----- BOOK ROUTES --------------
 
-Route::get('browse/{location?}/{language?}/{category?}', array('as' => 'browse', 'uses' => 'BookController@showAll'));
-Route::get('search-books/{term}', array('as' => 'search-books', 'uses' => 'BookController@search'));
+Route::get('browse/{location?}/{language?}/{category?}', 
+	array('as' => 'browse', 'uses' => 'BookController@showAll'));
+Route::get('search-books/{term}', 
+	array('as' => 'search-books', 'uses' => 'BookController@search'));
 
 Route::get('book/{id?}', array('as' => 'single-book', 'uses' => 'BookController@showSingle'));
 
@@ -150,3 +147,35 @@ Route::post('submit-contact', 'UtilityController@submitContactForm');
 // ------- MAINTENANCE --------------
 
 Route::get('update-search', 'MaintenanceController@updateSearch');
+
+// ------- MASTER CALL --------------
+
+Route::get('/{username}', 
+	array('as' => 'user-books', 'uses' => 'UserGateway@showUserCollection'));
+Route::get('/', 
+	array('as' => 'home', 'uses' => 'HomeGateway@showHome'));
+// {
+// 	return View::make('home');
+// });
+
+/*Route::get('test', function()
+{
+	$routeCollection = Route::getRoutes();
+
+    foreach ($routeCollection as $route) 
+    {
+	    $path = $route->getPath();
+	    if (substr($path,0,1)=="/")
+	        $path = substr($path, 1);
+	    $firstPartEnd = strpos($path,'/');
+	    if ($firstPartEnd)
+	    {
+	        $firstPart = substr($path, 0, $firstPartEnd);
+	    }
+	    else
+	    {
+	        $firstPart = $path;
+	    }
+	    echo $firstPart.'<br/>';
+	}
+});*/

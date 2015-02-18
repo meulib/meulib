@@ -65,7 +65,7 @@ It is short, simple and important that you know them.<br/>
 		<tr>
 			<td>{{ Form::label('l_username', 'Username'); }}</td>
 			<td>
-			{{ Form::text('username', '', ['required','pattern' => '[a-zA-Z0-9]{2,64}']) }}<br/>
+			{{ Form::text('username', '', ['required']) }}<br/>
 			</td>
 		</tr>
 		<tr>

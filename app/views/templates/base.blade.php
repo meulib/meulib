@@ -7,6 +7,12 @@
             $currentRoute = 'how-it-works';
         }
     }
+    $loggedInUser = false;
+    if (Session::has('loggedInUser'))
+    {
+        $loggedInUser = true;
+        $user = Session::get('loggedInUser');
+    }
 ?>
 <!doctype html>
 <html lang="en">
@@ -29,11 +35,11 @@
 
     @section('appLinks')
         <div class="appLinks">
-            {{($currentRoute=='browse' ? "<span class='currentPageHighlighter'>Browse Collection</span>" : HTML::link(URL::route('browse'), 'Browse Collection'))}} | 
-        @if (Session::has('loggedInUser'))
-            {{($currentRoute=='messages' ? "<span class='currentPageHighlighter'>Messages</span>" : HTML::link(URL::route('messages'), 'Messages'))}} | 
-            {{($currentRoute=='my-books' ? "<span class='currentPageHighlighter'>My Books</span>" : HTML::link(URL::route('my-books'), 'My Books'))}} | 
-            {{($currentRoute=='borrowed' ? "<span class='currentPageHighlighter'>Borrowed Books</span>" : HTML::link(URL::route('borrowed'), 'Borrowed Books'))}}
+            {{($currentRoute=='browse' ? "<span class='currentPageHighlighter'>Full Meulib Collection</span>" : HTML::link(URL::route('browse'), 'Full Meulib Collection'))}} | 
+        @if ($loggedInUser)
+            {{(($currentRoute=='user-books') && (Request::is('*'.$user->Username.'*')) ? "<span class='currentPageHighlighter'>My Collection</span>" : HTML::link(URL::to('/'.$user->Username), 'My Collection'))}} | 
+            {{($currentRoute=='borrowed' ? "<span class='currentPageHighlighter'>Borrowed Books</span>" : HTML::link(URL::route('borrowed'), 'Borrowed Books'))}} |
+            {{($currentRoute=='messages' ? "<span class='currentPageHighlighter'>Messages</span>" : HTML::link(URL::route('messages'), 'Messages'))}}
         @else
             {{($currentRoute=='how-it-works' ? "<span class='currentPageHighlighter'>How It Works</span>" : HTML::link(URL::route('how-it-works'), 'How It Works'))}} | 
             {{($currentRoute=='faq' ? "<span class='currentPageHighlighter'>FAQ</span>" : HTML::link(URL::route('faq'), 'FAQ'))}} | 

@@ -30,45 +30,46 @@
 		</span>
 	</p>
 @endif
-<span class="pageTitle">{{$user->FullName."'s Very Own Collection"}}</span>
+<span class="pageTitle">{{$user->FullName."'s Collection"}}</span>
+<p align="center">{{ $user->Locality . ', ' . $user->City . '. ' . $user->State . ', ' . $user->Country }}</p>
 @if (count($books)>0)
 	{{ $books->links() }}
 	<ul>
-	@foreach($books as $book)
+	@foreach($books as $bookCopy)
 		<li>
-			<a href={{  URL::action('BookController@showSingle', array($book->BookID))}}>
-			{{{ $book->Title }}}
-			@if ($book->SubTitle)
-				{{{ ": ".$book->SubTitle }}}
+			<a href={{  URL::action('BookController@showSingle', array($bookCopy->Book->ID))}}>
+			{{{ $bookCopy->Book->Title }}}
+			@if ($bookCopy->Book->SubTitle)
+				{{{ ": ".$bookCopy->Book->SubTitle }}}
 			@endif
 			</a>
-			@if ($book->Author1)
-				{{{ "&nbsp;by ".$book->Author1 }}}
+			@if ($bookCopy->Book->Author1)
+				{{{ "&nbsp;by ".$bookCopy->Book->Author1 }}}
 			@endif
-			@if ($book->Author2)
-				{{{ ", ".$book->Author2 }}}
+			@if ($bookCopy->Book->Author2)
+				{{{ ", ".$bookCopy->Book->Author2 }}}
 			@endif
 			<!--br/-->
 			(
-			@if ($book->StatusTxt() == 'Available')
-				<?php $onclick = "showLendForm('".$book->BookCopyID."','".$pendingReqURL."')"; ?>
+			@if ($bookCopy->StatusTxt() == 'Available')
+				<?php $onclick = "showLendForm('".$bookCopy->ID."','".$pendingReqURL."')"; ?>
 				{{ HTML::link('#','Lend', ['onclick'=>$onclick]); }}
 				{{--"<div id='showDiv2".$copy->ID."' style='display:none; border:2px grey solid;padding: 5px;'></div>"--}}
-				{{"<div id='showDiv2".$book->BookCopyID."' style='display:none;' class='formDiv'></div>"}}
+				{{"<div id='showDiv2".$bookCopy->ID."' style='display:none;' class='formDiv'></div>"}}
 			@endif
-			@if ($book->StatusTxt() == 'Lent Out')
-				{{{$book->StatusTxt()}}}
-				{{ 'on '.$book->niceLentOutDt().'. '.$book->daysAgoLentOut().' days ago'}}
-				<?php $onclick = "showLendForm('".$book->BookCopyID."','".$returnForm."')"; ?>
+			@if ($bookCopy->StatusTxt() == 'Lent Out')
+				{{{$bookCopy->StatusTxt()}}}
+				{{ 'on '.$bookCopy->niceLentOutDt().'. '.$bookCopy->daysAgoLentOut().' days ago'}}
+				<?php $onclick = "showLendForm('".$bookCopy->ID."','".$returnForm."')"; ?>
 				{{ HTML::link('#','Accept Return', ['onclick'=>$onclick]); }}
-				{{"<div id='showDiv2".$book->BookCopyID."' style='display:none' class='formDiv'></div>"}}
+				{{"<div id='showDiv2".$bookCopy->ID."' style='display:none' class='formDiv'></div>"}}
 			@endif
 			)
 	@endforeach
 	</ul>
 	{{ $books->links() }}
 @else
-	There are no books yet in your very own {{Config::get('app.name');}} collection.<br/><br/>
+	There are no books yet in your {{Config::get('app.name');}} collection.<br/><br/>
 @endif
 
 

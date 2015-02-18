@@ -6,6 +6,12 @@ class UserAccess extends Eloquent {
 	public $incrementing = false;
 	protected $primaryKey = 'UserID';
 
+	public static function getUserByUsername($username)
+	{
+		$user = self::where('Username','=',$username)->first();
+		return $user;
+	}
+
 	private static function getUserByEmail($email)
 	{
 		$user = self::where('EMail','=',$email)->first();
@@ -135,6 +141,7 @@ class UserAccess extends Eloquent {
 				// info of existing users? 
 				// [well only name, email, phone right now]
 			$user->UserId = $userID;
+			$user->Username = $data['username'];
 			$user->FullName = $data['name'];
 			$user->Locality = $data['locality'];
 			$user->City = $data['city'];

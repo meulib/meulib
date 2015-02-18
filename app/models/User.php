@@ -1,14 +1,5 @@
 <?php
 
-//use Illuminate\Auth\UserTrait;
-//use Illuminate\Auth\UserInterface;
-//use Illuminate\Auth\Reminders\RemindableTrait;
-//use Illuminate\Auth\Reminders\RemindableInterface;
-
-//class User extends Eloquent implements UserInterface, RemindableInterface {
-
-//	use UserTrait, RemindableTrait;
-
 	/**
 	 * The database table used by the model.
 	 *
@@ -29,6 +20,12 @@ class User extends Eloquent {
 
 	protected $table = 'users';
 	protected $primaryKey = 'UserID';
+	protected $hidden = array('UserID','EMail');
+
+	/*protected function RegistrationDetails()
+    {
+        return $this->hasOne('RegisteredUser','UserID','UserID');
+    }*/
 
 }
 
