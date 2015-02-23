@@ -46,8 +46,8 @@ Route::get('signup-or-login',function()
 
 Route::get('browse/{location?}/{language?}/{category?}', 
 	array('as' => 'browse', 'uses' => 'BookController@showAll'));
-Route::get('search-books/{term}', 
-	array('as' => 'search-books', 'uses' => 'BookController@search'));
+Route::get('search/{term}', 
+	array('as' => 'search', 'uses' => 'BookController@search'));
 
 Route::get('book/{id?}', array('as' => 'single-book', 'uses' => 'BookController@showSingle'));
 

@@ -4,7 +4,7 @@ class MaintenanceController extends BaseController {
 
 	public function updateSearch()
 	{
-		$results = FlatBook::updateSearchTbl();
+		$results = Librarian::updateSearchTbl();
 		var_dump($results);
 	}
 

@@ -31,7 +31,8 @@
 	</p>
 @endif
 <span class="pageTitle">{{$user->FullName."'s Collection"}}</span>
-<p align="center">{{ $user->Locality . ', ' . $user->City . '. ' . $user->State . ', ' . $user->Country }}</p>
+<p align="center">{{ $user->Locality . ', ' . $user->City . '. ' . 
+	$user->State . ', ' . $user->Country }}</p>
 @if (count($books)>0)
 	{{ $books->links() }}
 	<ul>
@@ -52,17 +53,17 @@
 			<!--br/-->
 			(
 			@if ($bookCopy->StatusTxt() == 'Available')
-				<?php $onclick = "showLendForm('".$bookCopy->ID."','".$pendingReqURL."')"; ?>
+				<?php $onclick = "showLendForm('".$bookCopy->BookCopyID."','".$pendingReqURL."')"; ?>
 				{{ HTML::link('#','Lend', ['onclick'=>$onclick]); }}
 				{{--"<div id='showDiv2".$copy->ID."' style='display:none; border:2px grey solid;padding: 5px;'></div>"--}}
-				{{"<div id='showDiv2".$bookCopy->ID."' style='display:none;' class='formDiv'></div>"}}
+				{{"<div id='showDiv2".$bookCopy->BookCopyID."' style='display:none;' class='formDiv'></div>"}}
 			@endif
 			@if ($bookCopy->StatusTxt() == 'Lent Out')
 				{{{$bookCopy->StatusTxt()}}}
 				{{ 'on '.$bookCopy->niceLentOutDt().'. '.$bookCopy->daysAgoLentOut().' days ago'}}
-				<?php $onclick = "showLendForm('".$bookCopy->ID."','".$returnForm."')"; ?>
+				<?php $onclick = "showLendForm('".$bookCopy->BookCopyID."','".$returnForm."')"; ?>
 				{{ HTML::link('#','Accept Return', ['onclick'=>$onclick]); }}
-				{{"<div id='showDiv2".$bookCopy->ID."' style='display:none' class='formDiv'></div>"}}
+				{{"<div id='showDiv2".$bookCopy->BookCopyID."' style='display:none' class='formDiv'></div>"}}
 			@endif
 			)
 	@endforeach

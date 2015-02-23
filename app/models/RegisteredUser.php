@@ -24,9 +24,20 @@ class RegisteredUser extends Eloquent
 		return $this->belongsToMany('FlatBook','bookcopies','UserID','BookID')->withTimestamps();
 	}
 
+	// returns ordered by book title - which is not so easy with
+	// the BookCopies relationship
 	public function myBookCopies()
 	{
-
+		$query = BookCopy::with('Book')
+			->where('UserID', $this->UserID)
+			->join('books_flat', 'bookcopies.BookID', '=', 'books_flat.ID')
+			->select('books_flat.ID as BookID','bookcopies.ID as BookCopyID',
+				'Title','SubTitle','Author1','Author2','Status','LentOutDt');
+		$query->orderBy('Status','desc')
+			->orderBy('LentOutDt','asc');
+		$query->orderBy('books_flat.Title', 'ASC');
+		return $query;
+			
 	}
 
 	public static function getUserByUsername($username)

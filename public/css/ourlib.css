@@ -58,6 +58,11 @@ input {
 	margin:2px;
 }
 
+.thinInput
+{
+	border: 1px solid #B48700;
+}
+
 select {
 	border: none;
 	padding: 4px;
@@ -84,6 +89,18 @@ select {
 	font-weight: bold;
 	/*border: 1px solid #B48700;*/
 	font-size   : 120%;
+	-moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+    border-radius: 4px;
+}
+
+.thinNormalButton
+{
+	background-color: #7B40C9;
+	color: white;
+	font-weight: bold;
+	/*border: 1px solid #B48700;*/
+	font-size   : 100%;
 	-moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
@@ -281,6 +298,10 @@ textarea {
 
 /* only for Input */
 @media (min-width: 450px) {
+	.thinInput
+	{
+		font-size: 100%;
+	}
 	input
 	{
 		font-size: 120%;

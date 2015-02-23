@@ -74,7 +74,8 @@
 	{{ $books->links() }}
 </ul>
 @else
-		<p style="text-align:center;">{{$user->FullName}} has not added any books as yet.</p>
+	<span class="pageTitle">{{$user->FullName."'s Collection"}}</span>
+	<p style="text-align:center;">{{$user->FullName}} has not added any books as yet.</p>
 @endif
 
 @stop

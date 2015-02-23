@@ -313,52 +313,6 @@ class FlatBook extends Eloquent {
 		return $books;
 	}
 
-	public static function search($searchTerm)
-	{
-		// searches only book title right now
-		// does not order result by relevance
-
-		$connSettings = Config::get('database.connections');
-		$tblPrefix = '';
-		$tblPrefix = $connSettings['mysql']['prefix'];
-
-		$sql = "SELECT EntityID, MATCH(Phrase) AGAINST(:term1 IN BOOLEAN MODE) score FROM ".$tblPrefix."search_tbl 
-			WHERE MATCH(Phrase) AGAINST(:term2 IN BOOLEAN MODE) order by EntityID asc limit 0,30";
-		$bookIDsWithScore = DB::select($sql,array('term1'=>$searchTerm,'term2'=>$searchTerm));
-
-		$bookIDsA = array_map(function($val)
-					{
-					    return $val->EntityID;
-					}, $bookIDsWithScore);
-		$books = FlatBook::select('ID','Title','Author1')
-				->orderBy('ID','asc')
-				->whereIn('ID', $bookIDsA)
-				->get();
-		return $books->toArray();
-		
-	}
-
-/*
-	public static function myBooks($userID)
-	{
-		$booksIDs = DB::table('bookcopies')
-					->select('BookID')
-					->distinct()
-					->where('UserID', '=', $userID)
-					->lists('BookID');
-		if (!empty($booksIDs))
-		{
-			$books = FlatBook::whereIn('ID',$booksIDs)
-						->orderBy('Title', 'asc')
-						->with('Copies')
-						->get();
-			return $books;
-		}
-		else
-		{
-			return false;
-		}
-	}*/
 
 	public static function myBorrowedBooks($borrowerID)
 	{
@@ -380,27 +334,7 @@ class FlatBook extends Eloquent {
 			return false;
 	}
 
-	// ------------------- MAINTENANCE --------------
 
-	public static function updateSearchTbl()
-	{
-		$connSettings = Config::get('database.connections');
-		$tblPrefix = '';
-		$tblPrefix = $connSettings['mysql']['prefix'];
-
-		// which books are already in search tbl
-		$existingIDs = DB::table('search_tbl')->select('EntityID')->distinct()->where('EntityType',1)->lists('EntityID');
-		if (count($existingIDs) == 0)
-			$existingIDs = [0];
-		// which ids are not in search tbl
-		$newIDs = DB::table('books_flat')->select('ID')->whereNotIn('ID', $existingIDs)->lists('ID');
-		$newIDsString = implode(",", $newIDs);
-		// insert data abt new books into search tbl
-		$sql = "insert into ".$tblPrefix."search_tbl (EntityID,Phrase,EntityType) select ID,Title,1 from ".$tblPrefix."books_flat where ID in (".$newIDsString.")";
-		// var_dump($sql);
-		$result = DB::statement($sql);
-		return $result;
-	}
 
 }
 

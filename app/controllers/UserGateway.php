@@ -19,14 +19,16 @@ class UserGateway extends BaseController
 			$currentUser = Session::get('loggedInUser');
 			if ($calledUser->UserID == $currentUser->UserID)
 			{
-				$myBooks = $calledUser->BookCopies()->with('Book')
+				$myBooks = $calledUser->myBookCopies()
 							->paginate($paginationItemCount);;
 		        return View::make('myBooks',
 		        	array('books' => $myBooks));
 			}
 		}
 		
-		$usersBooks = $calledUser->Books()->paginate($paginationItemCount);
+		$usersBooks = $calledUser->Books()
+			->orderBy('Title', 'asc')
+			->paginate($paginationItemCount);
 
 		return View::make('userBooks',
 			array('books' => $usersBooks, 'user' => $humanUser));

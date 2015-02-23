@@ -96,7 +96,7 @@ class BookController extends BaseController
     public function search($term = 'abc')
     {
         // $searchTerm = Input::get('searchTerm');
-        $result = FlatBook::search($term);
+        $result = Librarian::search($term);
         var_dump($result);
     }
 
