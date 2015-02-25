@@ -34,7 +34,7 @@ Validator::extend('norouteclash', function($field, $value, $params)
         {
             $firstPart = $path;
         }
-        if ($firstPart == $value)
+        if (strcasecmp ($firstPart,$value) == 0)
             return false;
     }
     return true;
