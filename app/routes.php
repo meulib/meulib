@@ -23,6 +23,21 @@
 
 // -------- APP ROUTES --------------------------
 
+Route::get('test-clickable-link',function()
+{
+	echo 'sending mail';
+	$view = 'emails.testingClickableLinks';
+	$viewData = [];
+	$subject = "Testing Clickable Links";
+	$to = [];
+	$to['email'] = 'vani.murarka@gmail.com';
+	$to['name'] = 'Vani Murarka';
+	$fromPersonal = true;
+
+	Postman::mailToUser($view,$viewData,$subject,$to,$fromPersonal);
+	echo 'mail sent';
+});
+
 Route::get('generic-error', function()
 {
 	return View::make('genericError');
