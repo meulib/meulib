@@ -31,7 +31,8 @@ class Postman {
 	config/mail.php setting: fromHuman
 	*/
 
-	public static function mailToUser($view,$viewData,$subject,$to,$fromPersonalizedAdmin=false)
+	public static function mailToUser($view,$viewData,$subject,
+		$to,$fromPersonalizedAdmin=false)
 	{
 		$from = [];
 		$from['email'] = Config::get('mail.from')['address'];
