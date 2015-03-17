@@ -111,6 +111,7 @@ Category:
 </div>
 <!-- --- END BROWSE FILTER SECTION --- -->
 
+<!--
 @if (!$loggedIn)
 	<form action={{URL::to('/signup-or-login')}}>
 		{{ Form::submit('Become a Member', 
@@ -121,46 +122,84 @@ Category:
 			'name'=>'btnLogin')); }} to request books to borrow, to add your own books to lend.
 	</form>	
 @endif
+-->
 
 @if ($tMsg[1]!="")
 	<p align='center'>
 		<span style="border:2px solid blue;padding:4px;background-color:LemonChiffon">
 			{{{$tMsg[1][1] }}}
-			@if ($tMsg[1][0] && ($tMsg[0] == 'AddBook'))
-				<a href="#AddBooks">Add More Books</a>
-			@endif
 		</span>
 	</p>
 @endif
 
 <!-- --- BOOK LISTING --- -->
 
-<ul>
 @if ($bookCount > 0)
 	{{ $books->links() }}
 	<br/>
 		@foreach($books as $book)
-			<li>
-				<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
-				{{{ $book->Title }}}
-				@if ($book->SubTitle)
-					{{{ ": ".$book->SubTitle }}}
-				@endif
-				</a>
-				@if ($book->Author1)
-					{{{ "&nbsp;by ".$book->Author1 }}}
-				@endif
-				@if ($book->Author2)
-					{{{ ", ".$book->Author2 }}}
-				@endif
-			</li>	
+			@if (strlen($book->CoverFilename)>0)
+				<div style="display:inline-block;padding:2px;margin:2px;width:200px;text-align:center;vertical-align:top;background-color: #f0f9f0;">
+					<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
+					{{ HTML::image('images/book-covers/'.$book->CoverFilename, 'a picture', array('height' => '150')) }}<br/>
+					{{{ $book->Title }}}
+					</a>
+					@if ($book->SubTitle)
+						<div style="font-size:70%;">
+						@if (strlen($book->SubTitle)>30)
+							{{{ substr($book->SubTitle,0,30).'...' }}}
+						@else
+							{{{ $book->SubTitle }}}
+						@endif
+						</div>
+					@endif
+					@if ($book->Author1)
+						<div style="font-size:90%">
+						{{{ $book->Author1 }}}
+						@if ($book->Author2)
+							{{{ ", ".$book->Author2 }}}
+						@endif
+						</div>
+					@endif
+				</div>
+			@else
+				<div style="display:inline-block;padding:2px;margin:2px;width:200px;text-align:center;vertical-align:top;background-color: #f0f9f0;">
+					<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
+					{{{ $book->Title }}}
+					</a>
+					@if ($book->SubTitle)
+						<div style="font-size:70%;">
+						{{{ $book->SubTitle }}}
+						</div>
+					@endif
+					@if ($book->Author1)
+						<div style="font-size:90%">
+						{{{ $book->Author1 }}}
+						@if ($book->Author2)
+							{{{ ", ".$book->Author2 }}}
+						@endif
+						</div>
+					@endif
+				</div>
+			@endif
+			<!-- 
+			{{{ $book->Title }}}
+			@if ($book->SubTitle)
+				{{{ ": ".$book->SubTitle }}}
+			@endif
+			</a>
+			@if ($book->Author1)
+				{{{ "&nbsp;by ".$book->Author1 }}}
+			@endif
+			@if ($book->Author2)
+				{{{ ", ".$book->Author2 }}}
+			@endif -->
 		@endforeach
 	<br/>
 	{{ $books->links() }}
 @else
 		No books found in Location <b>{{$currentLocationLinkValue}}</b> in Language <b>{{$currentLanguageLinkValue}}</b> of Category <b>{{$currentCategoryLinkValue}}</b>
 @endif
-</ul>
 
 @if (Session::has('loggedInUser'))
 	@include('templates.addBooks')
