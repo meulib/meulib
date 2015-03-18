@@ -36,8 +36,13 @@ It is short, simple and important that you know them.<br/>
 		    </td>
 		</tr> -->
 		<tr>
-			<td>{{ Form::label('l_locality', 'Locality'); }}</td>
-			<td>{{ Form::text('locality', '', ['required']) }}</td>
+			<td valign="top">
+				{{ Form::label('l_locality', 'Locality'); }}
+				<div style="font-size:70%">
+				(neighborhood / region / nagar<br/>
+				within your city)</div>
+			</td>
+			<td valign="top">{{ Form::text('locality', '', ['required']) }}</td>
 		</tr>
 		<tr>
 			<td>{{ Form::label('l_city', 'City'); }}</td>

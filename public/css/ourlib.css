@@ -294,6 +294,22 @@ textarea {
 	margin-top:1px;
 }
 
+/* to show books in their own rectangle 
+introduced for book cover */
+.bookMat
+{
+	display:inline-block;
+	padding:2px;
+	margin:2px;
+	width:200px;
+	text-align:center;
+	vertical-align:top;
+	background-color: #f0f9f0;
+}
+
+.bookMatSubTitle { font-size:70%; }
+.bookMatAuthor { font-size:90%; }
+
 /* RESPONSIVE UI. ADJUST FOR LARGER SCREENS */
 
 /* only for Input */
