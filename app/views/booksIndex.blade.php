@@ -138,50 +138,31 @@ Category:
 	{{ $books->links() }}
 	<br/>
 		@foreach($books as $book)
-			@if (strlen($book->CoverFilename)>0)
-				<div style="display:inline-block;padding:2px;margin:2px;width:200px;text-align:center;vertical-align:top;background-color: #f0f9f0;">
-					<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
-					{{ HTML::image('images/book-covers/'.$book->CoverFilename, 'a picture', array('height' => '150')) }}<br/>
-					{{{ $book->Title }}}
-					</a>
-					@if ($book->SubTitle)
-						<div style="font-size:70%;">
-						@if (strlen($book->SubTitle)>30)
-							{{{ substr($book->SubTitle,0,30).'...' }}}
-						@else
-							{{{ $book->SubTitle }}}
-						@endif
-						</div>
-					@endif
-					@if ($book->Author1)
-						<div style="font-size:90%">
-						{{{ $book->Author1 }}}
-						@if ($book->Author2)
-							{{{ ", ".$book->Author2 }}}
-						@endif
-						</div>
-					@endif
-				</div>
-			@else
-				<div style="display:inline-block;padding:2px;margin:2px;width:200px;text-align:center;vertical-align:top;background-color: #f0f9f0;">
-					<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
-					{{{ $book->Title }}}
-					</a>
-					@if ($book->SubTitle)
-						<div style="font-size:70%;">
+			<div class="bookMat">
+				<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
+				@if (strlen($book->CoverFilename)>0)
+				{{ HTML::image('images/book-covers/'.$book->CoverFilename, 'a picture', array('height' => '150')) }}<br/>
+				@endif
+				{{{ $book->Title }}}
+				@if ($book->SubTitle)
+					<div class="bookMatSubTitle">
+					@if (strlen($book->SubTitle)>30)
+						{{{ substr($book->SubTitle,0,30).'...' }}}
+					@else
 						{{{ $book->SubTitle }}}
-						</div>
 					@endif
-					@if ($book->Author1)
-						<div style="font-size:90%">
-						{{{ $book->Author1 }}}
-						@if ($book->Author2)
-							{{{ ", ".$book->Author2 }}}
-						@endif
-						</div>
+					</div>
+				@endif
+				</a>
+				@if ($book->Author1)
+					<div class="bookMatAuthor">
+					{{{ $book->Author1 }}}
+					@if ($book->Author2)
+						{{{ ", ".$book->Author2 }}}
 					@endif
-				</div>
-			@endif
+					</div>
+				@endif
+			</div>
 			<!-- 
 			{{{ $book->Title }}}
 			@if ($book->SubTitle)
