@@ -90,6 +90,8 @@ class FlatBook extends Eloquent {
         	$bookCopy->BookID = $book->ID;
         	$bookCopy->UserID = $userID;
         	$bookCopy->LocationID = $userLocation;
+        	if (isset($bookDetails['ForGiveAway']))
+        		$bookCopy->ForGiveAway = $bookDetails['ForGiveAway'];
         	$result = $bookCopy->save();
         	if ($result)
         	{

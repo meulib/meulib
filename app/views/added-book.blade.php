@@ -7,7 +7,7 @@
 
 @if (isset($addedBook) && ($addedBook))
 <div class='positiveMessage'>
-Yay! {{$book->Title}} added!<br/>
+Great! {{$book->Title}} added!<br/>
 </div>
 @endif
 
