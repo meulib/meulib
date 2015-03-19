@@ -315,6 +315,7 @@ class UserAccess extends Eloquent {
 		Postman::mailToUser($view,$viewData,$subject,$to,$fromPersonal);
 
 		$bodyText = 'New User Activated ' . $user->UserID . ' | ' .
+					$humanUser->Username . ' | ' .
 					$humanUser->FullName . ' | ' .
 					$humanUser->Locality . ' | ' .
 					$humanUser->City . ' | ' .
