@@ -1,5 +1,7 @@
 @extends('templates.base')
 
+@section('title', 'Login: ')
+
 @section('content')
 
 <div style="margin: 0 auto; display:table;" id="loginDiv">

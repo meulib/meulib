@@ -1,6 +1,8 @@
 
 @extends('templates.base')
 
+@section('title', 'How MeULib Works: ')
+
 @section('content')
 
 <div style='font-size:150%;font-weight:bold;margin:0 auto;display:table;'>

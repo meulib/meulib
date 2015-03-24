@@ -1,6 +1,8 @@
 
 @extends('templates.base')
 
+@section('title', 'Membership Rules: ')
+
 @section('content')
 
 <div class='contentDiv' style='max-width:700px'>

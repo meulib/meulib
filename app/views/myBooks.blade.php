@@ -1,6 +1,8 @@
 
 @extends('templates.base')
 
+@section('title', 'My Collection: ')
+
 <?php
 	$loggedIn = false;
 	if (Session::has('loggedInUser'))
