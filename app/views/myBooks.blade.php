@@ -1,6 +1,8 @@
 
 @extends('templates.base')
 
+@section('title', 'My Collection: ')
+
 <?php
 	$loggedIn = false;
 	if (Session::has('loggedInUser'))
@@ -35,10 +37,14 @@
 	$user->State . ', ' . $user->Country }}</p>
 @if (count($books)>0)
 	{{ $books->links() }}
-	<ul>
+	<!-- ul -->
 	@foreach($books as $bookCopy)
-		<li>
+		<!-- li -->
+		<div style="margin-left:10px;margin-bottom:10px;">
 			<a href={{  URL::action('BookController@showSingle', array($bookCopy->Book->ID))}}>
+			@if (strlen($bookCopy->Book->CoverFilename)>0)
+				{{ HTML::image('images/book-covers/'.$bookCopy->Book->CoverFilename, '', array('height' => '100','style'=>'float: left; margin-right: 15px;')) }}
+			@endif
 			{{{ $bookCopy->Book->Title }}}
 			@if ($bookCopy->Book->SubTitle)
 				{{{ ": ".$bookCopy->Book->SubTitle }}}
@@ -66,8 +72,10 @@
 				{{"<div id='showDiv2".$bookCopy->BookCopyID."' style='display:none' class='formDiv'></div>"}}
 			@endif
 			)
+			<span style="display: block; clear: both; width: 1px; height: 0.001%; font-size: 0px; line-height: 0px;"/>
+		</div>
 	@endforeach
-	</ul>
+	<!-- /ul -->
 	{{ $books->links() }}
 @else
 	There are no books yet in your {{Config::get('app.name');}} collection.<br/><br/>

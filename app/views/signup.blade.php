@@ -1,5 +1,7 @@
 @extends('templates.base')
 
+@section('title', 'Become a Member of ')
+
 @section('content')
 <!-- TO DO: break this form into several pages/tabs with heading so that it is easier for user. Form does not feel too long. -->
 <div class='contentDiv'>

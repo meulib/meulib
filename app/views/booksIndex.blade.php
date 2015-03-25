@@ -34,6 +34,8 @@
 	$bookCount = $books->count();
 ?>
 
+@section('title', 'Full Collection: ')
+
 @section('content')
 
 <!-- --- BROWSE FILTER SECTION --- -->
