@@ -41,6 +41,11 @@
 @if ($tMsg[1]!="")
 	<p align='center'><span style="border:2px solid blue;padding:4px;background-color:LemonChiffon">{{{$tMsg[1]}}}</span></p>
 @endif
+
+	@if (strlen($book->CoverFilename)>0)
+		{{ HTML::image('images/book-covers/'.$book->CoverFilename, '', array('height' => '200','style'=>'float: left; margin-right: 15px;')) }}
+	@endif
+
 	<b>{{{$title}}}</b><br/>
 	@if ($book->Author1)
 		{{{ $book->Author1 }}}
