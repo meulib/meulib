@@ -59,10 +59,15 @@ class UserController extends BaseController
         try
         {
             $result = UserAccess::login($userNameEmail, $pwd);
-            if ($result)
+            if ($result['result'])
             {
-                $loggedInUser = User::find($result);
+                // echo 'logged in';
+                $loggedInUser = User::find($result['UserID']);
+                $loggedInUser->IsAdmin = $result['IsAdmin'];
                 Session::put('loggedInUser',$loggedInUser);
+                $registeredUser = RegisteredUser::find($result['UserID']);
+                Session::put('registeredUser',$registeredUser);
+                // var_dump($registeredUser);
                 if (strlen($fromURL)>0)
                     return Redirect::to($fromURL);
                 else

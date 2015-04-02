@@ -6,6 +6,11 @@ class FlatBook extends Eloquent {
 
 	protected $table = 'books_flat';
 	protected $primaryKey = 'ID';
+	protected static $rules = array(
+            	'Title' => 'required',
+	            'Author1' => 'required',
+	            'Language1' => 'required'
+        	);
 
 	// ------------------ RELATIONSHIPS ----------------------
 
@@ -54,7 +59,7 @@ class FlatBook extends Eloquent {
             'Title' => 'required',
             'Author1' => 'required'
         );
-        $validator = Validator::make($bookDetails, $rules);
+        $validator = Validator::make($bookDetails, self::$rules);
         if ($validator->fails()) 
         {
             return array(false,$validator->messages());
@@ -101,11 +106,6 @@ class FlatBook extends Eloquent {
 				    $subject = 'New ' . Config::get('app.name') . ' Book';
 				    Postman::mailToAdmin($subject,$bodyText);
 
-					/*Mail::queue(array('text' => 'emails.raw'), $body, function($message)
-					{
-						$message->to(Config::get('mail.admin'))
-								->subject('New ' . Config::get('app.name') . ' Book');
-					});*/
 					Session::put('AddBookAdminMail','sent');
 				}     		
 	        	return array(true,$book->ID);
@@ -227,6 +227,55 @@ class FlatBook extends Eloquent {
 		});*/
 
 		return [true,''];
+	}
+
+	public function updateBook($bookDetails)
+	{
+		$validator = Validator::make($bookDetails, self::$rules);
+        if ($validator->fails()) 
+        {
+            return array('success'=>false,'errors'=>$validator->messages());
+        }
+		if ($bookDetails['book-cover'])
+		{
+			$uploadResult = FileManager::uploadImage($bookDetails['book-cover'],'book-covers');
+			if ($uploadResult['success'])
+			{
+				// upload successful
+				// set info in book record
+				$this->CoverFilename = $uploadResult['filename'];
+			}
+			else
+			{
+				return $uploadResult;
+			}
+		}
+
+		$this->Title = $bookDetails['Title'];
+        $this->Author1 = $bookDetails['Author1'];
+        if (isset($bookDetails['Author2']))
+        	$this->Author2 = $bookDetails['Author2'];
+        if (isset($bookDetails['Language1']))
+        {
+        	$this->Language1 = $bookDetails['Language1'];
+        	$language1 = Language::where('LanguageNative','=',$bookDetails['Language1'])->first();
+        	if ($language1 != NULL)
+        		$this->Language1ID = $language1->ID;
+        }	        
+        if (isset($bookDetails['Language2']))
+        {
+        	$this->Language2 = $bookDetails['Language2'];
+        	$language2 = Language::where('LanguageNative','=',$bookDetails['Language2'])->first();
+        	if ($language2 != NULL)
+        		$this->Language2ID = $language2->ID;
+        }
+        if (isset($bookDetails['SubTitle']))
+        	$this->SubTitle = $bookDetails['SubTitle'];
+        $this->Checked = 0;
+
+		$this->save();
+
+		return array('success' => true);
 	}
 
 	// ------------------ QUERY SCOPES ------------------

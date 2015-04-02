@@ -21,6 +21,7 @@ class User extends Eloquent {
 	protected $table = 'users';
 	protected $primaryKey = 'UserID';
 	protected $hidden = array('UserID','EMail');
+	public $IsAdmin = 0;
 
 	/*protected function RegistrationDetails()
     {

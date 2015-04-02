@@ -55,7 +55,7 @@ class UserAccess extends Eloquent {
 		return Hash::make($plainPwd);	// Laravel's method
 	}
 
-	public static function Login($userNameEmail, $pwd)
+	public static function login($userNameEmail, $pwd)
 	{
 		$user = NULL;
 
@@ -90,11 +90,12 @@ class UserAccess extends Eloquent {
  		if ($user->Active != 1)  			// no :-(
 			throw new LoginException("Account Not Activated", 3);
 
+		// login successful! Yay! Whew rather...
         // reset failed login
         $user->FailedLogins = 0;
         $user->LastFailedLogin = NULL;
         $user->save();
-        return $user->UserID;
+        return array('result'=>true,'UserID'=>$user->UserID,'IsAdmin'=>$user->IsAdmin);
 	}
 
 	public static function addNew($data)

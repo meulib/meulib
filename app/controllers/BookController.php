@@ -103,7 +103,7 @@ class BookController extends BaseController
     public function myBooks()
     {
         if (!Session::has('loggedInUser'))
-                return Redirect::to(URL::to('/'));
+                return Redirect::route('login');
 
         $userID = Session::get('loggedInUser')->UserID;
         // $books = FlatBook::myBooks($userID);
@@ -230,11 +230,42 @@ class BookController extends BaseController
             else
             {
                 Session::put('TransactionMessage',['DeleteBook','Book copy deleted']);
-               return Redirect::to(URL::to('book/'.$bookID));
+                return Redirect::to(URL::to('book/'.$bookID));
             }
         }
         else
             return $result; // TODO: make this more elegant, rather than just showing $result
+    }
+
+    public function editBook()
+    {
+        // $bookCoverFile = Input::file('book-cover');
+        // $result = FileManager::uploadImage($bookCoverFile,'book-covers');
+        // var_dump($result);
+
+        if (!Session::has('loggedInUser'))
+            return Redirect::route('login');
+
+        $bookID = Input::get('bookID');
+
+        $registerdUser = Session::get('registeredUser');
+        // $originalBook = FlatBook::find(Input::get('bookID'));
+        $result = $registerdUser->editBookInfo(Input::all());
+
+        // var_dump($result);
+
+        if ($result['success'])
+        {
+            if ($result['updated'])
+                Session::put('TransactionMessage',['EditBook','Book details updated']);
+            else
+                Session::put('TransactionMessage',['EditBook','Information sent to Librarian for verification, as mulitiple copies of this book exist in MeULib']);
+            return Redirect::to(URL::to('book/'.$bookID));
+        }
+        else
+        {
+            return Redirect::to(URL::to('book/'.$bookID))->withErrors($result['errors']);
+        }
     }
     
 }
