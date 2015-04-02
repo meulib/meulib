@@ -72,6 +72,7 @@ Route::get('borrowed-books', array('as' => 'borrowed', 'uses' => 'BookController
 
 Route::post('add-book', 'BookController@addBook');
 Route::post('add-book-info', 'BookController@setBookInfo');
+Route::post('edit-book', 'BookController@editBook');
 
 Route::post('delete-book-confirmation', 'BookController@serveDeleteBookConfirmation');
 Route::post('delete-bookcopy', 'BookController@deleteBookCopy');
@@ -161,7 +162,17 @@ Route::post('submit-contact', 'UtilityController@submitContactForm');
 
 // ------- MAINTENANCE --------------
 
-Route::get('update-search', 'MaintenanceController@updateSearch');
+Route::group(array('before' => 'admin'), function()
+{
+    Route::get('/admin', function()
+    {
+        echo 'ok you have access to admin functionality';
+    });
+
+    Route::get('update-search', 'MaintenanceController@updateSearch');
+});
+
+
 
 // ------- MASTER CALL --------------
 

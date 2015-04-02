@@ -191,3 +191,8 @@ function lendFormSubmit(id,callURL)
     
 }
 
+function showHideDiv(showId, hideId)
+{
+    document.getElementById(hideId).style.display = "none";
+    document.getElementById(showId).style.display = "inline-block";
+}

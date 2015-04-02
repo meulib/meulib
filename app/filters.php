@@ -24,6 +24,24 @@ App::after(function($request, $response)
 
 /*
 |--------------------------------------------------------------------------
+| Admin Filter
+|--------------------------------------------------------------------------
+|
+| Used to verify that the user of the current
+| session is an admin for admin only functionalities
+*/
+
+Route::filter('admin', function()
+{
+	if (!Session::has('loggedInUser'))
+    	return Response::make('Unauthorized', 401);
+
+    if (!Session::get('loggedInUser')->IsAdmin)
+    	return Response::make('Unauthorized', 401);
+});
+
+/*
+|--------------------------------------------------------------------------
 | Authentication Filters
 |--------------------------------------------------------------------------
 |

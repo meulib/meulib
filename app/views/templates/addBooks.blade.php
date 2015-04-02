@@ -22,6 +22,6 @@
 	Any other language? <span style="font-size:90%">(for multi-lingual books)</span><br/>
 	{{ Form::text('Language2', '', ['maxlength'=>50]) }}<br/>
 	{{ Form::checkbox('ForGiveAway', 1, false, ['style'=>'width:1em;height:1em;']) }} For Give Away? <span style="font-size:90%">(check if you no longer want to own this book and want to give it away)</span><br/>
-	{{ Form::submit('Yes, Add', array('class' => 'richButton')); }}
+	{{ Form::submit('Yes, Add', array('class' => 'normalButton')); }}
 	{{ Form::close() }}
 </div>
