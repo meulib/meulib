@@ -1,21 +1,5 @@
 <?php
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-//	protected $table = 'users';
-
-	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-//	protected $hidden = array('password', 'remember_token');
-
-//}
-
 class User extends Eloquent {
 
 	protected $table = 'users';
@@ -27,6 +11,23 @@ class User extends Eloquent {
     {
         return $this->hasOne('RegisteredUser','UserID','UserID');
     }*/
+
+    public function setLibrarySettings($librarySettings)
+    {
+    	try
+    	{
+    		if (isset($librarySettings['LibraryName']))
+	    	{
+	    		$this->LibraryName = $librarySettings['LibraryName'];
+	    		$this->save();
+	    		return ['success'=>true,'UserId'=>$this->UserID];
+	    	}
+    	}
+    	catch (Exception $e)
+		{
+			return ['success' => false, 'errors' => $e->getMessage()];
+		}
+    }
 
 }
 

@@ -151,12 +151,12 @@ class BookController extends BaseController
     {
         $result = FlatBook::addBook(Input::all());
 
-        if ($result[0])
-            return $this->addBookThanks($result[1]);
+        if ($result['success'])
+            return $this->addBookThanks($result['bookID']);
         else
         {
-            Session::put('TransactionMessage',['AddBook',$result]);
-            return Redirect::to(URL::previous());
+            // Session::put('TransactionMessage',['AddBook',$result]);
+            return Redirect::to(URL::previous())->withErrors($result['errors']);
         }
     }
 
@@ -247,10 +247,14 @@ class BookController extends BaseController
             return Redirect::route('login');
 
         $bookID = Input::get('bookID');
+        //NOTE: This is a temporary workaround because in production
+        //I get incomplete class when calling upon session saved 
+        //RegisteredUser
+        $registeredUser = RegisteredUser::find(Session::get('loggedInUser')->UserID);
+        //desireable version:
+        //$registeredUser = Session::get('registeredUser');
 
-        $registerdUser = Session::get('registeredUser');
-        // $originalBook = FlatBook::find(Input::get('bookID'));
-        $result = $registerdUser->editBookInfo(Input::all());
+        $result = $registeredUser->editBookInfo(Input::all());
 
         // var_dump($result);
 

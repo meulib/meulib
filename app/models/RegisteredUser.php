@@ -92,5 +92,10 @@ class RegisteredUser extends Eloquent
 		    return array('success' => true, 'updated' => false );
 		}
 	}
+
+	public function editMyPreferences($preferencesData)
+	{
+		
+	}
 }
 ?>

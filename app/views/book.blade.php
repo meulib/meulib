@@ -76,7 +76,10 @@
 	@endif
 	<span style="display: block; clear: both; width: 1px; height: 0.001%; font-size: 0px; line-height: 0px;"/>
 </div>
-@if (isset($copies[$loggedInUser->UserID]))
+@if (($loggedIn) && (isset($copies[$loggedInUser->UserID])))
+	<?php $onclickShowEdit = "showHideDiv('bookEdit','bookDisplay','inline-block')"; 
+	$onclickHideEdit = "showHideDiv('bookDisplay','bookEdit','inline-block')";
+	?>
 	<div id="bookEdit" style="display:none">
 		<span class="formTitle">
 			Edit Book Info
@@ -87,32 +90,31 @@
 		<div>
 			@if (strlen($book->CoverFilename)>0)
 				{{ HTML::image('images/book-covers/'.$book->CoverFilename, '', array('height' => '200')) }}<br/>
-				Add / Change Book Cover<br/>
+				Change Book Cover<br/>
 			@else
 				Add Book Cover<br/>
 			@endif
 			{{ Form::file('book-cover') }}
 		</div>
-		Title<br/>
+		Title <span style="color:red">*</span><br/>
 		{{ Form::text('Title', $book->Title, ['required','size'=>40,'maxlength'=>100]) }}<br/>
 		Sub Title<br/>
 		{{ Form::text('SubTitle', $book->SubTitle, ['size'=>40,'maxlength'=>100]) }}<br/>
-		Author <span style="font-size:90%">(or editor or series name)</span><br/>
+		Author <span style="font-size:90%">(or editor or series name)</span> <span style="color:red">*</span><br/>
 		{{ Form::text('Author1', $book->Author1, ['required','size'=>40,'maxlength'=>100]) }}<br/>
 		Any other authors?<br/>
 		{{ Form::text('Author2', $book->Author2, ['size'=>40,'maxlength'=>100]) }}<br/>
-		Language<br/>
+		Language <span style="color:red">*</span><br/>
 		{{ Form::text('Language1', $book->Language1, ['required','maxlength'=>50]) }}<br/>
 		Any other language? <span style="font-size:90%">(for multi-lingual books)</span><br/>
 		{{ Form::text('Language2', $book->Language2, ['maxlength'=>50]) }}<br/>
 		{{ Form::submit('Edit Info', array('class' => 'normalButton')); }}
-		{{ Form::submit('Cancel', array('class' => 'normalButton')); }}
+		{{ Form::button('Cancel', array('class' => 'normalButton','onclick' => $onclickHideEdit)); }}
 		{{ Form::close() }}
 	</div>
 	<div style="display:inline-block;vertical-align:top;margin-left:10px">
-		<?php $onclick = "showHideDiv('bookEdit','bookDisplay')"; ?>
 		<span class="subtleActionLink">
-		{{ HTML::link('#','Edit Book Info', ['onclick'=>$onclick]) }}
+		{{ HTML::link('#','Edit Book Info', ['onclick'=>$onclickShowEdit]) }}
 		</span>
 	</div>
 @endif

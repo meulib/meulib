@@ -55,15 +55,31 @@ class FlatBook extends Eloquent {
         $userID = $user->UserID;
         $userLocation = $user->LocationID;
 
-		$rules = array(
-            'Title' => 'required',
-            'Author1' => 'required'
-        );
+		// $rules = array(
+  //           'Title' => 'required',
+  //           'Author1' => 'required'
+  //       );
         $validator = Validator::make($bookDetails, self::$rules);
         if ($validator->fails()) 
         {
             return array(false,$validator->messages());
         }
+
+        $coverFilename = "";
+        if (isset($bookDetails['book-cover']))
+		{
+			$uploadResult = FileManager::uploadImage($bookDetails['book-cover'],'book-covers');
+			if ($uploadResult['success'])
+			{
+				// upload successful
+				// set info in book record
+				$coverFilename = $uploadResult['filename'];
+			}
+			else
+			{
+				return $uploadResult;
+			}
+		}
 
         $book = new FlatBook;
         $book->Title = $bookDetails['Title'];
@@ -86,6 +102,8 @@ class FlatBook extends Eloquent {
         }
         if (isset($bookDetails['SubTitle']))
         	$book->SubTitle = $bookDetails['SubTitle'];
+        if (strlen($coverFilename)>0)
+        	$book->CoverFilename = $coverFilename;
         $book->Checked = 0;
 
         $result = $book->save();
@@ -108,11 +126,11 @@ class FlatBook extends Eloquent {
 
 					Session::put('AddBookAdminMail','sent');
 				}     		
-	        	return array(true,$book->ID);
+	        	return array('success'=>true,'bookID'=>$book->ID);
         	}
-        	return array(false,'Book not saved. DB save error 2.');
+        	return array('success'=>false,'errors'=>['Book not saved. DB save error 2.']);
         }
-        return array(false,'Book not saved. DB save error 1.');
+        return array('success'=>false,'errors'=>['Book not saved. DB save error 1.']);
 	}
 
 	// $independent: if this is being called from another 

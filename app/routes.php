@@ -77,6 +77,8 @@ Route::post('edit-book', 'BookController@editBook');
 Route::post('delete-book-confirmation', 'BookController@serveDeleteBookConfirmation');
 Route::post('delete-bookcopy', 'BookController@deleteBookCopy');
 
+Route::post('set-library-settings', 'UserController@setLibrarySettings');
+
 // ----- ACCOUNT CREATION ------------
 
 Route::get('become-a-member', 'UserController@signup');
