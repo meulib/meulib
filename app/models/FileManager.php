@@ -2,7 +2,7 @@
 
 class FileManager
 {
-	protected static $imagePath = '\images\\';
+	protected static $imagePath = '/images/';
 	protected static $imageMimes = array(
 		'image/gif'=>['gif'],
 		'image/jpeg'=>['jpg','jpeg','jpe','jfif'],
@@ -31,7 +31,7 @@ class FileManager
 			return array('success' => false, 'errors' => ['Files greater than 5MB not allowed.']);
 
 		$fileName = $fileData->getClientOriginalName();
-		$destinationPath = public_path().self::$imagePath.$folder.'\\';
+		$destinationPath = public_path().self::$imagePath.$folder.'/';
 		$fullName = $destinationPath.$fileName;
 		// echo $destinationPath;
 		while (File::exists($fullName))

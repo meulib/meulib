@@ -115,7 +115,7 @@ class TransactionController extends BaseController
             if (is_int($result[0])) // transaction id returned
                 $tranID = $result[0];
             else
-                Session::put('TransactionMessage',['LendBook',[false,'There was some error. Book lending not recorded. '.$result[1]]]);
+                return Redirect::to(URL::previous())->withErrors(['There was some error. Book lending not recorded. '.$result[1]]);
         }
         else  // Lend to a pending request
         {
@@ -125,15 +125,17 @@ class TransactionController extends BaseController
             }
             catch (Exception $e)
             {
-                Session::put('TransactionMessage',['LendBook',[false,'There was some error. Book lending not recorded. '.$e->getMessage()]]);
+                return Redirect::to(URL::previous())->withErrors(['There was some error. Book lending not recorded. '.$e->getMessage()]);
             }
         }              
 
         if ($tranID > 0)
-            Session::put('TransactionMessage',['LendBook',[true,'Book lending recorded.']]);
+        {
+            Session::put('TransactionMessage',['LendBook','Book lending recorded.']);
             //return true;
-
-        return Redirect::to(URL::previous());
+            return Redirect::to(URL::previous());
+        }
+            
     }
 
     public function returnForm()
@@ -169,15 +171,18 @@ class TransactionController extends BaseController
         }
         catch (Exception $e)
         {
-            Session::put('TransactionMessage',['ReturnBook',[false,'There was some error. Book return not recorded.'.$e->getMessage()]]);
+            return Redirect::to(URL::previous())->withErrors(['There was some error. Book return not recorded.'.$e->getMessage()]);
+            //Session::put('TransactionMessage',['ReturnBook',[false,'There was some error. Book return not recorded.'.$e->getMessage()]]);
         }        
 
         if ($tranID == $returnedTranID)
-            Session::put('TransactionMessage',['ReturnBook',[true,'Book return recorded.']]);
+        {
+            Session::put('TransactionMessage',['ReturnBook','Book return recorded.']);
+            return Redirect::to(URL::previous());
+        }          
         else
-            Session::put('TransactionMessage',['ReturnBook',[false,'There was some error. Book return not recorded.'.$e->getMessage()]]);
-
-        return Redirect::to(URL::previous());
+            return Redirect::to(URL::previous())->withErrors(['There was some error. Book return not recorded.']);
+        
     }
 }
 ?>

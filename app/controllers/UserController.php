@@ -62,9 +62,8 @@ class UserController extends BaseController
             if ($result['result'])
             {
                 // echo 'logged in';
-                $loggedInUser = User::find($result['UserID']);
-                $loggedInUser->IsAdmin = $result['IsAdmin'];
-                Session::put('loggedInUser',$loggedInUser);
+                // Session::regenerate();
+                $this->setUserInSession($result['UserID'],$result['IsAdmin']);
                 $registeredUser = RegisteredUser::find($result['UserID']);
                 Session::put('registeredUser',$registeredUser);
                 // var_dump($registeredUser);
@@ -82,6 +81,13 @@ class UserController extends BaseController
         {
             return View::make('login', array('result' => [false,$e->getMessage()]));
         }
+    }
+
+    private function setUserInSession($UserID,$IsAdmin)
+    {
+        $loggedInUser = User::find($UserID);
+        $loggedInUser->IsAdmin = $IsAdmin;
+        Session::put('loggedInUser',$loggedInUser);
     }
 
     public function logout()
@@ -235,6 +241,29 @@ class UserController extends BaseController
             $founder->ClaimToFame = str_replace('appName', $appName, $founder->ClaimToFame);
         });
         return View::make('founders', array('founders'=>$founders));
+    }
+
+    public function setLibrarySettings()
+    {
+        if (!Session::has('loggedInUser'))
+            return Redirect::route('login');
+
+        $librarySettings = Input::all();
+        $loggedInUser = User::find(Session::get('loggedInUser')->UserID);
+        $UserID = $loggedInUser->UserID;
+        $IsAdmin = $loggedInUser->IsAdmin;
+        $result = $loggedInUser->setLibrarySettings($librarySettings);
+
+        if ($result['success'])
+        {
+            $this->setUserInSession($UserID,$IsAdmin);
+            //Session::put('TransactionMessage',['EditLibrarySettings','Library Name changed']);
+            return Redirect::to(URL::previous());
+        }
+        else
+        {
+            return Redirect::to(URL::previous())->withErrors($result['errors']);
+        }
     }
 }
 ?>
