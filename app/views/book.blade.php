@@ -125,9 +125,8 @@ Book Copies ({{{count($copies)}}})
 <br/><br/>
 <b>Owners</b><br/>
 @foreach($copies as $bCopy)
-	@if ($loggedIn)
-		{{{$bCopy->Owner->FullName.': '}}}
-	@endif
+	<a href={{ URL::route('user-books', array($bCopy->Owner->Username))}}>
+	{{{$bCopy->Owner->FullName.': '}}}</a>
 	in 
 	{{{$bCopy->Owner->City.', '.$bCopy->Owner->Locality}}}<br/>
 	@if ($loggedIn)
