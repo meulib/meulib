@@ -29,12 +29,7 @@
 
 @if ($tMsg[1]!="")
 	<p align='center'>
-		<span style="border:2px solid blue;padding:4px;background-color:LemonChiffon">
-			{{{$tMsg[1][1] }}}
-			@if ($tMsg[1][0] && ($tMsg[0] == 'AddBook'))
-				<a href="#AddBooks">Add More Books</a>
-			@endif
-		</span>
+		<span class="positiveMessage">{{{$tMsg[1][1] }}}</span>
 	</p>
 @endif
 
@@ -51,7 +46,13 @@
 			'name'=>'btnLogin')); }} to request these books for borrowing.
 	</form>	
 @endif
-<span class="pageTitle">{{$user->FullName."'s Collection"}}</span>
+<span class="pageTitle">
+	@if(strlen($user->LibraryName)>0)
+		{{$user->LibraryName}}
+	@else
+		{{$user->FullName."'s Collection"}}
+	@endif
+</span>
 <p align="center">{{ $user->Locality . ', ' . $user->City . '. ' . $user->State . ', ' . $user->Country }}</p>
 
 	{{ $books->links() }}
