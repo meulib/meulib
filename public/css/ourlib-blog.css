@@ -1,0 +1,57 @@
+/* STYLE SETTINGS SPECIFICALLY FOR BLOG */
+
+.blogTitle
+{
+	color:white;
+	font-family:'Merienda One', serif;
+	font-style: oblique;
+	/*-webkit-text-stroke: 1px gray;*/
+}
+
+.blogHead {
+	position:relative;
+	/*width:100%;*/
+	margin-bottom:2px;
+	margin-top:0px;
+	overflow: hidden;
+	/*background-color: #C6EFFF;*/
+	background-color: #2438ff;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+
+
+.blogSubTitle
+{
+	color:white;
+	display:none; 
+	/*-webkit-text-stroke: 1px gray;*/
+}
+
+.blogAppLinks
+{
+	font-size: 100%;
+	padding: 10px;
+	margin-bottom: 2px;
+	/*border-top: 2px solid #B48700;
+	border-bottom: 2px solid #B48700;*/
+	/*background-color: #C6EFFF;*/
+	background-color: #55a8ff;
+}
+
+.blogAppLinks a
+{
+	/*color: #009000;*/
+	color: black;
+	font-weight: bold;
+}
+
+@media (min-width: 600px) {
+	.blogTitle
+	{
+		font-size: 150%;
+		/*text-shadow: 2px 2px silver;*/
+	}
+	.blogSubTitle { display: block; }
+}

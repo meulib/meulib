@@ -1,6 +1,6 @@
 <?php
 
-class Book extends Eloquent {
+class Author extends Eloquent {
 
 	protected $primaryKey = 'ID';
 	public function authors()

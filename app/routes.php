@@ -162,6 +162,12 @@ Route::get('founding-members', 'UserController@foundingMembers');
 
 Route::post('submit-contact', 'UtilityController@submitContactForm');
 
+// ------- BLOG ROUTES --------------
+
+Route::get('/blog/{postSlug}', 'BlogGateway@postPage');
+Route::get('/blog', 'BlogGateway@homePage');
+
+
 // ------- MAINTENANCE --------------
 
 Route::group(array('before' => 'admin'), function()

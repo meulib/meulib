@@ -14,7 +14,7 @@ return array(
 			'password'  => 'chaabee',
 			'charset'   => 'utf8',
 			'collation' => 'utf8_general_ci',
-			'prefix'    => 'oltest_',
+			'prefix'    => 'tstol_',
 		),
 	)
 );

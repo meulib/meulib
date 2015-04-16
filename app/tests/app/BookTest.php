@@ -24,10 +24,12 @@ class BookTest extends TestCase
 
 		// test basic saved
 		$bookDetails = array('Author1'=>'Me',
-						'Title'=>'My Real Book!');
+						'Title'=>'My Real Book!',
+						'Language1'=>'English');
 		$result = FlatBook::addBook($bookDetails);
-		$this->assertTrue($result[0]); // should have saved
-		$bookID = $result[1];
+		//var_dump($result);
+		$this->assertTrue($result['success']); // should have saved
+		$bookID = $result['bookID'];
 		$book = FlatBook::find($bookID);
 		$this->assertEquals($bookID, $book->ID);
 		$this->assertEquals($bookDetails['Author1'], $book->Author1);
@@ -45,8 +47,8 @@ class BookTest extends TestCase
 						'Language2' => 'Second Language',
 						'SubTitle' => 'More words needed');
 		$result = FlatBook::addBook($bookDetails);
-		$this->assertTrue($result[0]); // should have saved
-		$bookID = $result[1];
+		$this->assertTrue($result['success']); // should have saved
+		$bookID = $result['bookID'];
 		$book = FlatBook::find($bookID);
 		$this->assertEquals($bookID, $book->ID);
 		$this->assertEquals($bookDetails['Author1'], $book->Author1);
@@ -73,8 +75,9 @@ class BookTest extends TestCase
 						'Language2' => 'हिन्दी',
 						'SubTitle' => 'More words needed');
 		$result = FlatBook::addBook($bookDetails);
-		$this->assertTrue($result[0]); // should have saved
-		$bookID = $result[1];
+		//var_dump($result);
+		$this->assertTrue($result['success']); // should have saved
+		$bookID = $result['bookID'];
 		$book = FlatBook::find($bookID);
 		$this->assertEquals($bookID, $book->ID);
 		$this->assertEquals($english->ID, $book->Language1ID);
@@ -88,9 +91,11 @@ class BookTest extends TestCase
 	{
 		Session::put('loggedInUser',$this->owner);
 		$bookDetails = array('Author1'=>'Me',
-						'Title'=>'My Expanded Book!');
+						'Title'=>'My Expanded Book!',
+						'Language1'=>'English');
 		$result = FlatBook::addBook($bookDetails);
-		$bookID = $result[1];
+		$bookID = $result['bookID'];
+		//var_dump($bookID);
 		$book = FlatBook::find($bookID);
 
 		$result = $book->setCategory(768);	// wrong category
@@ -104,9 +109,10 @@ class BookTest extends TestCase
 		$this->assertTrue($result[0]);	// no issue
 
 		$bookDetails = array('Author1'=>'Me',
-						'Title'=>'My Multifaceted Book!');
+						'Title'=>'My Multifaceted Book!',
+						'Language1'=>'English');
 		$result = FlatBook::addBook($bookDetails);
-		$bookID = $result[1];
+		$bookID = $result['bookID'];
 		$book = FlatBook::find($bookID);
 
 		$result = $book->setCategory([5,10]); // test multiple save, wrong category
@@ -124,9 +130,11 @@ class BookTest extends TestCase
 	{
 		Session::put('loggedInUser',$this->owner);
 		$bookDetails = array('Author1'=>'Me',
-						'Title'=>'My New Type Book!');
+						'Title'=>'My New Type Book!',
+						'Language1'=>'English');
 		$result = FlatBook::addBook($bookDetails);
-		$bookID = $result[1];
+		//var_dump($result);
+		$bookID = $result['bookID'];
 		$book = FlatBook::find($bookID);
 
 		$result = $book->suggestCategory('History');

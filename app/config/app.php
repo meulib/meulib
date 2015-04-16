@@ -21,12 +21,15 @@ return array(
 	|--------------------------------------------------------------------------
 	|
 	| The name of your library and the tag line.
+	| The name of your app blog and tag line.
 	|
 	*/
 
 	'name' => 'OurLib',
 	//'tag_line' => 'For demo and testing only. Data will be frequently deleted.',
 	'tag_line' => 'Book Garden Grown by Me and You',
+	'blog_name' => 'Books on Our Journey',
+	'blog_tag' => 'The MeULib Blog',
 
 	/*
 	|--------------------------------------------------------------------------

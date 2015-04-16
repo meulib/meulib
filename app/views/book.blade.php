@@ -33,7 +33,7 @@
 			'name'=>'btnMember')); }}
 		{{ Form::submit('Login', 
 			array('class' => 'normalButton',
-			'name'=>'btnLogin')); }} for more details about the owner(s) and to request this book.
+			'name'=>'btnLogin')); }} to request this book.
 	</form>	
 	<br/><br/>
 @endif

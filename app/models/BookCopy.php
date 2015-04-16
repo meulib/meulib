@@ -37,7 +37,7 @@ class BookCopy extends Eloquent {
 
 	public function niceLentOutDt()
 	{
-		return date("jS M",strtotime($this->LentOutDt));
+		return TimeKeeper::niceDateNoYear($this->LentOutDt);
 	}
 
 	public function daysAgoLentOut()
