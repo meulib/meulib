@@ -40,7 +40,7 @@ It is short, simple and important that you know them.<br/>
 		<tr>
 			<td valign="top">
 				{{ Form::label('l_locality', 'Locality'); }}
-				<div style="font-size:70%">
+				<div class="smallHelpText">
 				(neighborhood / region / nagar<br/>
 				within your city)</div>
 			</td>

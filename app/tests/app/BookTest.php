@@ -141,6 +141,14 @@ class BookTest extends TestCase
 		$this->assertTrue($result[0]);
 	}
 
+	public function testEditBookCopySettings()
+	{
+		Session::put('loggedInUser',$this->owner);
+		$bookCopy = BookCopy::find(1);
+		$result = $bookCopy->editSettings(array('ForGiveAway'=>1));
+		$this->assertTrue($result['success']);
+	}
+
 	// -----------------------------------------
 	// -------- DELETE BOOKCOPY-----------------
 	// -----------------------------------------

@@ -23,7 +23,6 @@ class Postman {
 	$viewData = data array required by view
 
 	$to = array('email'=>,'name'=>)
-	i.e. array with two elements of keys 'email', 'name'
 	
 	$fromPersonalizeAdmin: true / false
 	Will the from header say an impersonal "App Admin" or 
@@ -63,11 +62,11 @@ class Postman {
 						->subject($subject)
 						->from($from['email'],$from['name']);
 			});
-			return true;
+			return ['success'=>true,'msg'=>'Email sent'];
 		}
 		catch (Exception $e)
 		{
-			return false;
+			return ['success'=>false,'error'=>$e->getMessage()];
 		}
 	}
 
@@ -81,7 +80,7 @@ class Postman {
 						->subject($subject)
 						->from($from['email'],$from['name']);
 			});
-			return true;
+			return ['success'=>true,'msg'=>'Email sent'];
 		}
 		catch (Exception $e)
 		{

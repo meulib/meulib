@@ -315,6 +315,8 @@ introduced for book cover */
 .bookMatSubTitle { font-size:70%; }
 .bookMatAuthor { font-size:90%; }
 
+.smallHelpText {font-size: 70%;}
+
 /* RESPONSIVE UI. ADJUST FOR LARGER SCREENS */
 
 /* only for Input */

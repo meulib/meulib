@@ -93,11 +93,15 @@ class Transaction extends Eloquent {
 			$msgData['bookFullTitle'] = $item->FullTitle();
 			$msgData['tranID'] = $tranID;
 			$msgData['msg'] = $msg;
-			Mail::send('emails.messageRequest',$msgData, function($message) use ($data)
-			{
-				$message->to($data['email'], $data['name'])
-						->subject('A Request For Your Book');
-			});
+			Postman::mailToUser('emails.messageRequest',$msgData,'A Request For Your Book',$data);
+			
+			// send email to admin
+			$bodyText = 'Request sent by ' . $borrower->UserID . ' ' . $borrower->FullName .
+						' for ' . $item->FullTitle() . ' to ' . 
+						$owner->UserID . ' ' . $owner->FullName . ' Msg:' .
+						$msg;
+			$subject = 'Admin notice: Request sent';
+			Postman::mailToAdmin($subject,$bodyText);
 		}
 		catch (Exception $e)
 		{
@@ -160,11 +164,21 @@ class Transaction extends Eloquent {
 			$msgData['bookFullTitle'] = $item->FullTitle();
 			$msgData['tranID'] = $this->ID;
 			$msgData['msg'] = $msg;
-			Mail::send('emails.messagePosted',$msgData, function($message) use ($data)
-			{
-				$message->to($data['email'], $data['name'])
-						->subject('A Message For You');
-			});
+			$subject = 'Regarding ' . $item->Title;
+			Postman::mailToUser('emails.messagePosted',$msgData,$subject,$data);
+			// Mail::send('emails.messagePosted',$msgData, function($message) use ($data)
+			// {
+			// 	$message->to($data['email'], $data['name'])
+			// 			->subject('A Message For You');
+			// });
+
+			// send email to admin
+			$bodyText = 'Reply sent by ' . $fromUser->UserID . ' ' . $fromUser->FullName .
+						' for ' . $item->FullTitle() . ' to ' . 
+						$toUser->UserID . ' ' . $toUser->FullName . ' Msg:' .
+						$msg;
+			$subject = 'Admin notice: Reply by user to user';
+			Postman::mailToAdmin($subject,$bodyText);
 		}
 		catch (Exception $e)
 		{
@@ -185,6 +199,7 @@ class Transaction extends Eloquent {
 		$itemCopy = BookCopy::where('ID','=',$itemCopyID)
 					->where('UserID','=',$lenderID)
 					->where('Status','=', BookCopy::StatusVal('Available'))
+					->with('Book','Owner')
 					->first();
 
 		if (!$itemCopy)
@@ -219,6 +234,28 @@ class Transaction extends Eloquent {
 			throw $e;
 		}				
 		DB::commit();
+
+		$borrower = User::find($borrowerID);
+
+		$data['name'] = $borrower->FullName;
+		$data['email'] = $borrower->EMail;
+		$msgData['email'] = $borrower->EMail;
+		$msgData['borrower'] = $borrower->FullName;
+		$msgData['bookName'] = $itemCopy->Book->Title;
+		$msgData['owner'] = $itemCopy->Owner->FullName;
+		$template = 'emails.directLendRealUser'; 
+		$subject = $msgData['owner'].' lent you '.$msgData['bookName'];
+
+		Postman::mailToUser($template,$msgData,$subject,$data);
+
+		// send email to admin
+		$bodyText = 'Book Copy ' . $itemCopyID . ' ' . $itemCopy->Book->FullTitle() .
+					' Lent. From: ' . $itemCopy->Owner->UserID . ' ' . 
+					$itemCopy->Owner->FullName . ' To ' . $borrower->FullName . ' ' .
+					$borrower->UserID;
+		$subject = 'Book Lent';
+		Postman::mailToAdmin($subject,$bodyText);
+
 		return $tran->ID;
 
 	}
@@ -236,6 +273,7 @@ class Transaction extends Eloquent {
 		$itemCopy = BookCopy::where('ID','=',$itemCopyID)
 					->where('UserID','=',$lenderID)
 					->where('Status','=', BookCopy::StatusVal('Available'))
+					->with('Book','Owner')
 					->first();
 		if (!$itemCopy)
 			return [false,'Item Not Available'];
@@ -282,24 +320,258 @@ class Transaction extends Eloquent {
 		{
 			$owner = User::find($lenderID);
 
+			$data['name'] = $borrowerName;
+			$data['email'] = $borrowerEmail;
 			$msgData['email'] = $borrowerEmail;
 			$msgData['borrower'] = $borrowerName;
-			$msgData['bookName'] = $itemCopy->Book->FullTitle();
+			$msgData['bookName'] = $itemCopy->Book->Title;
 			$msgData['owner'] = $owner->FullName;
 			if ($phantomUserResult['isPhantom'])
 				$template = 'emails.directLendPhantomUser'; 
 			else
 				$template = 'emails.directLendRealUser'; 
+			$subject = $msgData['owner'].' lent you '.$msgData['bookName'];
 
-			Mail::send($template,$msgData, function($message) use ($msgData)
-			{
-				$message->to($msgData['email'], $msgData['borrower'])
-						->subject($msgData['owner'].' lent you '.$msgData['bookName']);
-			});	
+			Postman::mailToUser($template,$msgData,$subject,$data);
+			// Mail::send($template,$msgData, function($message) use ($msgData)
+			// {
+			// 	$message->to($msgData['email'], $msgData['borrower'])
+			// 			->subject($msgData['owner'].' lent you '.$msgData['bookName']);
+			// });	
 			
 		}
 		
+		// send email to admin
+		$bodyText = 'Book Copy ' . $itemCopyID . ' ' . $itemCopy->Book->FullTitle() .
+					' Lent. From: ' . $itemCopy->Owner->UserID . ' ' . 
+					$itemCopy->Owner->FullName . ' To Prospective User: ' . $borrowerName . ' ' .
+					$borrowerEmail . ' ' . $borrowerPhone;
+		$subject = 'Book Lent';
+		Postman::mailToAdmin($subject,$bodyText);
+
 		return [$tranID];
+	}
+
+	public static function giveAway($ownerID,$itemCopyID,$toID)
+	{
+		$itemCopy = BookCopy::where('ID','=',$itemCopyID)
+					->where('UserID','=',$ownerID)
+					->where('Status','=', BookCopy::StatusVal('Available'))
+					->with('Book', 'Owner')
+					->first();
+
+		if (!$itemCopy)
+			return array('success' => false, 'error' => 'Item Not Available');
+
+		$tran = Transaction::where('Borrower','=',$toID)
+					->where('itemCopyID','=',$itemCopyID)
+					->where('Status','=',self::tStatusByKey('T_STATUS_REQUESTED'))
+					->first();
+
+		if (!$tran)
+			return array('success' => false, 'error' => 'TransactionID Not Found');
+
+		$tranID = $tran->ID;
+
+		$fromUser = $itemCopy->Owner;
+
+		$toUser = User::find($toID);
+		if (!$toUser)
+			return array('success' => false, 'error' => 'Receiving User Not Found');
+
+		DB::beginTransaction();
+		try 
+		{
+			// mark item as available
+			// change owner in bookcopies
+			// set giveaway to false - because the new owner may not want to give this book away
+			$itemCopy->Status = BookCopy::StatusVal('Available');
+			$itemCopy->LentOutDt = null;
+			$itemCopy->UserID = $toID;
+			$itemCopy->LocationID = $toUser->LocationID;
+			$itemCopy->ForGiveAway = 0;
+
+			$itemCopy->save();
+
+			// close transaction
+
+			// post to transaction archive
+			$tranArchive = new TransactionArchived;
+			$tranArchive->ID = $tran->ID;
+  			$tranArchive->Borrower = $tran->Borrower;
+  			$tranArchive->Lender = $tran->Lender;
+  			$tranArchive->ItemCopyID = $tran->ItemCopyID;
+  			$tranArchive->ItemID = $tran->ItemID;
+  			$tranArchive->Status = self::tStatusByKey('T_STATUS_GIVENAWAY');
+  			$tranArchive->save();
+
+			// post to history
+			$tranH = new TransactionHistory;
+			$tranH->TransactionID = $tran->ID;
+			$tranH->Status = self::tStatusByKey('T_STATUS_GIVENAWAY');
+			$tranH->save();
+
+			$tran->delete();
+		}
+		catch (Exception $e)
+		{
+			DB::rollback();
+			return array('success' => false, 'error' => $e->getMessage());
+		}				
+		DB::commit();
+
+		// send email to new owner
+		$data['email'] = $toUser->EMail;
+		$data['name'] = $toUser->FullName;
+		$msgData['firstOwner'] = $fromUser->FullName;
+		$msgData['to'] = $toUser->FullName;
+		$msgData['bookName'] = $itemCopy->Book->FullTitle();
+		$msgData['toUsername'] = $toUser->Username;
+		Postman::mailToUser('emails.giveAwayRealUser',$msgData,'You received a book!',$data);
+
+		// send email to admin
+		$bodyText = 'Book Copy ' . $itemCopyID . ' ' . $itemCopy->Book->FullTitle() .
+					' Given Away. From: ' . $fromUser->UserID . ' ' . 
+					$fromUser->FullName . ' To: ' . $toUser->UserID . ' ' .
+					$toUser->FullName;
+		$subject = 'Book Given Away';
+		Postman::mailToAdmin($subject,$bodyText);
+
+		return array('success' => true, 'msg' => 'Book given away');
+
+		
+		
+	}
+
+	public static function giveAwayDirect($ownerID,$itemCopyID,$toName,$toEmail=null,$toPhone=null)
+	{
+
+		// is item available to be lent?
+		$itemCopy = BookCopy::where('ID','=',$itemCopyID)
+					->where('UserID','=',$ownerID)
+					->where('Status','=', BookCopy::StatusVal('Available'))
+					->with('Book', 'Owner')
+					->first();
+		if (!$itemCopy)
+			return array('success'=>false,'error'=>'Item Not Available');
+
+		$itemID = $itemCopy->BookID;
+		$item = $itemCopy->Book;
+		$fromUser = $itemCopy->Owner;
+
+		$phantomUserResult = UserAccess::addNewPhantomUser($toName,$toEmail,$toPhone);
+		if (!$phantomUserResult['UserID'])	// 1st element of result = false => failure
+			return array('success'=>false,'error'=>$phantomUserResult['msg']);	// user did not get created. Some error in borrower details
+
+		// ENTER GIVE DIRECT TRANSACTION
+
+		$toUserID = $phantomUserResult['UserID'];
+		if (!$phantomUserResult['isPhantom'])
+			$toUser = User::find($toUserID);
+
+		DB::beginTransaction();
+
+		try 
+		{
+			$tran = new Transaction;
+			$tran->Borrower = $toUserID;
+			$tran->Lender = $ownerID;
+			$tran->ItemCopyID = $itemCopyID;
+			$tran->ItemID = $itemID;
+			$tran->Status = self::tStatusByKey('T_STATUS_GIVENAWAY');
+			$tran->save();
+			$tranID = $tran->ID;
+
+			$tranH = new TransactionHistory;
+			$tranH->TransactionID = $tranID;
+			$tranH->Status = self::tStatusByKey('T_STATUS_GIVENAWAY');
+			$tranH->save();
+
+			// post to transaction archive
+			$tranArchive = new TransactionArchived;
+			$tranArchive->ID = $tran->ID;
+  			$tranArchive->Borrower = $tran->Borrower;
+  			$tranArchive->Lender = $tran->Lender;
+  			$tranArchive->ItemCopyID = $tran->ItemCopyID;
+  			$tranArchive->ItemID = $tran->ItemID;
+  			$tranArchive->Status = self::tStatusByKey('T_STATUS_GIVENAWAY');
+  			$tranArchive->save();
+
+  			$tran->delete();
+
+  			if ($phantomUserResult['isPhantom'])
+  			{
+  				$result = $itemCopy->delete(true);	// force delete itemcopy
+  				if (!$result[0])
+  					throw new Exception('Error in deleting book.');
+  			}
+  			else
+  			{
+  				$itemCopy->Status = BookCopy::StatusVal('Available');
+				$itemCopy->LentOutDt = null;
+				$itemCopy->UserID = $toUserID;
+				$itemCopy->LocationID = $toUser->LocationID;
+				$itemCopy->ForGiveAway = 0;
+
+				$itemCopy->save();
+  			}
+		}
+		catch (Exception $e)
+		{
+			DB::rollback();
+			return array('success' => false, 'error' => $e->getMessage());
+		}
+		DB::commit();
+		$mailResult = '';
+		// send email to new owner
+		if ($phantomUserResult['isPhantom'])
+		{
+			if (strlen($toEmail)>0)	// email given
+			{
+				// send email to new owner
+				$data['email'] = $toEmail;
+				$data['name'] = $toName;
+				$msgData['firstOwner'] = $fromUser->FullName;
+				$msgData['to'] = $toName;
+				$msgData['bookName'] = $item->FullTitle();
+				$msgData['firstOwnerUsername'] = $fromUser->Username;
+				$mailResult = Postman::mailToUser('emails.giveAwayProspectiveUser',$msgData,'You received a book!',$data);
+				if ($mailResult['success'])
+					$mailResult = $mailResult['msg'];
+				else
+					$mailResult = $mailResult['error'];
+			}
+
+			// send email to admin
+			$bodyText = 'Book Copy ' . $itemCopyID . ' ' . $item->FullTitle() .
+						' Given Away. From: ' . $fromUser->UserID . ' ' . 
+						$fromUser->FullName . ' To Prospective User: ' . $toName . ' ' .
+						$toEmail . ' ' . $toPhone;
+			$subject = 'Book Given Away';
+			Postman::mailToAdmin($subject,$bodyText);
+		}
+		else
+		// direct give away to Real User
+		{
+			// send email to new owner
+			$data['email'] = $toUser->EMail;
+			$data['name'] = $toUser->FullName;
+			$msgData['firstOwner'] = $fromUser->FullName;
+			$msgData['to'] = $toUser->FullName;
+			$msgData['bookName'] = $itemCopy->Book->FullTitle();
+			$msgData['toUsername'] = $toUser->Username;
+			Postman::mailToUser('emails.giveAwayRealUser',$msgData,'You received a book!',$data);
+
+			// send email to admin
+			$bodyText = 'Book Copy ' . $itemCopyID . ' ' . $itemCopy->Book->FullTitle() .
+						' Given Away. From: ' . $fromUser->UserID . ' ' . 
+						$fromUser->FullName . ' To: ' . $toUser->UserID . ' ' .
+						$toUser->FullName;
+			$subject = 'Book Given Away';
+			Postman::mailToAdmin($subject,$bodyText);
+  		}
+
+		return array('success' => true, 'msg' => 'Book given away'.$mailResult);
 	}
 
 	// user records the return of an item
@@ -309,6 +581,7 @@ class Transaction extends Eloquent {
 		$itemCopy = BookCopy::where('ID','=',$this->ItemCopyID)
 					->where('UserID','=',$this->Lender)
 					->where('Status','=', BookCopy::StatusVal('Lent Out'))
+					->with('Book','Owner')
 					->first();		
 
 		if (!$itemCopy)
@@ -352,6 +625,14 @@ class Transaction extends Eloquent {
 			throw $e;
 		}				
 		DB::commit();
+
+		// send email to admin
+		$bodyText = 'Book Copy ' . $itemCopy->ID . ' ' . $itemCopy->Book->FullTitle() .
+					' recorded returned. Owner: ' . $itemCopy->Owner->UserID . ' ' . 
+					$itemCopy->Owner->FullName;
+		$subject = 'Book Returned';
+		Postman::mailToAdmin($subject,$bodyText);
+
 		return $tranID;
 	}
 
@@ -459,6 +740,10 @@ class Transaction extends Eloquent {
 				return 'T_STATUS_RETURNED';
 				break;
 
+			case 11:
+				return 'T_STATUS_GIVENAWAY';
+				break;
+
 			case -10:
 				return 'T_STATUS_ABORTED';
 				break;
@@ -486,6 +771,10 @@ class Transaction extends Eloquent {
 
 			case 'T_STATUS_RETURNED':
 				return 10;
+				break;
+
+			case 'T_STATUS_GIVENAWAY':
+				return 11;
 				break;
 
 			case 'T_STATUS_ABORTED':

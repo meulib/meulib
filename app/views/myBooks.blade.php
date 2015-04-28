@@ -42,7 +42,7 @@
 <?php $onclickEditLibName = "showHideDiv('editLibraryName','displayLibraryName','table')"; 
 $onclickShowLibName = "showHideDiv('displayLibraryName','editLibraryName','block')";
 ?>
-<span id="displayLibraryName" class="pageTitle">{{$libraryName}} {{ HTML::image('images/mEdit.png', '', array('height' => '16','onclick'=>$onclickEditLibName)) }}</span>
+<span id="displayLibraryName" class="pageTitle">{{{$libraryName}}} {{ HTML::image('images/mEdit.png', '', array('height' => '16','onclick'=>$onclickEditLibName)) }}</span>
 <div id="editLibraryName" style="display:none;margin:0 auto">
 	{{ Form::open(array('action' => 'UserController@setLibrarySettings')) }}
 		{{ Form::text('LibraryName', $libraryName, ['required','size'=>40,'maxlength'=>100]) }} 
@@ -59,7 +59,7 @@ $onclickShowLibName = "showHideDiv('displayLibraryName','editLibraryName','block
 	@foreach($books as $bookCopy)
 		<!-- li -->
 		<div style="margin-left:10px;margin-bottom:10px;">
-			<a href={{  URL::action('BookController@showSingle', array($bookCopy->Book->ID))}}>
+			<a href={{  URL::action('BookController@showSingle', $bookCopy->Book->ID)}}>
 			@if (strlen($bookCopy->Book->CoverFilename)>0)
 				{{ HTML::image('images/book-covers/'.$bookCopy->Book->CoverFilename, '', array('height' => '100','style'=>'float: left; margin-right: 15px;')) }}
 			@endif
@@ -76,18 +76,23 @@ $onclickShowLibName = "showHideDiv('displayLibraryName','editLibraryName','block
 			@endif
 			<!--br/-->
 			(
-			@if ($bookCopy->StatusTxt() == 'Available')
-				<?php $onclick = "showLendForm('".$bookCopy->BookCopyID."','".$pendingReqURL."')"; ?>
-				{{ HTML::link('#','Lend', ['onclick'=>$onclick]); }}
+			@if ($bookCopy->StatusTxt() == 'Available') 
+				@if ($bookCopy->ForGiveAway)
+					<?php $onclick = "showLendForm('".$bookCopy->BookCopyID."','1','".$pendingReqURL."')"; ?>
+					{{ HTML::link('#','Give Away', ['onclick'=>$onclick]); }}
+				@else
+					<?php $onclick = "showLendForm('".$bookCopy->BookCopyID."','0','".$pendingReqURL."')"; ?>
+					{{ HTML::link('#','Lend', ['onclick'=>$onclick]); }}
+				@endif
 				{{--"<div id='showDiv2".$copy->ID."' style='display:none; border:2px grey solid;padding: 5px;'></div>"--}}
-				{{"<div id='showDiv2".$bookCopy->BookCopyID."' style='display:none;' class='formDiv'></div>"}}
+				<div id='showLendDiv{{$bookCopy->BookCopyID}}' style='display:none;' class='formDiv'></div>
 			@endif
 			@if ($bookCopy->StatusTxt() == 'Lent Out')
 				{{{$bookCopy->StatusTxt()}}}
 				{{ 'on '.$bookCopy->niceLentOutDt().'. '.$bookCopy->daysAgoLentOut().' days ago'}}
-				<?php $onclick = "showLendForm('".$bookCopy->BookCopyID."','".$returnForm."')"; ?>
+				<?php $onclick = "showLendForm('".$bookCopy->BookCopyID."',0,'".$returnForm."')"; ?>
 				{{ HTML::link('#','Accept Return', ['onclick'=>$onclick]); }}
-				{{"<div id='showDiv2".$bookCopy->BookCopyID."' style='display:none' class='formDiv'></div>"}}
+				{{"<div id='showLendDiv".$bookCopy->BookCopyID."' style='display:none' class='formDiv'></div>"}}
 			@endif
 			)
 			<span style="display: block; clear: both; width: 1px; height: 0.001%; font-size: 0px; line-height: 0px;"/>

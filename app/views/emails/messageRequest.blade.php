@@ -4,12 +4,12 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<h2>A Request For Your Book<br/>
-		{{$bookFullTitle}}</h2>
-
 		<div style="font-size: 12pt">
+			<b>A Request For Your Book<br/>
+			{{$bookFullTitle}}</b><br/>
+			<br/>
 			Hi {{$to}},<br/><br/>
-			{{$from}} has requested to borrow your book <b>{{$bookFullTitle}}</b> with the following message:<br/>
+			{{$from}} has requested your book <b>{{$bookFullTitle}}</b> with the following message:<br/>
 			<br/>
 			<i><span style="color:blue">{{$msg}}</span></i><br/>
 			<br/>
@@ -18,7 +18,6 @@
 			<br/><br/>
 			Admin<br/>
 			{{Config::get('app.name');}}
-			<!-- This link will expire in {{ Config::get('auth.reminder.expire', 60) }} minutes. -->
 		</div>
 	</body>
 </html>

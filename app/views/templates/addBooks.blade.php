@@ -23,7 +23,8 @@
 	{{ Form::text('Language2', '', ['maxlength'=>50]) }}<br/>
 	Book Cover<br/>
 	{{ Form::file('book-cover') }}<br/>
-	{{ Form::checkbox('ForGiveAway', 1, false, ['style'=>'width:1em;height:1em;']) }} For Give Away? <span style="font-size:90%">(check if you no longer want to own this book and want to give it away)</span><br/>
+	{{ Form::checkbox('ForGiveAway', 1, false, ['style'=>'width:1em;height:1em;']) }} 
+	<b>For Give Away</b> <span class="smallHelpText">(tick if you no longer want to own this book and want to give it away)</span><br/>
 	{{ Form::submit('Yes, Add', array('class' => 'normalButton')); }}
 	{{ Form::close() }}
 </div>

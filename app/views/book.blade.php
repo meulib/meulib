@@ -87,15 +87,6 @@
 		<br/>
 		{{ Form::open(array('action' => 'BookController@editBook','files'=>true)) }}
 		{{ Form::hidden('bookID',$book->ID) }}
-		<div>
-			@if (strlen($book->CoverFilename)>0)
-				{{ HTML::image('images/book-covers/'.$book->CoverFilename, '', array('height' => '200')) }}<br/>
-				Change Book Cover<br/>
-			@else
-				Add Book Cover<br/>
-			@endif
-			{{ Form::file('book-cover') }}
-		</div>
 		Title <span style="color:red">*</span><br/>
 		{{ Form::text('Title', $book->Title, ['required','size'=>40,'maxlength'=>100]) }}<br/>
 		Sub Title<br/>
@@ -108,6 +99,15 @@
 		{{ Form::text('Language1', $book->Language1, ['required','maxlength'=>50]) }}<br/>
 		Any other language? <span style="font-size:90%">(for multi-lingual books)</span><br/>
 		{{ Form::text('Language2', $book->Language2, ['maxlength'=>50]) }}<br/>
+		<div>
+			@if (strlen($book->CoverFilename)>0)
+				{{ HTML::image('images/book-covers/'.$book->CoverFilename, '', array('height' => '200')) }}<br/>
+				Change Book Cover<br/>
+			@else
+				Add Book Cover<br/>
+			@endif
+			{{ Form::file('book-cover') }}
+		</div>
 		{{ Form::submit('Edit Info', array('class' => 'normalButton')); }}
 		{{ Form::button('Cancel', array('class' => 'normalButton','onclick' => $onclickHideEdit)); }}
 		{{ Form::close() }}
@@ -129,24 +129,58 @@ Book Copies ({{{count($copies)}}})
 	{{{$bCopy->Owner->FullName.': '}}}</a>
 	in 
 	{{{$bCopy->Owner->City.', '.$bCopy->Owner->Locality}}}<br/>
+	@if ($bCopy->ForGiveAway)
+		For Give-Away
+	@else
+		For Lending
+	@endif
+	<br/>
+	Status: {{ $bCopy->StatusTxt() }}
 	@if ($loggedIn)
 		@if ($bCopy->Owner->UserID != $loggedInUser->UserID)
-			Book Status: {{ $bCopy->StatusTxt() }}
 			<br/>
-			<?php $onclick = "showDiv('requestBook".$bCopy->ID."')"; ?>
-			{{ HTML::link('#','Request Book', ['onclick'=>$onclick]); }}
+			<?php 
+				if ($bCopy->ForGiveAway)
+					$requestText = "Request to Take Away";
+				else
+					$requestText = "Request to Borrow";
+				$onclick = "showDiv('requestBook".$bCopy->ID."')"; 
+			?>
+			{{ HTML::link('#',$requestText, ['onclick'=>$onclick]); }}
 			@include('templates.requestBookForm')
-		@else
-			This is you!<br/>
-			Book Status: {{ $bCopy->StatusTxt() }}
+		@else {{-- USER's OWN BOOK --}}
 			@if ($bCopy->StatusTxt() == 'Lent Out')
 				{{ 'on '.$bCopy->niceLentOutDt().'. '.$bCopy->daysAgoLentOut().' days ago'}}
 			@endif
+			<br/>
+			{{ Form::open(array('route' => 'edit-bookcopy','id'=>'formEditBookCopySettings'.$bCopy->ID)) }}
+			<?php $submitEditBookCopy = "document.getElementById('formEditBookCopySettings".$bCopy->ID."').submit();"; ?>
+			{{ Form::hidden('bookID',$book->ID) }}
+			{{ Form::hidden('bookCopyID',$bCopy->ID)}}
+			@if ($bCopy->ForGiveAway)			
+				For Give Away
+				<span class="subtleActionLink">
+				{{ HTML::link('#','Switch to For Lending', ['onclick'=>$submitEditBookCopy]) }}
+				</span>
+				{{ Form::hidden('ForGiveAway',0)}}
+			@else
+				For Lending
+				<span class="subtleActionLink">
+				{{ HTML::link('#','Switch to For Give Away', ['onclick'=>$submitEditBookCopy]) }}
+				</span>
+				{{ Form::hidden('ForGiveAway',1)}}
+			@endif
+			{{ Form::close() }}
+			{{"<div id='editBookCopy".$bCopy->ID."' style='display:none'>"}}
+				@include('templates.editBookCopy')
+			{{"</div>"}}
 			<br/>
 			<?php $onclick = "showPostDiv('".$bCopy->ID."','".$deleteFormURL."')"; ?>
 			<span class="aTreadCarefully">{{ HTML::link('#','Delete This Copy', ['onclick'=>$onclick]) }}</span>
 			{{"<div id='postDiv".$bCopy->ID."' style='display:none;' class='carefulDiv'></div>"}}
 		@endif
+	@else
+
 	@endif
 	<br/><br/>
 @endforeach

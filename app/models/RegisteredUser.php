@@ -35,6 +35,7 @@ class RegisteredUser extends Eloquent
 			->where('UserID', $this->UserID)
 			->join('books_flat', 'bookcopies.BookID', '=', 'books_flat.ID')
 			->select('books_flat.ID as BookID','bookcopies.ID as BookCopyID',
+				'bookcopies.ForGiveAway',
 				'Title','SubTitle','Author1','Author2','Status','LentOutDt');
 		$query->orderBy('Status','desc')
 			->orderBy('LentOutDt','asc');
