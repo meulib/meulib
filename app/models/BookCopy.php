@@ -80,7 +80,7 @@ class BookCopy extends Eloquent {
 	// SUCCESS RETURN: Array[trueIfSuccessfullyDeleted,trueIfBookItselfDelete]
 	public function delete($forceDelete = false)
 	{
-
+		
 		if (!Session::has('loggedInUser'))
             return array(false,'No user logged in.');
 
@@ -161,7 +161,29 @@ class BookCopy extends Eloquent {
 		return [true,$deleteBookItself];
 	}
 
-	public static function myBooks($UserID)
+	public function editSettings($settings)
+	{
+		if (!Session::has('loggedInUser'))
+            return array('success'=>false,'error'=>'No user logged in.');
+
+        $user = Session::get('loggedInUser');
+        if ($user->UserID != $this->UserID)
+        	return array('success'=>false,'error'=>'Unauthorized');
+
+		try
+		{
+			$this->ForGiveAway = $settings['ForGiveAway'];
+			$this->save();	
+		}
+		catch (Exception $e)
+		{
+			return array('success'=>false,'error'=>$e->getMessage());
+		}
+		return array('success' => true, 'Book Copy setting changed.');
+	}
+
+	// possibly defunct
+	/*public static function myBooks($UserID)
 	{
 		$paginationItemCount = Config::get('view.pagination-itemcount');
 
@@ -169,9 +191,11 @@ class BookCopy extends Eloquent {
 			->where('UserID', $UserID)
 			->join('books_flat', 'bookcopies.BookID', '=', 'books_flat.ID')
 			->orderBy('books_flat.Title', 'ASC')
-			->select('books_flat.ID as BookID','bookcopies.ID as BookCopyID','Title','SubTitle','Author1','Author2','Status','LentOutDt')
+			->select('books_flat.ID as BookID',
+				'bookcopies.ID as BookCopyID','bookcopies.ForGiveAway',
+				'Title','SubTitle','Author1','Author2','Status','LentOutDt')
 			->paginate($paginationItemCount);
-	}
+	}*/
 }
 
 ?>

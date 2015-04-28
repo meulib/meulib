@@ -90,7 +90,7 @@ class BookController extends BaseController
                'languages' => $languages,
                'currentLanguage' => $currentLanguage,
                'categories' => $categories,
-               'currentCategory' => $currentCategory));
+               'currentCategory' => $currentCategory))->render();
     }
 
     public function search($term = 'abc')
@@ -100,7 +100,8 @@ class BookController extends BaseController
         var_dump($result);
     }
 
-    public function myBooks()
+    // possibly defunct
+    /*public function myBooks()
     {
         if (!Session::has('loggedInUser'))
                 return Redirect::route('login');
@@ -110,7 +111,7 @@ class BookController extends BaseController
         $books = BookCopy::myBooks($userID);
         //var_dump(count($books));
         return View::make('myBooks',array('books' => $books));
-    }
+    }*/
 
     public function borrowedBooks()
     {
@@ -216,6 +217,8 @@ class BookController extends BaseController
         if (!Session::has('loggedInUser'))
             return "";
 
+        $user = Session::get('loggedInUser');
+
         $bookCopyID = Input::get('bookCopyID');
         $bookCopy = BookCopy::find($bookCopyID);
         $bookID = $bookCopy->BookID;
@@ -224,8 +227,8 @@ class BookController extends BaseController
         {
             if ($result[1]) // book itself deleted, return to my-books
             {
-                Session::put('TransactionMessage',['DeleteBook',[true,'Book copy deleted.']]);   
-                return Redirect::to(URL::to('my-books'));
+                Session::put('TransactionMessage',['DeleteBook','Book copy deleted.']);   
+                return Redirect::route('user-books',$user->Username);
             }                
             else
             {
@@ -270,6 +273,25 @@ class BookController extends BaseController
         {
             return Redirect::to(URL::to('book/'.$bookID))->withErrors($result['errors']);
         }
+    }
+
+    public function editBookCopy()
+    {
+        if (!Session::has('loggedInUser'))
+            return Redirect::route('login');
+
+        $bookCopyID = Input::get('bookCopyID');
+        $bookID = Input::get('bookID');
+        $bookCopy = BookCopy::find($bookCopyID);
+        $result = $bookCopy->editSettings(Input::all());
+        if ($result['success'])
+        {
+            Session::put('TransactionMessage',['EditBook','Book settings updated.']);
+            return Redirect::route('single-book',$bookID);
+        }
+        else
+            return Redirect::route('single-book',$bookID)->withErrors($result['errors']);
+
     }
     
 }

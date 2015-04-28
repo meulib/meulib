@@ -29,6 +29,7 @@ function showPostDiv(id,callURL)
             div.innerHTML = result;
   //          div.innerHTML = 'abc';
             div.style.display = "inline-block";
+            event.preventDefault();
          },
          error: function( xhr, status )
          {
@@ -46,7 +47,7 @@ function hideDiv(id)
 
 // makes db query for pending requests
 // and generates lendBookForm
-function showLendForm(id,callURL)
+function showLendForm(id,giveAway,callURL)
 {
   if (shownDiv != "")
     document.getElementById(shownDiv).style.display = "none";
@@ -54,16 +55,17 @@ function showLendForm(id,callURL)
 
   $j.ajax({
          url:callURL,
-         data: {bookCopyID: id},
+         data: {bookCopyID: id,forGiveAway:giveAway},
          type: "POST",
          dataType: "html",
          success: function(result) 
          {
-            shownDiv = "showDiv2"+id;    //even this div2 needs to be named better!
+            shownDiv = "showLendDiv"+id;    //even this div2 needs to be named better!
             var div = document.getElementById(shownDiv);
             div.innerHTML = result;
   //			    div.innerHTML = 'abc';
             div.style.display = "inline-block";
+            event.preventDefault();
          },
          error: function( xhr, status )
          {
@@ -125,13 +127,14 @@ function lendFormSubmit(id,callURL)
     var msg = "";
     var msgHolder = document.getElementById('lendFormMsg'+id);
     var bName, bEmail, bPhone;
+    var giveAway = document.getElementsByName('giveAway'+id)[0].value;
     if (pendingRequests)
     {
-        var lendToID = $j("input[name=lendToID"+id+"]:checked").val();
-        if (!lendToID)
+        var userToID = $j("input[name=userToID"+id+"]:checked").val();
+        if (!userToID)
             msg = "Please specify who you are lending to.";
         else
-            if (lendToID == -1)
+            if (userToID == -1)
             {
                 okDirectLendingForm = validateDirectLendingForm(id,true);
                 if (okDirectLendingForm[0])
@@ -163,7 +166,10 @@ function lendFormSubmit(id,callURL)
     else // validation success - post form
     {
         console.log('success');
-        msgHolder.innerHTML = "Saving lend details ... ";
+        if (giveAway == 1)
+            msgHolder.innerHTML = "Recording give-away ... ";
+        else
+            msgHolder.innerHTML = "Saving lend details ... ";
         msgHolder.style.display = "inline";
         document.forms["lendForm"+id].submit();
 

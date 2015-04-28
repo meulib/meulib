@@ -87,24 +87,28 @@ class TransactionController extends BaseController
             return "";
 
         $bookCopyID = Input::get('bookCopyID');
+        $giveAway = Input::get('forGiveAway');
         $userID = Session::get('loggedInUser')->UserID;
         $trans = Transaction::pendingRequests($bookCopyID,$userID);
-        return View::make("templates.lendBookForm",array('bookCopyID' => $bookCopyID,'requestTransactions' => $trans));
+        return View::make("templates.lendBookForm",
+            array('bookCopyID' => $bookCopyID,'giveAway'=>$giveAway,
+                'requestTransactions' => $trans));
     }
 
     public function lend()
     {
         if (!Session::has('loggedInUser'))
-            return Redirect::to(URL::to('/'));
+            return Redirect::to(URL::route('login'));
 
         $userID = Session::get('loggedInUser')->UserID;
         $bookCopyID = Input::get('bookCopyID');
-        $borrowerID = Input::get('lendToID'.$bookCopyID);
+        $borrowerID = Input::get('userToID'.$bookCopyID);
         $requestsExist = Input::get('existsRequests'.$bookCopyID);
         $tranID = 0;
 
 
-        if (($borrowerID == -1) || (!$requestsExist))   // Direct Lending via Name, Email, Phone
+        if (($borrowerID == -1) || (!$requestsExist))   
+        // Direct Lending via Name, Email, Phone
         {
             $borrowerName = Input::get('bName'.$bookCopyID);
             $borrowerEmail = Input::get('bEmail'.$bookCopyID);
@@ -117,7 +121,8 @@ class TransactionController extends BaseController
             else
                 return Redirect::to(URL::previous())->withErrors(['There was some error. Book lending not recorded. '.$result[1]]);
         }
-        else  // Lend to a pending request
+        else  
+        // Lend to a pending request
         {
             try
             {
@@ -136,6 +141,45 @@ class TransactionController extends BaseController
             return Redirect::to(URL::previous());
         }
             
+    }
+
+    public function giveAway()
+    {
+        if (!Session::has('loggedInUser'))
+            return Redirect::to(URL::route('login'));
+
+        $userID = Session::get('loggedInUser')->UserID;
+        $bookCopyID = Input::get('bookCopyID');
+        $userToID = Input::get('userToID'.$bookCopyID);
+        $requestsExist = Input::get('existsRequests'.$bookCopyID);
+        $tranID = 0;
+
+
+        if (($userToID == -1) || (!$requestsExist))   
+        // Direct Lending via Name, Email, Phone
+        {
+            $toName = Input::get('bName'.$bookCopyID);
+            $toEmail = Input::get('bEmail'.$bookCopyID);
+            $toPhone = Input::get('bPhone'.$bookCopyID);
+
+            $result = Transaction::giveAwayDirect($userID,$bookCopyID,$toName,$toEmail,$toPhone);
+        }
+        else  
+        // Give away to a pending request
+        {
+            $result = Transaction::giveAway($userID,$bookCopyID,$userToID);
+        }           
+
+        if ($result['success'])
+        {
+            Session::put('TransactionMessage',['LendBook','Book give-away recorded. The book is no longer in your collection.']);
+            //return true;
+            return Redirect::to(URL::previous());
+        }
+        else
+        {
+            return Redirect::to(URL::previous())->withErrors(['There was some error. Give away not recorded. '.$result['error']]);
+        }
     }
 
     public function returnForm()

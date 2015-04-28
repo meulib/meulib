@@ -73,6 +73,7 @@ Route::get('borrowed-books', array('as' => 'borrowed', 'uses' => 'BookController
 Route::post('add-book', 'BookController@addBook');
 Route::post('add-book-info', 'BookController@setBookInfo');
 Route::post('edit-book', 'BookController@editBook');
+Route::post('edit-bookcopy', array('as'=>'edit-bookcopy', 'uses' => 'BookController@editBookCopy'));
 
 Route::post('delete-book-confirmation', 'BookController@serveDeleteBookConfirmation');
 Route::post('delete-bookcopy', 'BookController@deleteBookCopy');
@@ -115,6 +116,7 @@ Route::post('reply', 'TransactionController@reply');
 
 Route::post('pending-requests', 'TransactionController@pendingRequests');
 Route::post('lend', 'TransactionController@lend');
+Route::post('give-away','TransactionController@giveAway');
 
 Route::post('return-form', 'TransactionController@returnForm');
 Route::post('accept-return', 'TransactionController@acceptReturn');

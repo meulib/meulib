@@ -311,7 +311,7 @@ class UserAccess extends Eloquent {
 		$to = [];
 		$to['email'] = $humanUser->EMail;
 		$to['name'] = $humanUser->FullName;
-		$fromPersonal = true;
+		$fromPersonal = false;
 
 		Postman::mailToUser($view,$viewData,$subject,$to,$fromPersonal);
 
@@ -381,7 +381,7 @@ class UserAccess extends Eloquent {
 	{
 		$user = self::find($id);
 		if ($user == NULL)
-			return [false,'ID/Code Not Found'];
+			return [false,'ID Not Found'];
 		if ($user->PwdResetHash != $resetCode)
 			return [false,'ID/Code Not Found'];
 		$expiryMinutes = Config::get('auth.reminder')['expire'];

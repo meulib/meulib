@@ -4,10 +4,10 @@
 		<meta charset="utf-8">
 	</head>
 	<body>
-		<h2>A Message For You regarding<br/>
-		{{$bookFullTitle}}</h2>
-
 		<div style="font-size: 12pt">
+			<b>A Message For You regarding<br/>
+			{{$bookFullTitle}}</b>
+			<br/><br/>
 			Hi {{$to}},<br/><br/>
 			{{$from}} has sent you a message regarding the book <b>{{$bookFullTitle}}</b>:<br/>
 			<br/>
@@ -18,7 +18,6 @@
 			<br/><br/>
 			Admin<br/>
 			{{Config::get('app.name');}}
-			<!-- This link will expire in {{ Config::get('auth.reminder.expire', 60) }} minutes. -->
 		</div>
 	</body>
 </html>
