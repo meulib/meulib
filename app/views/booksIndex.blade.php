@@ -148,11 +148,11 @@ Category:
 				{{{ $book->Title }}}
 				@if ($book->SubTitle)
 					<div class="bookMatSubTitle">
-					@if (strlen($book->SubTitle)>30)
+					{{-- @if (strlen($book->SubTitle)>30)
 						{{{ substr($book->SubTitle,0,30).'...' }}}
-					@else
+					@else --}}
 						{{{ $book->SubTitle }}}
-					@endif
+					{{-- @endif --}}
 					</div>
 				@endif
 				</a>
