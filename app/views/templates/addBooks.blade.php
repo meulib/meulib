@@ -4,7 +4,7 @@
 		@if (isset($addMoreBooks) && ($addMoreBooks))
 			Add More Books
 		@else
-			Add Books That You Are Willing To Lend
+			Add Books You Want to Lend / Give-Away
 		@endif
 		</span><br/>
 	<br/>

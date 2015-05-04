@@ -20,7 +20,11 @@
 	    {{-- HTML::image('images/member-pics/'.$founder->PictureFile, 'a picture', array('width' => '50','height' => '50')) --}}
 		</div>
 		<!-- br/ -->
-		{{$founder->Name}}
+		@if ($founder->UserDetails)
+			{{ HTML::link(URL::route('user-books',$founder->UserDetails->Username), $founder->UserDetails->FullName)}}
+		@else
+			{{$founder->Name}}
+		@endif
 		<br/>
 		{{$founder->ClaimToFame}}
 	</div>
