@@ -2,8 +2,9 @@
 
 class BookController extends BaseController
 {
-    public function showAll($location='all',$language='all',$category='all')
+    public function showAll($mode = 'all', $location='all',$language='all',$category='all')
     {
+
         // -------------- get the locations -----------------
         $locations = Location::havingBooks();
         // set current location
@@ -75,16 +76,17 @@ class BookController extends BaseController
         $paginationItemCount = Config::get('view.pagination-itemcount');
 
         $books = null;
-        if (($location == 'all') && ($language == 'all') && ($category == 'all'))
+        if (($mode == 'all') && ($location == 'all') && ($language == 'all') && ($category == 'all'))
             $books = FlatBook::checked()
                             ->orderBy('Title', 'asc')
                             ->orderBy('Author1', 'asc')
                             ->paginate($paginationItemCount);
         else
-            $books = FlatBook::filtered($cLocationID,$cLanguageID,$cCategoryID);
+            $books = FlatBook::filtered($mode,$cLocationID,$cLanguageID,$cCategoryID);
         
         return View::make('booksIndex',
            array('books' => $books, 
+                'currentMode' => $mode,
                'locations' => $locations, 
                'currentLocation' => $currentLocation,
                'languages' => $languages,

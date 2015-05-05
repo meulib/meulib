@@ -298,6 +298,15 @@ class FlatBook extends Eloquent {
 
 	// ------------------ QUERY SCOPES ------------------
 
+	public function scopeMode($query,$mode)
+	{
+		return $query->whereHas('Copies', function($q) use($mode)
+						{
+						    $q->where('ForGiveAway', '=', $mode);
+						}
+					);
+	}
+
 	public function scopeLocation($query,$LocationID)
 	{
 		return $query->whereHas('Copies', function($q) use($LocationID)
@@ -333,7 +342,7 @@ class FlatBook extends Eloquent {
 
 	// ------------------- RETRIEVE FUNCTIONS --------------
 
-	public static function filtered($LocationID=0,$LanguageID=0,$CategoryID=0)
+	public static function filtered($mode='all',$LocationID=0,$LanguageID=0,$CategoryID=0)
 	{
         $books = NULL;
 
@@ -341,6 +350,19 @@ class FlatBook extends Eloquent {
         	$LocationID = 0;
         if (!is_numeric($LanguageID))
         	$LanguageID = 0;
+
+        if ($mode != 'all')
+        {
+        	if ($mode == 'borrow')
+        		$forGiveAway = 0;
+        	else
+        		$forGiveAway = 1;
+
+        	if (is_null($books))
+        		$books = FlatBook::mode($forGiveAway);
+        	else
+        		$books = $books->mode($forGiveAway);
+        }
 
         if ($LanguageID>0)
 		{
