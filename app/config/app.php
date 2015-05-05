@@ -27,7 +27,7 @@ return array(
 
 	'name' => 'OurLib',
 	//'tag_line' => 'For demo and testing only. Data will be frequently deleted.',
-	'tag_line' => 'Book Garden Grown by Me and You',
+	'tag_line' => 'book garden grown by me and you',
 	'blog_name' => 'Books on Our Journey',
 	'blog_tag' => 'The MeULib Blog',
 
@@ -46,7 +46,7 @@ return array(
 	//'logoUrl' => 'images/logoOurLib50.png',
 	//'displayNameOnMast' => true,
 	'url' => 'http://meulib.com',
-	'logoUrl' => 'images/meulibLogo141126.png',
+	'logoUrl' => 'images/meulibLogoWLeaf.png',
 	'displayNameOnMast' => false,
 
 	/*

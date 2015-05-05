@@ -383,7 +383,7 @@ class UserAccess extends Eloquent {
 		if ($user == NULL)
 			return [false,'ID Not Found'];
 		if ($user->PwdResetHash != $resetCode)
-			return [false,'ID/Code Not Found'];
+			return [false,'Code Not Found'];
 		$expiryMinutes = Config::get('auth.reminder')['expire'];
 		//echo('\nexp min '.$expiryMinutes);
 		$expiryCutOff = time() - ($expiryMinutes*60);

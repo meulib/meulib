@@ -41,11 +41,31 @@
 <!-- --- BROWSE FILTER SECTION --- -->
 <div class="filterSection">
 
-<!-- --- LOCATION --- -->
+<!-- === MODE : ALL / BORROW / TAKE-AWAY === -->
+@if ($currentMode == 'all')
+	<b>all</b>
+@else
+	<a href={{ URL::route('browse', array('all',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>all</a>
+@endif
+ | 
+@if ($currentMode == 'borrow')
+	<b>To Borrow</b>
+@else
+	<a href={{ URL::route('browse', array('borrow',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>To Borrow</a>
+@endif
+ | 
+@if ($currentMode == 'take-away')
+	<b>To Take Away</b>
+@else
+	<a href={{ URL::route('browse', array('take-away',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>To Take Away</a>
+@endif
+
+<!-- === LOCATION === -->
 @if ($locations)
+<br/>
 Location: 
 	@if ($currentLocation != 'all')
-		<a href={{ URL::action('BookController@showAll', array('all',$currentLanguageLinkValue,$currentCategoryLinkValue))}}>
+		<a href={{ URL::route('browse', array($currentMode,'all',$currentLanguageLinkValue,$currentCategoryLinkValue))}}>
 			all
 		</a>
 	@else
@@ -54,7 +74,7 @@ Location:
 	@foreach($locations as $location)
 			| 
 		@if (($currentLocation == 'all') || ($currentLocation->ID != $location->ID))
-			<a href={{ URL::action('BookController@showAll', array($location->Location,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>
+			<a href={{ URL::route('browse', array($currentMode,$location->Location,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>
 				{{{ $location->Location}}}
 			</a>
 		@else
@@ -70,7 +90,7 @@ Showing: <b>{{{ $currentLocation }}}</b><br/>-->
 <br/>
 Language: 
 	@if ($currentLanguage != 'all')
-		<a href={{ URL::action('BookController@showAll', array($currentLocationLinkValue,'all',$currentCategoryLinkValue))}}>
+		<a href={{ URL::route('browse', array($currentMode,$currentLocationLinkValue,'all',$currentCategoryLinkValue))}}>
 			all
 		</a>
 	@else
@@ -79,7 +99,7 @@ Language:
 	@foreach($languages as $language)
 			| 
 		@if (($currentLanguage == 'all') || ($currentLanguage->ID != $language->ID))
-			<a href={{ URL::action('BookController@showAll', array($currentLocationLinkValue,$language->LanguageEnglish,$currentCategoryLinkValue))}}>
+			<a href={{ URL::route('browse', array($currentMode,$currentLocationLinkValue,$language->LanguageEnglish,$currentCategoryLinkValue))}}>
 				{{{ $language->LanguageEnglish}}}
 			</a>
 		@else
@@ -93,7 +113,7 @@ Language:
 @if ($categories)
 Category: 
 	@if ($currentCategory != 'all')
-		<a href={{ URL::action('BookController@showAll', array($currentLocationLinkValue,$currentLanguageLinkValue,'all'))}}>
+		<a href={{ URL::route('browse', array($currentMode,$currentLocationLinkValue,$currentLanguageLinkValue,'all'))}}>
 			all
 		</a>
 	@else
@@ -102,7 +122,7 @@ Category:
 	@foreach($categories as $category)
 			| 
 		@if (($currentCategory == 'all') || ($currentCategory->ID != $category->ID))
-			<a href={{ URL::action('BookController@showAll', array($currentLocationLinkValue,$currentLanguageLinkValue,$category->Category))}}>
+			<a href={{ URL::route('browse', array($currentMode,$currentLocationLinkValue,$currentLanguageLinkValue,$category->Category))}}>
 				{{{ $category->Category}}}
 			</a>
 		@else
@@ -141,7 +161,7 @@ Category:
 	<br/>
 		@foreach($books as $book)
 			<div class="bookMat">
-				<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
+				<a href={{  URL::route('single-book', array($book->ID))}}>
 				@if (strlen($book->CoverFilename)>0)
 				{{ HTML::image('images/book-covers/'.$book->CoverFilename, 'a picture', array('height' => '150')) }}<br/>
 				@endif
@@ -179,7 +199,9 @@ Category:
 			@endif -->
 		@endforeach
 	<br/>
+	<br/>
 	{{ $books->links() }}
+	<br/>
 @else
 		No books found in Location <b>{{$currentLocationLinkValue}}</b> in Language <b>{{$currentLanguageLinkValue}}</b> of Category <b>{{$currentCategoryLinkValue}}</b>
 @endif

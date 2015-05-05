@@ -26,12 +26,12 @@ class ResetPwdTest extends TestCase
 		// incorrect id
 		$result = UserAccess::verifyPwdResetLink('booboo','beebee');
 		$this->assertFalse($result[0]);
-		$this->assertEquals($result[1],"ID/Code Not Found");
+		$this->assertEquals($result[1],"ID Not Found");
 
 		// incorrect reset code
 		$result = UserAccess::verifyPwdResetLink($this->owner->UserID,'beebee');
 		$this->assertFalse($result[0]);
-		$this->assertEquals($result[1],"ID/Code Not Found");
+		$this->assertEquals($result[1],"Code Not Found");
 
 		$result = UserAccess::verifyPwdResetLink($this->owner->UserID,$userA->PwdResetHash);
 		$this->assertTrue($result[0]);
@@ -49,12 +49,12 @@ class ResetPwdTest extends TestCase
 		// incorrect id
 		$result = UserAccess::resetPwd('booboo','beebee','uu');
 		$this->assertFalse($result[0]);
-		$this->assertEquals($result[1],"ID/Code Not Found");
+		$this->assertEquals($result[1],"ID Not Found");
 
 		// incorrect reset code
 		$result = UserAccess::resetPwd($this->owner->UserID,'beebee','uu');
 		$this->assertFalse($result[0]);
-		$this->assertEquals($result[1],"ID/Code Not Found");
+		$this->assertEquals($result[1],"Code Not Found");
 
 		// pwd not valid
 		$result = UserAccess::resetPwd($this->owner->UserID,$userA->PwdResetHash,'uu');
