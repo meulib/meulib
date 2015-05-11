@@ -5,9 +5,15 @@ class Location extends Eloquent {
 	protected $table = 'locations';
 	protected $primaryKey = 'ID';
 
+	// relationship
 	public function BookCopies()
 	{
 		return $this->hasMany('BookCopy', 'LocationID', 'ID');
+	}
+
+	public function Users()
+	{
+		return $this->hasMany('User','LocationID','ID');
 	}
 
 	public static function havingBooks()
@@ -48,6 +54,27 @@ class Location extends Eloquent {
 	public function scopeLocation($query,$location)
 	{
 		return $query->whereLocation($location);
+	}
+
+	public static function getCountriesAsPerUsers()
+	{
+		return DB::table('locations')
+				->join('users','locations.ID','=','users.LocationID')
+				->groupBy('locations.Country')
+				->select('locations.Country',DB::raw('count(*) as TotalMembers'))
+				->orderBy('TotalMembers','desc')
+				->get();
+	}
+
+	public static function getCitiesAsPerUsers($country)
+	{
+		return DB::table('locations')
+				->join('users','locations.ID','=','users.LocationID')
+				->groupBy('users.LocationID')
+				->select('locations.ID','locations.Location','locations.Country',DB::raw('count(*) as TotalMembers'))
+				->orderBy('locations.ID','asc')
+				->where('locations.Country','=',$country)
+				->get();
 	}
 
 }

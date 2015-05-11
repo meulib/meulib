@@ -61,7 +61,7 @@
 			<div class="bookMat">
 				<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
 				@if (strlen($book->CoverFilename)>0)
-				{{ HTML::image('images/book-covers/'.$book->CoverFilename, 'a picture', array('height' => '150')) }}<br/>
+				{{ HTML::image('images/book-covers/'.$book->CoverFilename, '', array('height' => '150')) }}<br/>
 				@endif
 				{{{ $book->Title }}}
 				@if ($book->SubTitle)

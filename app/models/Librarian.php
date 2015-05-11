@@ -73,6 +73,17 @@ class Librarian {
 		
 	}
 
+	public static function membersByCountry($country)
+	{
+		return DB::table('users')
+				->join('locations','users.LocationID','=','locations.ID')
+				->select('users.FullName','users.Username','users.ProfilePicFile','users.LocationID')
+				->orderBy('users.LocationID','asc')
+				->orderBy('users.FullName','asc')
+				->where('locations.Country','=',$country)
+				->get();
+	}
+
 	// ------------------- MAINTENANCE --------------
 
 	public static function updateSearchTbl()

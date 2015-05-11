@@ -315,6 +315,27 @@ introduced for book cover */
 .bookMatSubTitle { font-size:70%; }
 .bookMatAuthor { font-size:90%; }
 
+.memberMat
+{
+	width:150px;
+	display:inline-block;
+	vertical-align:top;
+	text-align:center;
+	padding:2px;
+	margin:2px;
+}
+
+.memberPicture
+{
+	display:table;
+	margin:0 auto;
+	width:100px;height:100px;
+	border-radius:50%;
+	background-repeat: no-repeat; 
+	background-position: center center; 
+	background-size: cover;
+}
+
 .smallHelpText {font-size: 70%;}
 
 /* RESPONSIVE UI. ADJUST FOR LARGER SCREENS */

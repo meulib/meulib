@@ -82,6 +82,12 @@ Route::post('delete-bookcopy', 'BookController@deleteBookCopy');
 
 Route::post('set-library-settings', 'UserController@setLibrarySettings');
 
+// ----- MEMBER BROWSE ------------
+
+Route::get('founding-members', 'UserController@foundingMembers');
+Route::get('members/{country?}', 
+	array('as' => 'member-browse','uses' => 'LibrarianCounter@whereAreYourBranches'));
+
 // ----- ACCOUNT CREATION ------------
 
 Route::get('become-a-member', 'UserController@signup');
@@ -161,8 +167,6 @@ Route::get('/contact-admin', function()
 {
 	return View::make('contactAdmin');
 });
-
-Route::get('founding-members', 'UserController@foundingMembers');
 
 Route::post('submit-contact', 'UtilityController@submitContactForm');
 

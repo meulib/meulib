@@ -54,26 +54,8 @@
 				{{$singleNew}}<br/><br/>
 			@endforeach
 		</p-->
-		@if ($randomPromo == 1)
-			<a href={{ URL::to('/how-it-works-owner') }}>
-			{{ HTML::image('images/howitworks/o1.png','',array('width'=>287, 'height'=>246)) }}
-			<br/>
-			See how {{Config::get('app.name')}} works<br/>
-			for the book owner</a>
-		@endif
-		@if ($randomPromo == 2)
-			{{HTML::image('images/promo/vision.png','')}}
-		@endif
-		@if ($randomPromo == 3)
-			<a href={{ URL::to('/how-it-works-borrower') }}>
-			{{ HTML::image('images/howitworks/b1.png','',array('width'=>287, 'height'=>246)) }}
-			<br/>
-			See how {{Config::get('app.name')}} works<br/>
-			for the borrower</a>
-		@endif
-		@if ($randomPromo == 4)
-			{{ HTML::image('images/promo/directLending.png','') }}
-		@endif
+		<blockquote class="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">Looks like <a href="https://twitter.com/hashtag/Piku?src=hash">#Piku</a> is inundated. Are you too?&#10;Give away books you no longer want on <a href="http://t.co/KEDcFfBxth">http://t.co/KEDcFfBxth</a> <a href="http://t.co/KKRskLAuai">pic.twitter.com/KKRskLAuai</a></p>&mdash; Meulib (@meulib) <a href="https://twitter.com/meulib/status/595796037199110144">May 6, 2015</a></blockquote>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 	</div>
 	
 	</div>
