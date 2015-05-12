@@ -29,8 +29,9 @@ class LibrarianCounter extends BaseController
 		    {
 		        $aM = $a->TotalMembers;
 		        $bM = $b->TotalMembers;
-		        if ($aM === $bM) {
-		            return 0;
+		        if ($aM === $bM) 
+		        {
+		        	return strcmp($a->Location, $b->Location);
 		        }
 		        return ($aM > $bM) ? -1 : 1;
 		    });

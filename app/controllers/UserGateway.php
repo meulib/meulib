@@ -5,7 +5,7 @@ class UserGateway extends BaseController
 
 	public function showUserCollection($username)
 	{
-		
+
 		$calledUser = RegisteredUser::getUserByUsername($username);
 		if (is_null($calledUser))
 			App::abort(404);

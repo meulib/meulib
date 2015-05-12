@@ -163,6 +163,11 @@ class BookController extends BaseController
         }
     }
 
+    public function getAdminAddBook()
+    {
+        return View::make('admin.admin-add-book');
+    }
+
     // show thanks screen
     // ask for more info or give option to add more books
     public function addBookThanks($bookID)

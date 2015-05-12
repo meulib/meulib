@@ -48,10 +48,19 @@ class FlatBook extends Eloquent {
 
 	public static function addBook($bookDetails)
 	{
-		if (!Session::has('loggedInUser'))
+		$user = NULL;
+		if (isset($bookDetails['UserID']))
+		{
+			$user = User::find($bookDetails['UserID']);
+		}
+		else
+		{
+			if (!Session::has('loggedInUser'))
             return array(false,'No user logged in.');
 
-        $user = Session::get('loggedInUser');
+        	$user = Session::get('loggedInUser');
+		}
+		
         $userID = $user->UserID;
         $userLocation = $user->LocationID;
 
