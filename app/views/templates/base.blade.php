@@ -44,7 +44,7 @@
 
     @section('appLinks')
         <div class="appLinks">
-            {{($currentRoute=='browse' ? "<span class='currentPageHighlighter'>Full MeULib Collection</span>" : HTML::link(URL::route('browse'), 'Full MeULib Collection'))}} | 
+            {{($currentRoute=='browse' ? "<span class='currentPageHighlighter'>Browse Collection</span>" : HTML::link(URL::route('browse'), 'Browse Collection'))}} | 
         @if ($loggedInUser)
             {{(($currentRoute=='user-books') && (Request::is('*'.$user->Username.'*')) ? "<span class='currentPageHighlighter'>My Collection</span>" : HTML::link(URL::to('/'.$user->Username), 'My Collection'))}} | 
             {{($currentRoute=='borrowed' ? "<span class='currentPageHighlighter'>Borrowed Books</span>" : HTML::link(URL::route('borrowed'), 'Borrowed Books'))}} |

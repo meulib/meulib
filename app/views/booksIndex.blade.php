@@ -34,7 +34,7 @@
 	$bookCount = $books->count();
 ?>
 
-@section('title', 'Full Collection: ')
+@section('title', 'Browse Collection: ')
 
 @section('content')
 

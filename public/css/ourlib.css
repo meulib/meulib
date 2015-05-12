@@ -284,7 +284,7 @@ textarea {
 .homeLeft
 {
 	display:inline-block;
-	border-bottom: 1px solid #B48700;
+	/*border-bottom: 1px solid #B48700;*/
 	text-align: left;
 	padding-bottom: 10px;
 	margin-bottom:1px;
@@ -314,6 +314,27 @@ introduced for book cover */
 
 .bookMatSubTitle { font-size:70%; }
 .bookMatAuthor { font-size:90%; }
+
+.memberMat
+{
+	width:150px;
+	display:inline-block;
+	vertical-align:top;
+	text-align:center;
+	padding:2px;
+	margin:2px;
+}
+
+.memberPicture
+{
+	display:table;
+	margin:0 auto;
+	width:100px;height:100px;
+	border-radius:50%;
+	background-repeat: no-repeat; 
+	background-position: center center; 
+	background-size: cover;
+}
 
 .smallHelpText {font-size: 70%;}
 
@@ -360,7 +381,7 @@ introduced for book cover */
 		display:inline-block;
 		vertical-align: top; 
 		border-bottom: 0;
-		border-right: 1px solid #B48700;
+		/*border-right: 1px solid #B48700;*/
 		margin-bottom: 0;
 		margin-right:1px;
 		padding-bottom: 0;

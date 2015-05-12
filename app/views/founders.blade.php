@@ -7,15 +7,11 @@
 		Founding Members
 	</div>
 	@foreach($founders as $founder)
-	<div style="width:150px;display:inline-block;vertical-align:top;text-align:center;padding:2px;margin:2px;">
+	<div class="memberMat">
 		@if (strlen($founder->PictureFile)>0)
-			<div style="display:table;margin:0 auto;width:100px;height:100px;border-radius:50%;
-			background-repeat: no-repeat; 
-		    background-position: center center; background-size: cover;background-image: url('images/member-pics/{{$founder->PictureFile}}')">
+			<div class="memberPicture" style="background-image: url('images/member-pics/{{$founder->PictureFile}}')">
 		@else
-			<div style="display:table;margin:0 auto;width:100px;height:100px;border-radius:50%;
-			background-repeat: no-repeat; 
-		    background-position: center center; background-size: cover;background-image: url('images/member-pics/meulib_member.png')">
+			<div class="memberPicture" style="background-image: url('images/member-pics/meulib_member.png')">
 		@endif
 	    {{-- HTML::image('images/member-pics/'.$founder->PictureFile, 'a picture', array('width' => '50','height' => '50')) --}}
 		</div>

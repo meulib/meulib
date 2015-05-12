@@ -12,6 +12,8 @@ class UserSeeder extends Seeder {
                     'Country' => 'India'));
         Location::create(array('ID' => 2, 'Location' => 'Kolkata',
                     'Country' => 'India'));
+        Location::create(array('ID' => 3, 'Location' => 'Boulder CO',
+                    'Country' => 'USA'));
 
         UserAccess::create(array('UserID' => 'Owner1',
         					'Username' => 'vaniprogrammer',
@@ -60,6 +62,22 @@ class UserSeeder extends Seeder {
                             'Locality' => 'Dashrathnagar',
                             'City' => 'Manipal',
                             'State' => 'Karnataka'
+            ));
+
+        UserAccess::create(array('UserID' => 'GlobalUser1',
+                            'Username' => 'kaavyaalaya',
+                            'EMail' => 'kaavyaalaya@gmail.com',
+                            'Pwd' => 'def',
+                            'Active' => 1,
+            ));
+
+        User::create(array('UserID' => 'GlobalUser1',
+                            'FullName' => 'Kaavyaalaya',
+                            'EMail' => 'kaavyaalaya@gmail.com',
+                            'Locality' => 'Lake',
+                            'City' => 'Boulder',
+                            'State' => 'CO',
+                            'LocationID' => 3
             ));
 
     }
