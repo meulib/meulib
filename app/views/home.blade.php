@@ -8,6 +8,7 @@
 		Session::forget('LoginMessage');
 		$fromURL = $msg['fromURL'];
 	}
+
 	$appName = Config::get('app.name');
 	$whatsNew = Config::get('app.whatsnew');
 	$randomPromo = rand(1,5);
@@ -17,22 +18,24 @@
 	<div class="contentDiv">
 	<!--div class="homeLoginWelcome" style="display:inline-block;"-->
 	<div class="homeLeft">
-		@if (Session::has('loggedInUser'))	
-				<p align="center">
-				<b>Welcome!</b><br/>
-				<br/>
-				You can now<br/>
-				<br/>
-				<a href={{URL::to('/browse')}}>Browse Collection</a> and request to borrow books<br/>
-				<br/>
-				<!-- Add Books you are willing to lend<br/> -->
-				{{HTML::link(URL::to('my-books'), 'Manage your books ')}} on {{ $appName }}<br/>
-				<br/>
-				{{HTML::link(URL::to('/messages'), 'Check your '.$appName . ' messages')}}<br/>
-				<br/>
-				{{HTML::link(URL::to('borrowed-books'), 'Manage books borrowed')}} via {{ $appName }}
-				</p>
-			
+		@if (Session::has('loggedInUser'))
+			<?php
+		        $user = Session::get('loggedInUser');
+		    ?>
+			<p align="center">
+			<b>Welcome!</b><br/>
+			<br/>
+			You can now<br/>
+			<br/>
+			<a href={{URL::to('/browse')}}>Browse Collection</a> and request to borrow books<br/>
+			<br/>
+			<!-- Add Books you are willing to lend<br/> -->
+			{{HTML::link(URL::to('/'.$user->Username), 'Manage your books')}} on {{ $appName }}<br/>
+			<br/>
+			{{HTML::link(URL::to('/messages'), 'Check your '.$appName . ' messages')}}<br/>
+			<br/>
+			{{HTML::link(URL::to('borrowed-books'), 'Manage books borrowed')}} via {{ $appName }}
+			</p>
 		@else
 			@if ($msg)
 				Please login to access {{{$msg['from']}}}.<br/><br/>

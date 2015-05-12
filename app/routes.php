@@ -18,7 +18,7 @@
 // 	        ]);
 // echo 'migration done';
 
-// Artisan::call('up');
+Artisan::call('up');
 // echo 'maintenance ended';
 
 // -------- APP ROUTES --------------------------
@@ -68,7 +68,7 @@ Route::get('search/{term}',
 
 Route::get('book/{id?}', array('as' => 'single-book', 'uses' => 'BookController@showSingle'));
 
-Route::get('my-books', array('as' => 'my-books', 'uses' => 'BookController@myBooks'));
+Route::get('my-books', array('as' => 'my-books', 'uses' => 'UserGateway@showUserCollection'));
 // Route::get('my-book', array('as' => 'my-single-book', 'uses' => 'BookController@showSingle'));
 Route::get('borrowed-books', array('as' => 'borrowed', 'uses' => 'BookController@borrowedBooks'));
 
@@ -184,6 +184,9 @@ Route::group(array('before' => 'admin'), function()
     {
         echo 'ok you have access to admin functionality';
     });
+
+    Route::get('/admin/add-book', 'BookController@getAdminAddBook');
+    //Route::post('add-book', 'BookController@addBook');
 
     Route::get('update-search', 'MaintenanceController@updateSearch');
 });
