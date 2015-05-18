@@ -18,7 +18,7 @@
 // 	        ]);
 // echo 'migration done';
 
-Artisan::call('up');
+// Artisan::call('up');
 // echo 'maintenance ended';
 
 // -------- APP ROUTES --------------------------
@@ -85,7 +85,7 @@ Route::post('set-library-settings', 'UserController@setLibrarySettings');
 // ----- MEMBER BROWSE ------------
 
 Route::get('founding-members', 'UserController@foundingMembers');
-Route::get('members/{country?}', 
+Route::get('m/{country?}', 
 	array('as' => 'member-browse','uses' => 'LibrarianCounter@whereAreYourBranches'));
 
 // ----- ACCOUNT CREATION ------------

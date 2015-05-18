@@ -8,7 +8,7 @@
 
 
 <!-- === COUNTRY LISTING === -->
-
+<div style="display:table;margin:0 auto">
 @if (count($countries) > 0)
 	@foreach($countries as $country)
 		<div class="bookMat">
@@ -20,5 +20,6 @@
 		</div>				
 	@endforeach
 @endif
+</div>
 
 @stop

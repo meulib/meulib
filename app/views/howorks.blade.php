@@ -6,21 +6,36 @@
 @section('content')
 
 <div style='font-size:150%;font-weight:bold;margin:0 auto;display:table;'>
-	<div style='display:table;margin:20px auto'>
-		How {{Config::get('app.name');}} Works
+	<div style='margin:10px'>
+	<div style="text-align:center">
+		<div style="vertical-align:top;display:inline-block;text-align:center;margin-right:20px;">
+			<a href={{ URL::to('/how-it-works-owner') }}>
+			How It Works<br/>
+			For The Book Owner<br/>
+			{{ HTML::image('images/howitworks/o1.png','') }}
+			</a>
+		</div>
+		<div style="vertical-align:top;display:inline-block;text-align:center;">
+			<a href={{ URL::to('/how-it-works-borrower') }}>
+			How It Works<br/>
+			For The Borrower<br/>
+			{{ HTML::image('images/howitworks/b1.png','') }}
+			</a>
+		</div>
 	</div>
-	<div style='display:table;margin:0 auto'>
-	<div style="vertical-align:top;display:inline-block;text-align:center;margin-right:20px;">
-		<a href={{ URL::to('/how-it-works-owner') }}>
-		Owner Side<br/>
-		{{ HTML::image('images/howitworks/ofull.png','') }}
-		</a>
-	</div>
-	<div style="vertical-align:top;display:inline-block;text-align:center;">
-		<a href={{ URL::to('/how-it-works-borrower') }}>
-		Borrower Side<br/>
-		{{ HTML::image('images/howitworks/bfull.png','') }}
-		</a>
+	<div style="text-align:center">
+		<div style="vertical-align:top;display:inline-block;text-align:center;">
+			<a href={{ URL::route('membership-rules') }}>
+			Membership Rules<br/>
+			{{ HTML::image('images/howitworks/clipboard.png','') }}
+			</a>
+		</div>
+		<div style="vertical-align:top;display:inline-block;text-align:center;">
+			<a href={{ URL::route('faq') }}>
+			FAQ<br/>
+			{{ HTML::image('images/howitworks/faq.png','') }}
+			</a>
+		</div>
 	</div>
 	</div>
 </div>
