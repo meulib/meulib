@@ -8,18 +8,25 @@
 
 
 <!-- === COUNTRY LISTING === -->
-<div class="bookMat">
-	{{{ $country }}}
-	{{ HTML::image('images/country-pics/'.$country.'.png', '',array('width'=>180)) }}
-	@foreach($cities as $city)
-		{{$city->Location}} {{$city->TotalMembers > 1? ": " . $city->TotalMembers . " members" : ""}}<br/>
-	@endforeach
+{{HTML::link(URL::route('member-browse'), 'Back to all countries')}}
+<div style="margin-bottom:2px">
+	<div class="bookMat">
+		{{{ $country }}}
+		{{ HTML::image('images/country-pics/'.$country.'.png', '',array('width'=>180)) }}
+	</div>
+	<div style="display:inline-block;text-align:center">
+		@foreach($cities as $city)
+			<a href=#{{$city->Location}}>{{$city->Location}}</a> {{$city->TotalMembers > 1? ": " . $city->TotalMembers . " members" : ""}}<br/>
+		@endforeach
+	</div>
 </div>
 
+<!-- === CITY-WISE MEMBERS === -->
 @if (count($cities) > 0)
-	<div style="display:inline-block">
+	<div style="display:block;">
 	@foreach($cities as $city)
-		<div class="bookMat" style="width:400px;max-width:100%;text-align:center">
+		<a name={{$city->Location}}></a>
+		<div style="display:inline-block;border:1px solid #B48700;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;padding-left:2px;margin-bottom:2px">
 		{{$city->Location}} {{$city->TotalMembers > 2? ": " . $city->TotalMembers . " members" : ""}}<br/>
 		<?php $slicedMembers = array_slice($members,$citiesWithOffset[$city->ID]["OffsetStart"],$city->TotalMembers); ?>
 		@foreach($slicedMembers as $member)

@@ -44,16 +44,14 @@
 
     @section('appLinks')
         <div class="appLinks">
-            {{($currentRoute=='browse' ? "<span class='currentPageHighlighter'>Browse Collection</span>" : HTML::link(URL::route('browse'), 'Browse Collection'))}} | 
+            {{($currentRoute=='browse' ? "<span class='currentPageHighlighter'>Books</span>" : HTML::link(URL::route('browse'), 'Books'))}} | 
+            {{($currentRoute=='member-browse' ? "<span class='currentPageHighlighter'>Members</span>" : HTML::link(URL::route('member-browse'), 'Members'))}} | 
+            {{($currentRoute=='how-it-works' ? "<span class='currentPageHighlighter'>How It Works</span>" : HTML::link(URL::route('how-it-works'), 'How It Works'))}} 
         @if ($loggedInUser)
-            {{(($currentRoute=='user-books') && (Request::is('*'.$user->Username.'*')) ? "<span class='currentPageHighlighter'>My Collection</span>" : HTML::link(URL::to('/'.$user->Username), 'My Collection'))}} | 
-            {{($currentRoute=='borrowed' ? "<span class='currentPageHighlighter'>Borrowed Books</span>" : HTML::link(URL::route('borrowed'), 'Borrowed Books'))}} |
+            &nbsp;|||&nbsp;
+            {{(($currentRoute=='user-books') && (Request::is('*'.$user->Username.'*')) ? "<span class='currentPageHighlighter'>MyBooks</span>" : HTML::link(URL::to('/'.$user->Username), 'MyBooks'))}} | 
+            {{($currentRoute=='borrowed' ? "<span class='currentPageHighlighter'>BorrowedBooks</span>" : HTML::link(URL::route('borrowed'), 'BorrowedBooks'))}} |
             {{($currentRoute=='messages' ? "<span class='currentPageHighlighter'>Messages</span>" : HTML::link(URL::route('messages'), 'Messages'))}}
-        @else
-            {{($currentRoute=='how-it-works' ? "<span class='currentPageHighlighter'>How It Works</span>" : HTML::link(URL::route('how-it-works'), 'How It Works'))}} | 
-            {{($currentRoute=='faq' ? "<span class='currentPageHighlighter'>FAQ</span>" : HTML::link(URL::route('faq'), 'FAQ'))}} | 
-            {{($currentRoute=='membership-rules' ? "<span class='currentPageHighlighter'>Membership Rules</span>" : HTML::link(URL::route('membership-rules'), 'Membership Rules'))}} | 
-            {{($currentRoute=='vision' ? "<span class='currentPageHighlighter'>Vision</span>" : HTML::link(URL::route('vision'), 'Vision'))}}
         @endif
         </div>
     @show

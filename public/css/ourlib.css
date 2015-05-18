@@ -17,57 +17,39 @@ body
 	padding-right: 10px;
 }
 
-a {
-	font-weight: bold;
-}
+a {	font-weight: bold; }
 
 a:link {
     text-decoration: none;
-    /*color: SeaGreen;*/
     color: #009000;
 }
 
 a:visited {
     text-decoration: none;
-    /*color: MediumPurple;*/
     color: #5703C5;
 }
 
-a:hover {
-    text-decoration: underline;
-}
+a:hover { text-decoration: underline; }
 
-a:active {
-    text-decoration: underline;
-}
+a:active { text-decoration: underline; }
 
 /* will show default text simply in bold 
 used with span */
-.currentPageHighlighter
-{
-	font-weight: bold;
-}
+.currentPageHighlighter { font-weight: bold; }
 
 input {
-
-	/*border: 2px solid #B48700;*/
 	border: none;
 	padding: 4px;
 	background-color: #CAE9CA;
-	/*font-size   : 120%;*/
 	margin:2px;
 }
 
-.thinInput
-{
-	border: 1px solid #B48700;
-}
+.thinInput { border: 1px solid #B48700; }
 
 select {
 	border: none;
 	padding: 4px;
 	background-color: #CAE9CA;
-	/*font-size   : 120%;*/
 	margin:2px;
 }
 
@@ -75,7 +57,6 @@ select {
 	background-color: #FFBF00;
 	color: #009000;
 	font-weight: bold;
-	/*border: 1px solid #B48700;*/
 	font-size   : 120%;
 	-moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -87,7 +68,6 @@ select {
 	background-color: #7B40C9;
 	color: white;
 	font-weight: bold;
-	/*border: 1px solid #B48700;*/
 	font-size   : 120%;
 	-moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -99,7 +79,6 @@ select {
 	background-color: #7B40C9;
 	color: white;
 	font-weight: bold;
-	/*border: 1px solid #B48700;*/
 	font-size   : 100%;
 	-moz-border-radius: 4px;
     -webkit-border-radius: 4px;
@@ -107,8 +86,6 @@ select {
 }
 
 textarea {
-  /*background: url(images/benice.png) center center no-repeat; /* This ruins default border */
-  /*border: 1px solid #888; */
 	border: none;
 	padding: 4px;
 	background-color: #CAE9CA;
@@ -120,10 +97,7 @@ textarea {
 {
 	padding: 10px;
 	margin-bottom: 10px;
-	/*border: 5px solid #B48700;*/
 	border: 5px solid #81AB00;
-	/*background-color: #81AB00;*/
-	/*font-weight: bold;*/
 	border-radius: 20px;
 }
 
@@ -174,7 +148,6 @@ textarea {
 
 .head {
 	position:relative;
-	/*width:100%;*/
 	margin-bottom:2px;
 	margin-top:0px;
 	overflow: hidden;
@@ -355,16 +328,6 @@ introduced for book cover */
 
 /* only for Home */
 @media (min-width: 810px) {
-	/*.homeLoginWelcome
-	{
-		border-bottom: none;
-		padding-bottom: 0px;
-		margin-bottom:0px;
-		border-right: 2px solid #B48700;
-		padding-right: 30px;
-		margin-right:30px;
-	}*/
-
 	.homeRight
 	{
 		display:inline-block;
@@ -381,7 +344,6 @@ introduced for book cover */
 		display:inline-block;
 		vertical-align: top; 
 		border-bottom: 0;
-		/*border-right: 1px solid #B48700;*/
 		margin-bottom: 0;
 		margin-right:1px;
 		padding-bottom: 0;
@@ -401,29 +363,12 @@ introduced for book cover */
 		text-align:right;
 		width: 60%;
 		display: block;
-		/*border-left: 1px black solid;*/
 	}
 	.loginFormH
 	{
 		float: none;
 		display: block;
 	}
-	/*input
-	{
-		font-size: 120%;
-	}*/
-	select
-	{
-		font-size: 120%;
-	}
-}
 
-/* medium large */
-/*@media (min-width: 600px) and (max-width: 900px) {
-	.loginFormH
-	{
-		float: right;
-		width:240px;
-	}
-}*/
+}
 
