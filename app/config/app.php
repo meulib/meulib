@@ -45,7 +45,7 @@ return array(
 	//'url' => 'http://localhost/ourlib/public',
 	//'logoUrl' => 'images/logoOurLib50.png',
 	//'displayNameOnMast' => true,
-	'url' => 'http://meulib.com',
+	'url' => 'http://localhost/meulib/public',
 	'logoUrl' => 'images/meulibLogoWLeaf.png',
 	'displayNameOnMast' => false,
 

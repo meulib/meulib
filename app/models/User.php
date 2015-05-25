@@ -29,6 +29,39 @@ class User extends Eloquent {
 		}
     }
 
+    public function setProfilePicture($profileData)
+    {
+    	try
+    	{
+    		$picFilename = "";
+	        if (isset($profileData['profile-pic']))
+			{
+				$uploadResult = FileManager::uploadImage($profileData['profile-pic'],'member-pics');
+				if ($uploadResult['success'])
+				{
+					// upload successful
+					// set info in book record
+					$picFilename = $uploadResult['filename'];
+					$this->ProfilePicFile = $picFilename;
+					$this->save();
+					return ['success'=>true,'UserId'=>$this->UserID];
+				}
+				else
+				{
+					return $uploadResult;
+				}
+			}
+			else
+			{
+				return ['success' => false, 'errors' => 'No picture received'];	
+			}
+    	}
+    	catch (Exception $e)
+    	{
+    		return ['success' => false, 'errors' => $e->getMessage()];
+    	}
+    }
+
 }
 
 ?>

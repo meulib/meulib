@@ -1,10 +1,9 @@
-
 <?php
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddUsersProfilepicfilename extends Migration {
+class AddUsersSocialmedialink extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -15,7 +14,7 @@ class AddUsersProfilepicfilename extends Migration {
 	{
 		Schema::table('users', function(Blueprint $table)
 		{
-			$table->string('ProfilePicFile',100)->after('LocationID');
+			$table->string('SocialMediaLink',100)->after('ProfilePicFile');
 		});
 	}
 
@@ -28,7 +27,7 @@ class AddUsersProfilepicfilename extends Migration {
 	{
 		Schema::table('users', function(Blueprint $table)
 		{
-			$table->dropColumn('ProfilePicFile');
+			$table->dropColumn('SocialMediaLink');
 		});
 	}
 

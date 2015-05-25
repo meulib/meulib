@@ -267,5 +267,27 @@ class UserController extends BaseController
             return Redirect::to(URL::previous())->withErrors($result['errors']);
         }
     }
+
+    public function setProfilePicture()
+    {
+        if (!Session::has('loggedInUser'))
+            return Redirect::route('login');
+
+        $profilePicData = Input::all();
+        $loggedInUser = User::find(Session::get('loggedInUser')->UserID);
+        $UserID = $loggedInUser->UserID;
+        $IsAdmin = $loggedInUser->IsAdmin;
+        $result = $loggedInUser->setProfilePicture($profilePicData);
+
+        if ($result['success'])
+        {
+            $this->setUserInSession($UserID,$IsAdmin);
+            return Redirect::to(URL::previous());
+        }
+        else
+        {
+            return Redirect::to(URL::previous())->withErrors($result['errors']);
+        }
+    }
 }
 ?>

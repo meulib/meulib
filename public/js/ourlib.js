@@ -202,3 +202,19 @@ function showHideDiv(showId, hideId, showMode)
     document.getElementById(hideId).style.display = "none";
     document.getElementById(showId).style.display = showMode;
 }
+
+function showPopup(popupId,showMode)
+{
+    // transparent layer div
+    document.getElementById('transparentHiderDiv').style.display = "block";
+    // popup element
+    document.getElementById(popupId).style.display = showMode;
+}
+
+function closePopup(popupId)
+{
+    // transparent layer div
+    document.getElementById('transparentHiderDiv').style.display = "none";
+    // popup element
+    document.getElementById(popupId).style.display = "none";
+}

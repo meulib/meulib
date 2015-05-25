@@ -80,8 +80,6 @@ Route::post('edit-bookcopy', array('as'=>'edit-bookcopy', 'uses' => 'BookControl
 Route::post('delete-book-confirmation', 'BookController@serveDeleteBookConfirmation');
 Route::post('delete-bookcopy', 'BookController@deleteBookCopy');
 
-Route::post('set-library-settings', 'UserController@setLibrarySettings');
-
 // ----- MEMBER BROWSE ------------
 
 Route::get('founding-members', 'UserController@foundingMembers');
@@ -98,7 +96,8 @@ Route::get('account/activate/{email?}/{verification_code?}', array(
 	'as' => 'activate',
 	'uses' => 'UserController@activate'));
 
-Route::get('showCaptcha', 'UtilityController@showCaptcha');
+Route::post('set-library-settings', 'UserController@setLibrarySettings');
+Route::post('set-profile-pic', ['as'=>'set-profile-pic','uses'=>'UserController@setProfilePicture']);
 
 // ------ LOGIN LOGOUT ---------------
 
@@ -177,6 +176,8 @@ Route::post('submit-contact', 'UtilityController@submitContactForm');
 
 
 // ------- MAINTENANCE --------------
+
+Route::get('showCaptcha', 'UtilityController@showCaptcha');
 
 Route::group(array('before' => 'admin'), function()
 {
