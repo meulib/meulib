@@ -24,37 +24,54 @@
 
 @section('content')
 
-
-
-
 @if ($tMsg[1]!="")
 	<p align='center'>
 		<span class="positiveMessage">{{{$tMsg[1][1] }}}</span>
 	</p>
 @endif
 
-<!-- --- BOOK LISTING --- -->
+
 
 @if ($bookCount > 0)
-@if (!$loggedIn)
-	<form action={{URL::to('/signup-or-login')}}>
-		{{ Form::submit('Become a Member', 
-			array('class' => 'richButton',
-			'name'=>'btnMember')); }}
-		{{ Form::submit('Login', 
-			array('class' => 'normalButton',
-			'name'=>'btnLogin')); }} to request these books for borrowing.
-	</form>	
-@endif
-<span class="pageTitle">
-	@if(strlen($user->LibraryName)>0)
-		{{$user->LibraryName}}
-	@else
-		{{$user->FullName."'s Collection"}}
+	@if (!$loggedIn)
+		<form action={{URL::to('/signup-or-login')}}>
+			{{ Form::submit('Become a Member', 
+				array('class' => 'richButton',
+				'name'=>'btnMember')); }}
+			{{ Form::submit('Login', 
+				array('class' => 'normalButton',
+				'name'=>'btnLogin')); }} to request these books for borrowing.
+		</form>	
 	@endif
-</span>
-<p align="center">{{ $user->Locality . ', ' . $user->City . '. ' . $user->State . ', ' . $user->Country }}</p>
+@endif
 
+<div style="display:table;margin:0 auto" id="centerMemberMastOnPage">
+	<div id="memberMastHolder" style="margin-top:10px">
+		<div id="memberInfo" class="memberMat" style="width:120px">
+			@if (strlen($user->ProfilePicFile)>0)
+				<div class="memberPicture" style="background-image: url('images/member-pics/{{$user->ProfilePicFile}}')">
+				</div>
+			@else
+				<div class="memberPicture" style="background-image: url('images/member-pics/meulib_member.png')">
+				</div>
+			@endif
+		</div>
+		<div id="memberLibraryProfile" style="display:inline-block">
+			<div class="collectionTitle">
+				@if(strlen($user->LibraryName)>0)
+					{{$user->LibraryName}}
+				@else
+					{{$user->FullName."'s Collection"}}
+				@endif
+			</div>
+			<div style="display:table;margin:0 auto">{{ $user->Locality . ', ' . $user->City . '. ' . $user->State . ', ' . $user->Country }}
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- === BOOK LISTING === -->
+@if ($bookCount > 0)
 	{{ $books->links() }}
 	<br/>
 		@foreach($books as $book)
@@ -86,9 +103,7 @@
 		@endforeach
 	<br/>
 	{{ $books->links() }}
-</ul>
 @else
-	<span class="pageTitle">{{$user->FullName."'s Collection"}}</span>
 	<p style="text-align:center;">{{$user->FullName}} has not added any books as yet.</p>
 @endif
 

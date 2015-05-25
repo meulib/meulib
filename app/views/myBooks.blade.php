@@ -1,7 +1,7 @@
 
 @extends('templates.base')
 
-@section('title', 'My Collection: ')
+@section('title', 'My Books: ')
 
 <?php
 	$loggedIn = false;
@@ -23,10 +23,14 @@
 		$tMsg = Session::get('TransactionMessage');
 			Session::forget('TransactionMessage');
 	}
-	//var_dump($tMsg);
+	
+	$onclickEditLibName = "showHideDiv('editLibraryName','displayLibraryName','table')"; 
+	$onclickShowLibName = "showHideDiv('displayLibraryName','editLibraryName','block')";
 ?>
 
 @section('content')
+
+<div id="transparentHiderDiv"></div>
 
 @if ($tMsg[1]!="")
 	<p align='center'>
@@ -34,25 +38,56 @@
 	</p>
 @endif
 
+
+
+<!-- ===== ERRORS IF ANY ========= -->
 <ul class="errors">
 @foreach($errors->all() as $message)
     <li>{{ $message }}</li>
 @endforeach
 </ul>
-<?php $onclickEditLibName = "showHideDiv('editLibraryName','displayLibraryName','table')"; 
-$onclickShowLibName = "showHideDiv('displayLibraryName','editLibraryName','block')";
-?>
-<span id="displayLibraryName" class="pageTitle">{{{$libraryName}}} {{ HTML::image('images/mEdit.png', '', array('height' => '16','onclick'=>$onclickEditLibName)) }}</span>
-<div id="editLibraryName" style="display:none;margin:0 auto">
-	{{ Form::open(array('action' => 'UserController@setLibrarySettings')) }}
-		{{ Form::text('LibraryName', $libraryName, ['required','size'=>40,'maxlength'=>100]) }} 
-		{{ Form::submit('Save', array('class' => 'normalButton')); }}
-		{{ Form::button('Cancel', array('class' => 'normalButton', 'onclick' => $onclickShowLibName)); }}
-	{{ Form::close() }}
+
+<div id="divEditMemberPhoto" class="popup">
+	<div class="formDiv" style="background-color:white;">
+		<span class="formTitle">Profile Photo</span>
+	{{ Form::open(array('action' => 'UserController@setProfilePicture','files'=>true,'id'=>'formEditMemberPhoto')) }}
+	{{ Form::file('profile-pic',['required']) }}<br/>
+	{{ Form::button('Upload Photo', array('class' => 'normalButton','onclick'=>"javascript:document.getElementById('formEditMemberPhoto').submit();")); }}{{ Form::button('Cancel', array('class' => 'normalButton', 'onclick' => "closePopup('divEditMemberPhoto')")); }}
+	</div>
+</div> 
+
+<div style="display:table;margin:0 auto" id="centerMemberMastOnPage">
+	<div id="memberMastHolder" style="margin-top:10px">
+		<div id="memberInfo" class="memberMat" style="width:120px">
+			@if (strlen($user->ProfilePicFile)>0)
+				<div class="memberPicture" style="background-image: url('images/member-pics/{{$user->ProfilePicFile}}');color:white" onclick="showPopup('divEditMemberPhoto','table')" onmouseenter="this.innerHTML='<b>click<br/>to change<br>photo</b>';" onmouseleave="this.innerHTML='';">
+				</div>
+			@else
+				<div class="memberPicture" style="background-image: url('images/member-pics/meulib_member.png')" onclick="showPopup('divEditMemberPhoto','table');"  onmouseenter="this.innerHTML='<b>click<br/>to change<br>photo</b>';" onmouseleave="this.innerHTML='';">
+				</div>
+			@endif
+		</div>
+		<div id="memberLibraryProfile" style="display:inline-block">
+			<div class="collectionTitle" id="displayLibraryName">
+				@if(strlen($user->LibraryName)>0)
+					{{$user->LibraryName}}
+				@else
+					{{$user->FullName."'s Collection"}}
+				@endif
+				{{ HTML::image('images/mEdit.png', '', array('height' => '16','onclick'=>$onclickEditLibName)) }}
+			</div>
+			<div id="editLibraryName" style="display:none;margin:0 auto">
+				{{ Form::open(array('action' => 'UserController@setLibrarySettings')) }}
+					{{ Form::text('LibraryName', $libraryName, ['required','size'=>40,'maxlength'=>100]) }} 
+					{{ Form::button('Save', array('class' => 'normalButton')); }}{{ Form::button('Cancel', array('class' => 'normalButton', 'onclick' => $onclickShowLibName)); }}
+				{{ Form::close() }}
+			</div>
+			<div style="display:table;margin:0 auto">{{ $user->Locality . ', ' . $user->City . '. ' . $user->State . ', ' . $user->Country }}
+			</div>
+		</div>
+	</div>
 </div>
-<p align="center">{{ $user->Locality . ', ' . $user->City . '. ' . 
-	$user->State . ', ' . $user->Country }} 
-	{{-- HTML::image('images/mEdit.png', '', array('height' => '16')) --}}</p>
+
 @if (count($books)>0)
 	{{ $books->links() }}
 	<!-- ul -->

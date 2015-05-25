@@ -6,24 +6,28 @@
 
 @section('content')
 
+<div class="contentDiv">
 
 <!-- === COUNTRY LISTING === -->
-{{HTML::link(URL::route('member-browse'), 'Back to all countries')}}
-<div style="margin-bottom:2px">
-	<div class="bookMat">
-		{{{ $country }}}
-		{{ HTML::image('images/country-pics/'.$country.'.png', '',array('width'=>180)) }}
+<div id="fixed-width">
+	<div style="margin-bottom:2px">
+		{{HTML::link(URL::route('member-browse'), 'Back to all countries')}}
+		<div class="bookMat">
+			{{{ $country }}}
+			{{ HTML::image('images/country-pics/'.$country.'.png', '',array('width'=>180)) }}
+		</div>
+		<div style="display:inline-block;text-align:center">
+			@foreach($cities as $city)
+				<a href=#{{$city->Location}}>{{$city->Location}}</a> {{$city->TotalMembers > 1? ": " . $city->TotalMembers . " members" : ""}}<br/>
+			@endforeach
+		</div>
 	</div>
-	<div style="display:inline-block;text-align:center">
-		@foreach($cities as $city)
-			<a href=#{{$city->Location}}>{{$city->Location}}</a> {{$city->TotalMembers > 1? ": " . $city->TotalMembers . " members" : ""}}<br/>
-		@endforeach
-	</div>
-</div>
+</div> <!-- end fixed -->
 
 <!-- === CITY-WISE MEMBERS === -->
 @if (count($cities) > 0)
-	<div style="display:block;">
+	<div id="fluid">
+	<div id="inner-block">
 	@foreach($cities as $city)
 		<a name={{$city->Location}}></a>
 		<div style="display:inline-block;border:1px solid #B48700;-moz-border-radius:4px;-webkit-border-radius:4px;border-radius:4px;padding-left:2px;margin-bottom:2px">
@@ -32,11 +36,10 @@
 		@foreach($slicedMembers as $member)
 			<div class="memberMat">
 				@if (strlen($member->ProfilePicFile)>0)
-					<div class="memberPicture" style="background-image: url('{{Config::get('app.url')}}/images/member-pics/{{$member->ProfilePicFile}}')">
+					<div class="memberPicture" style="background-image: url('{{Config::get('app.url')}}/images/member-pics/{{$member->ProfilePicFile}}')"></div>
 				@else
-					<div class="memberPicture" style="background-image: url('{{Config::get('app.url')}}/images/member-pics/meulib_member.png')">
+					<div class="memberPicture" style="background-image: url('{{Config::get('app.url')}}/images/member-pics/meulib_member.png')"></div>
 				@endif
-	    		</div>
 	    		{{-- HTML::image('images/member-pics/'.$member->ProfilePicFile, 'a picture', array('width' => '50','height' => '50')) --}}
 				{{ HTML::link(URL::route('user-books',$member->Username), $member->FullName)}}
 			</div>
@@ -44,7 +47,12 @@
 		</div>
 		<!-- br/><br/ -->
 	@endforeach
-	</div>
+	</div>	<!-- end inner-block -->
+	</div>  <!-- end fluid -->
 @endif
+
+<br style="clear:both">
+
+</div> <!-- end content -->
 
 @stop

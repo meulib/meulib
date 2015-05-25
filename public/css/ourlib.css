@@ -13,8 +13,6 @@ body
 	margin:0;
 	font-family:'Lato', sans-serif;
 	/*font-size: 120%;*/
-	padding-left: 10px;
-	padding-right: 10px;
 }
 
 a {	font-weight: bold; }
@@ -72,6 +70,10 @@ select {
 	-moz-border-radius: 4px;
     -webkit-border-radius: 4px;
     border-radius: 4px;
+    border:0;
+    margin-left:2px;
+    margin-right:2px;
+    padding: 4px;
 }
 
 .thinNormalButton
@@ -171,10 +173,10 @@ textarea {
 	margin: 0;
 }
 
-.loginFormH
+/*.loginFormH
 {
 	display: none;
-}
+}*/
 
 .appLinks
 {
@@ -196,10 +198,13 @@ textarea {
 	font-size: 80%;
 	padding: 10px;
 	margin-top: 10px;
-	border-top: 1px solid #B48700;
-	border-bottom: 1px solid #B48700;
 	/*background-color: #C6EFFF;*/
 	background-color: #B48700;
+/*	position: fixed;
+	bottom: 0;
+	right: -10px;
+	width: 100%;
+	margin-left: 10px;*/
 }
 
 .footer a
@@ -221,6 +226,13 @@ textarea {
 	font-weight:bold;
 	display:table;
 	margin:20px auto;
+	text-align: center;
+}
+
+.collectionTitle
+{
+	font-size:150%;
+	font-weight:bold;
 	text-align: center;
 }
 
@@ -307,9 +319,33 @@ introduced for book cover */
 	background-repeat: no-repeat; 
 	background-position: center center; 
 	background-size: cover;
+	border:1px solid #B48700;
 }
 
 .smallHelpText {font-size: 70%;}
+
+#transparentHiderDiv
+{
+	position:absolute;
+    top: 0;
+    left: 0;
+    min-width:100%;
+    min-height:100%;
+    z-index: 99;
+	background-color:rgba(100,100,100,0.7);
+	//for transparency
+	opacity:0.6;
+	display: none;
+}
+
+.popup
+{
+	display:none;
+	margin:0 auto;
+	z-index:100;
+	position:relative;
+}
+
 
 /* RESPONSIVE UI. ADJUST FOR LARGER SCREENS */
 
@@ -324,6 +360,19 @@ introduced for book cover */
 	{
 		font-size: 120%;
 	}
+	#fluid {
+	float: left;
+	width: 100%;
+	margin-left: -220px; /* The size of the fixed block. */
+	}
+	#inner-block {
+		margin-left: 220px; /* The size of the fixed block. */
+		}
+	#fixed-width {
+		float: left;
+		width: 210px; /* The size of the fixed block. */
+		margin-right:10px;
+		}
 }
 
 /* only for Home */
@@ -364,11 +413,5 @@ introduced for book cover */
 		width: 60%;
 		display: block;
 	}
-	.loginFormH
-	{
-		float: none;
-		display: block;
-	}
-
 }
 
