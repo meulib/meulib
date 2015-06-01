@@ -21,11 +21,13 @@
 		{{$founder->ClaimToFame}}
 	</div>
 	@endforeach
-	<p align="center">
-		<br/><br/>
+	<!-- p align="center">
+		<br/>
 		You can be a part of this too.
 		<br/>
 		There are many ways to be a founding member.<br/>
-		Participate and you will discover.</p>
+		Participate and you will discover.</p -->
+	<br/><br/>
+	<b>{{ HTML::link(URL::route('member-browse'), 'All Members')}}</b>
 	</div>
 @stop

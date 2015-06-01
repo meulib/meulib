@@ -36,7 +36,7 @@
     @section('appLinks')
         <div class="appLinks">
             {{($currentRoute=='browse' ? "<span class='currentPageHighlighter'>Books</span>" : HTML::link(URL::route('browse'), 'Books'))}} | 
-            {{($currentRoute=='member-browse' ? "<span class='currentPageHighlighter'>Members</span>" : HTML::link(URL::route('member-browse'), 'Members'))}} | 
+            {{(($currentRoute=='member-browse') || ($currentRoute=='founders') ? "<span class='currentPageHighlighter'>Members</span>" : HTML::link(URL::route('member-browse'), 'Members'))}} | 
             {{($currentRoute=='how-it-works' ? "<span class='currentPageHighlighter'>How It Works</span>" : HTML::link(URL::route('how-it-works'), 'How It Works'))}} 
         @if ($loggedInUser)
             &nbsp;|||&nbsp;
@@ -57,10 +57,8 @@
         </div>
         <div style="vertical-align:middle;text-align:right;display:inline-block;position:absolute;padding-right: 20px;
         right:0;">
-            {{HTML::link(URL::to('/founding-members'), 'founding members')}} | 
+            {{-- HTML::link(URL::to('/founding-members'), 'founding members') --}}
             {{HTML::link('https://github.com/meulib/meulib', 'github')}} | 
-            <!-- {{HTML::link('https://abc.com', 'founding members')}}
-            founding members | -->
             {{HTML::link(URL::to('/contact-admin'), 'contact support')}}
             
         </div>

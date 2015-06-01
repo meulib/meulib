@@ -44,7 +44,7 @@
 					<div class="memberPicture" style="background-image: url('{{Config::get('app.url')}}/images/member-pics/meulib_member.png')"></div>
 				@endif
 	    		{{-- HTML::image('images/member-pics/'.$member->ProfilePicFile, 'a picture', array('width' => '50','height' => '50')) --}}
-				{{ HTML::link(URL::route('user-books',$member->Username), $member->FullName)}}
+				{{ HTML::link(URL::route('user-books',$member->Username), $member->FullName)}}<br/>
 				@if (strlen($member->ClaimToFame)>0)	
 					{{{str_replace('appName', $appName, $member->ClaimToFame)}}}
 				@endif
