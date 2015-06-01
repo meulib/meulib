@@ -235,9 +235,7 @@ class UserController extends BaseController
     public function foundingMembers()
     {
         $appName = Config::get('app.name');
-        $founders = Founder::orderBy('When', 'desc')
-                    ->with('UserDetails')
-                    ->get();
+        $founders = Librarian::foundingMembers();
         $founders->each(function($founder) use ($appName)
         {
             $founder->ClaimToFame = str_replace('appName', $appName, $founder->ClaimToFame);

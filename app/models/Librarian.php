@@ -77,11 +77,20 @@ class Librarian {
 	{
 		return DB::table('users')
 				->join('locations','users.LocationID','=','locations.ID')
-				->select('users.FullName','users.Username','users.ProfilePicFile','users.LocationID')
+				->select('users.FullName','users.Username','users.ProfilePicFile','users.LocationID', 'users.ClaimToFame')
 				->orderBy('users.LocationID','asc')
 				->orderBy('users.FullName','asc')
 				->where('locations.Country','=',$country)
 				->get();
+	}
+
+	public static function foundingMembers()
+	{
+		$founders = User::where('ClaimToFame','>',0)
+			->orderBy('FullName','asc')
+			->get();
+
+		return $founders;
 	}
 
 	// ------------------- MAINTENANCE --------------

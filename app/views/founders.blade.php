@@ -8,19 +8,15 @@
 	</div>
 	@foreach($founders as $founder)
 	<div class="memberMat">
-		@if (strlen($founder->PictureFile)>0)
-			<div class="memberPicture" style="background-image: url('images/member-pics/{{$founder->PictureFile}}')">
+		@if (strlen($founder->ProfilePicFile)>0)
+			<div class="memberPicture" style="background-image: url('images/member-pics/{{$founder->ProfilePicFile}}')">
 		@else
 			<div class="memberPicture" style="background-image: url('images/member-pics/meulib_member.png')">
 		@endif
 	    {{-- HTML::image('images/member-pics/'.$founder->PictureFile, 'a picture', array('width' => '50','height' => '50')) --}}
 		</div>
 		<!-- br/ -->
-		@if ($founder->UserDetails)
-			{{ HTML::link(URL::route('user-books',$founder->UserDetails->Username), $founder->UserDetails->FullName)}}
-		@else
-			{{$founder->Name}}
-		@endif
+		{{ HTML::link(URL::route('user-books',$founder->Username), $founder->FullName)}}
 		<br/>
 		{{$founder->ClaimToFame}}
 	</div>

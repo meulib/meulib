@@ -8,6 +8,8 @@ nice chutney green color
 105 141 45 = 69 8D 2D
 */
 
+/*div, span, p { border:1px solid red;}*/
+
 body
 {
 	margin:0;
@@ -363,15 +365,22 @@ introduced for book cover */
 	#fluid {
 	float: left;
 	width: 100%;
-	margin-left: -220px; /* The size of the fixed block. */
+	margin-left: -230px; /* The size of the fixed block. */
+	position: relative;
+/*	z-index: -1;*/
 	}
 	#inner-block {
-		margin-left: 220px; /* The size of the fixed block. */
+		margin-left: 230px; /* The size of the fixed block. */
 		}
-	#fixed-width {
+	#fixedwidth {
 		float: left;
 		width: 210px; /* The size of the fixed block. */
 		margin-right:10px;
+		margin-left: 10px;
+		position: relative;
+		z-index: 10;
+		top: 0;
+		left: 0;
 		}
 }
 
