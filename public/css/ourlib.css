@@ -17,11 +17,12 @@ body
 	/*font-size: 120%;*/
 }
 
-a {	font-weight: bold; }
+/*a {	font-weight: bold; }*/
 
 a:link {
     text-decoration: none;
-    color: #009000;
+    /*color: #009000;*/
+    color: #5703C5;
 }
 
 a:visited {

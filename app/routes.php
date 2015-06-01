@@ -82,7 +82,7 @@ Route::post('delete-bookcopy', 'BookController@deleteBookCopy');
 
 // ----- MEMBER BROWSE ------------
 
-Route::get('founding-members', 'UserController@foundingMembers');
+Route::get('founding-members', ['as'=>'founders','uses'=>'UserController@foundingMembers']);
 Route::get('m/{country?}', 
 	array('as' => 'member-browse','uses' => 'LibrarianCounter@whereAreYourBranches'));
 

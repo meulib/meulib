@@ -6,9 +6,11 @@
 
 @section('content')
 
+<div class="contentDiv" style="text-align:center">
+
+<div class="pageTitle">All Members</div>
 
 <!-- === COUNTRY LISTING === -->
-<div style="display:table;margin:0 auto">
 @if (count($countries) > 0)
 	@foreach($countries as $country)
 		<div class="bookMat">
@@ -20,6 +22,8 @@
 		</div>				
 	@endforeach
 @endif
+<br/><br/>
+<b>{{ HTML::link(URL::route('founders'), 'Founding Members')}}</b>
 </div>
 
 @stop
