@@ -135,13 +135,29 @@ class BookController extends BaseController
         }
         else
         {
-            $book = FlatBook::find($bookId);
+            $cacheKey = Config::get('app.cacheKeys')['flatBook'].$bookId;
+            // Cache::forget($cacheKey);
+            // $book = FlatBook::find($bookId);
+            $book = Cache::rememberForever($cacheKey, function() use($bookId)
+            {
+                return FlatBook::find($bookId);
+            });
             if ($book == NULL)
                 App::abort(404);
             else
             {
-                $bookCategories = $book->Categories()->get();
-                $copies = BookCopy::where('BookID', '=', $book->ID)->get();
+                $cacheKey = Config::get('app.cacheKeys')['bookCategories'].$bookId;
+                // $bookCategories = $book->Categories()->get();
+                $bookCategories = Cache::rememberForever($cacheKey, function() use($book)
+                {
+                    return $book->Categories()->get();
+                });
+                $cacheKey = Config::get('app.cacheKeys')['bookCopies'].$bookId;
+                // $copies = BookCopy::where('BookID', '=', $book->ID)->get();
+                $copies = Cache::rememberForever($cacheKey, function() use($bookId)
+                {
+                    return BookCopy::where('BookID', '=', $bookId)->get();
+                });
                 return View::make("book",
                     array('book' => $book, 
                         'bookCategories' => $bookCategories,
