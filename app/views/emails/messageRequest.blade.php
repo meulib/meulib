@@ -1,3 +1,6 @@
+<?php
+$replyLink = URL::to('/messages', array($tranID));
+?>
 <!DOCTYPE html>
 <html lang="en-US">
 	<head>
@@ -13,8 +16,7 @@
 			<br/>
 			<i><span style="color:blue">{{$msg}}</span></i><br/>
 			<br/>
-			Click the link below to see the request message and to reply.<br/>
-			{{ URL::to('/messages', array($tranID)) }}
+			{{HTML::link($replyLink, 'Click this link to see the request and to reply.')}}
 			<br/><br/>
 			Admin<br/>
 			{{Config::get('app.name');}}
