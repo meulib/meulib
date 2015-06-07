@@ -82,7 +82,7 @@ return array(
 	|
 	*/
 
-	'username' => 'publibtest@gmail.com',
+	'username' => 'xxx',
 	
 
 	/*
