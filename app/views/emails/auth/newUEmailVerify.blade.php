@@ -1,3 +1,6 @@
+<?php
+$activationLink = URL::to('account/activate', array($email,$verificationCode));
+?>
 <!DOCTYPE html>
 <html lang="en-US">
 	<head>
@@ -9,7 +12,7 @@
 		<div>
 			Hi {{$name}},<br/><br/>
 			Please click this link to verify your email and activate your account:<br/>
-			{{ URL::to('account/activate', array($email,$verificationCode)) }}
+			{{HTML::link($activationLink, $activationLink)}}
 			<br/><br/>
 			Admin<br/>
 			{{Config::get('app.name');}}
