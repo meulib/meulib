@@ -224,5 +224,18 @@ return array(
 	'whatsnew' => array("A beginning made in UK too",
 		"Founding Members",
 		"Specify categories when adding books",
-		"Browse Collection by Category")
+		"Browse Collection by Category"),
+
+	/*
+	|--------------------------------------------------------------------------
+	| Cache Key and Duration Configuration
+	|--------------------------------------------------------------------------
+	|
+	| There must be a better place to keep this
+	|
+	*/
+
+	'cacheKeys' => array("flatBook"=>"flatBook_",
+		"bookCategories"=>'bookCategories_',
+		"bookCopies"=>'bookCopies_')
 );

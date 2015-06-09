@@ -11,6 +11,56 @@ class FlatBook extends Eloquent {
 	            'Author1' => 'required',
 	            'Language1' => 'required'
         	);
+	protected static $cacheKey;
+
+	protected static function boot()
+    {
+        parent::boot();
+
+        self::$cacheKey = Config::get('app.cacheKeys')['flatBook'];
+
+        static::updated(function($model)
+        {
+            return $model->clearCache($model);
+        });
+
+        static::deleting(function($model)
+        {
+            return $model->clearCache($model);
+        });
+    }
+
+    private function clearCache($model)
+    {
+    	$cacheKey = self::$cacheKey.$model->ID;
+    	Cache::forget($cacheKey);
+    	return true;
+    }
+
+    private function clearCacheCategories()
+    {
+    	$cacheKey = Config::get('app.cacheKeys')['bookCategories'].$this->ID;
+    	Cache::forget($cacheKey);
+    	return true;
+    }
+
+    public function clearCachedCopies()
+    {
+    	$cacheKey = Config::get('app.cacheKeys')['bookCopies'].$this->ID;
+    	Cache::forget($cacheKey);
+    	return true;
+    }
+
+
+	public static function find($id,$columns = array('*'))
+	{
+		$cacheKey = self::$cacheKey.$id;
+		return Cache::remember($cacheKey, 60, function() use($id)
+        {
+            return parent::find($id);
+        });
+	}
+
 
 	// ------------------ RELATIONSHIPS ----------------------
 
@@ -19,9 +69,27 @@ class FlatBook extends Eloquent {
 		return $this->hasMany('BookCopy', 'BookID', 'ID');
 	}
 
+	public function getCachedCopies()
+	{
+		$cacheKey = Config::get('app.cacheKeys')['bookCopies'].$this->ID;
+    	return Cache::remember($cacheKey, 60, function()
+        {
+            return $this->Copies()->get();
+        });		
+	}
+
 	public function Categories()
     {
         return $this->belongsToMany('Category','book_categories','BookID','CategoryID')->withTimestamps();
+    }
+
+    public function getCachedCategories()
+    {
+    	$cacheKey = Config::get('app.cacheKeys')['bookCategories'].$this->ID;
+    	return Cache::remember($cacheKey, 60, function()
+        {
+            return $this->Categories()->get();
+        });	
     }
 
 	public function MainLanguage()
@@ -159,6 +227,7 @@ class FlatBook extends Eloquent {
 		try 
 		{
 			$this->Categories()->detach();	// delete book_categories recs
+			$this->clearCacheCategories();
 			parent::delete();	// delete itself
 		}
 		catch (Exception $e)
@@ -194,6 +263,7 @@ class FlatBook extends Eloquent {
 				return [false,'Category Not Found'];
 
 			$result = $this->Categories()->attach($givenCategories, array('Suggested' => 1));
+			$this->clearCacheCategories();
 			return [true,''];
 		}
 
@@ -210,6 +280,7 @@ class FlatBook extends Eloquent {
 			if (count($foundCategories) == 0)
 				return [false,'Category Not Found'];
 			$result = $this->Categories()->attach($foundCategories, array('Suggested' => 1));
+			$this->clearCacheCategories();
 			return [true,''];
 		}
 

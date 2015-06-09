@@ -95,26 +95,6 @@ class BookController extends BaseController
                'currentCategory' => $currentCategory))->render();
     }
 
-    public function search($term = 'abc')
-    {
-        // $searchTerm = Input::get('searchTerm');
-        $result = Librarian::search($term);
-        var_dump($result);
-    }
-
-    // possibly defunct
-    /*public function myBooks()
-    {
-        if (!Session::has('loggedInUser'))
-                return Redirect::route('login');
-
-        $userID = Session::get('loggedInUser')->UserID;
-        // $books = FlatBook::myBooks($userID);
-        $books = BookCopy::myBooks($userID);
-        //var_dump(count($books));
-        return View::make('myBooks',array('books' => $books));
-    }*/
-
     public function borrowedBooks()
     {
         if (!Session::has('loggedInUser'))
@@ -135,13 +115,16 @@ class BookController extends BaseController
         }
         else
         {
+            
             $book = FlatBook::find($bookId);
             if ($book == NULL)
                 App::abort(404);
             else
             {
-                $bookCategories = $book->Categories()->get();
-                $copies = BookCopy::where('BookID', '=', $book->ID)->get();
+                $bookCategories = $book->getCachedCategories();
+
+                $copies = $book->getCachedCopies();
+
                 return View::make("book",
                     array('book' => $book, 
                         'bookCategories' => $bookCategories,
@@ -300,6 +283,15 @@ class BookController extends BaseController
             return Redirect::route('single-book',$bookID)->withErrors($result['errors']);
 
     }
+
+
+    public function search($term = 'abc')
+    {
+        // $searchTerm = Input::get('searchTerm');
+        $result = Librarian::search($term);
+        var_dump($result);
+    }
+
     
 }
 ?>
