@@ -136,11 +136,15 @@ class BookCopy extends Eloquent {
 			parent::delete();
 
 			// delete book itself and book category
+			$bookItself = FlatBook::find($BookID);
 			if ($deleteBookItself)
 			{
-				$bookItself = FlatBook::find($BookID);
 				// delete book itself, call with independent = false
 				$bookItself->delete(false); 
+			}
+			else
+			{
+				$bookItself->clearCachedCopies();
 			}
 		}
 		catch (Exception $e)

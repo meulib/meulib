@@ -95,26 +95,6 @@ class BookController extends BaseController
                'currentCategory' => $currentCategory))->render();
     }
 
-    public function search($term = 'abc')
-    {
-        // $searchTerm = Input::get('searchTerm');
-        $result = Librarian::search($term);
-        var_dump($result);
-    }
-
-    // possibly defunct
-    /*public function myBooks()
-    {
-        if (!Session::has('loggedInUser'))
-                return Redirect::route('login');
-
-        $userID = Session::get('loggedInUser')->UserID;
-        // $books = FlatBook::myBooks($userID);
-        $books = BookCopy::myBooks($userID);
-        //var_dump(count($books));
-        return View::make('myBooks',array('books' => $books));
-    }*/
-
     public function borrowedBooks()
     {
         if (!Session::has('loggedInUser'))
@@ -135,29 +115,16 @@ class BookController extends BaseController
         }
         else
         {
-            $cacheKey = Config::get('app.cacheKeys')['flatBook'].$bookId;
-            // Cache::forget($cacheKey);
-            // $book = FlatBook::find($bookId);
-            $book = Cache::rememberForever($cacheKey, function() use($bookId)
-            {
-                return FlatBook::find($bookId);
-            });
+            
+            $book = FlatBook::find($bookId);
             if ($book == NULL)
                 App::abort(404);
             else
             {
-                $cacheKey = Config::get('app.cacheKeys')['bookCategories'].$bookId;
-                // $bookCategories = $book->Categories()->get();
-                $bookCategories = Cache::rememberForever($cacheKey, function() use($book)
-                {
-                    return $book->Categories()->get();
-                });
-                $cacheKey = Config::get('app.cacheKeys')['bookCopies'].$bookId;
-                // $copies = BookCopy::where('BookID', '=', $book->ID)->get();
-                $copies = Cache::rememberForever($cacheKey, function() use($bookId)
-                {
-                    return BookCopy::where('BookID', '=', $bookId)->get();
-                });
+                $bookCategories = $book->getCachedCategories();
+
+                $copies = $book->getCachedCopies();
+
                 return View::make("book",
                     array('book' => $book, 
                         'bookCategories' => $bookCategories,
@@ -316,6 +283,15 @@ class BookController extends BaseController
             return Redirect::route('single-book',$bookID)->withErrors($result['errors']);
 
     }
+
+
+    public function search($term = 'abc')
+    {
+        // $searchTerm = Input::get('searchTerm');
+        $result = Librarian::search($term);
+        var_dump($result);
+    }
+
     
 }
 ?>
