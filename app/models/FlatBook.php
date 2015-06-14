@@ -11,16 +11,15 @@ class FlatBook extends Eloquent {
 	            'Author1' => 'required',
 	            'Language1' => 'required'
         	);
-	protected static $cacheKey;
+	// protected static $cacheKey = Config::get('app.cacheKeys')['flatBook'];
 
 	protected static function boot()
     {
         parent::boot();
 
-        self::$cacheKey = Config::get('app.cacheKeys')['flatBook'];
-
         static::updated(function($model)
         {
+        	// Log::debug("updated FlatBook event");
             return $model->clearCache($model);
         });
 
@@ -32,8 +31,9 @@ class FlatBook extends Eloquent {
 
     private function clearCache($model)
     {
-    	$cacheKey = self::$cacheKey.$model->ID;
+    	$cacheKey = Config::get('app.cacheKeys')['flatBook'].$model->ID;
     	Cache::forget($cacheKey);
+    	// Log::debug("cleared cache key ".$cacheKey);
     	return true;
     }
 
@@ -54,11 +54,19 @@ class FlatBook extends Eloquent {
 
 	public static function find($id,$columns = array('*'))
 	{
-		$cacheKey = self::$cacheKey.$id;
-		return Cache::remember($cacheKey, 60, function() use($id)
-        {
-            return parent::find($id);
-        });
+		$cacheKey = Config::get('app.cacheKeys')['flatBook'].$id;
+		if (Cache::has($cacheKey))
+		{
+			// Log::debug('FlatBook find from Cache '.$cacheKey);
+			return Cache::get($cacheKey);
+		}
+		else
+		{
+			// Log::debug('FlatBook find from db, saved in cache '.$cacheKey);
+			$flatBook = parent::find($id);
+			Cache::put($cacheKey,$flatBook,60);
+			return $flatBook;
+		}
 	}
 
 
@@ -72,8 +80,10 @@ class FlatBook extends Eloquent {
 	public function getCachedCopies()
 	{
 		$cacheKey = Config::get('app.cacheKeys')['bookCopies'].$this->ID;
-    	return Cache::remember($cacheKey, 60, function()
+		log::debug('getCachedCopies for cacheKey '.$cacheKey);
+    	return Cache::remember($cacheKey, 60, function() use($cacheKey)
         {
+        	Log::debug('getCachedCopies from db, not cacheKey '.$cacheKey);
             return $this->Copies()->get();
         });		
 	}
@@ -86,8 +96,10 @@ class FlatBook extends Eloquent {
     public function getCachedCategories()
     {
     	$cacheKey = Config::get('app.cacheKeys')['bookCategories'].$this->ID;
-    	return Cache::remember($cacheKey, 60, function()
+    	Log::debug('getCachedCategories for cacheKey '.$cacheKey);
+    	return Cache::remember($cacheKey, 60, function() use($cacheKey)
         {
+        	Log::debug('getCachedCategories from db, not cacheKey '.$cacheKey);
             return $this->Categories()->get();
         });	
     }

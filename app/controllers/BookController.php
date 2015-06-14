@@ -125,10 +125,11 @@ class BookController extends BaseController
 
                 $copies = $book->getCachedCopies();
 
-                return View::make("book",
+                $response = View::make("book",
                     array('book' => $book, 
                         'bookCategories' => $bookCategories,
                         'copies' => $copies));
+                return $response;
             }
 	    }
     }
@@ -244,12 +245,9 @@ class BookController extends BaseController
         //I get incomplete class when calling upon session saved 
         //RegisteredUser
         $registeredUser = RegisteredUser::find(Session::get('loggedInUser')->UserID);
-        //desireable version:
-        //$registeredUser = Session::get('registeredUser');
 
         $result = $registeredUser->editBookInfo(Input::all());
 
-        // var_dump($result);
 
         if ($result['success'])
         {
@@ -257,7 +255,7 @@ class BookController extends BaseController
                 Session::put('TransactionMessage',['EditBook','Book details updated']);
             else
                 Session::put('TransactionMessage',['EditBook','Information sent to Librarian for verification, as mulitiple copies of this book exist in MeULib']);
-            return Redirect::to(URL::to('book/'.$bookID));
+            return $this->showSingle($bookID);
         }
         else
         {
