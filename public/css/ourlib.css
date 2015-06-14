@@ -13,7 +13,8 @@ nice chutney green color
 body
 {
 	margin:0;
-	font-family:'Lato', sans-serif;
+	/*font-family:'Lato', sans-serif;*/
+	font-family:'Titillium Web', sans-serif;
 	/*font-size: 120%;*/
 }
 
@@ -153,7 +154,7 @@ textarea {
 
 .head {
 	position:relative;
-	margin-bottom:2px;
+	margin-bottom:1px;
 	margin-top:0px;
 	overflow: hidden;
 	background-color: #C6EFFF;
@@ -184,7 +185,8 @@ textarea {
 .appLinks
 {
 	font-size: 100%;
-	padding: 10px;
+	font-weight: bold;
+	padding-left: 10px;
 	margin-bottom: 2px;
 	border-top: 1px solid #B48700;
 	border-bottom: 1px solid #B48700;
@@ -193,7 +195,8 @@ textarea {
 
 .appLinks a:visited
 {
-	color: #009000;
+	/*color: #009000;*/
+	color: #5703C5;
 }
 
 .footer
@@ -257,11 +260,12 @@ textarea {
 
 .filterSection
 {
-	padding: 10px;
+	padding-left: 10px;
 	margin-bottom: 10px;
 	border-top: 1px solid #B48700;
 	border-bottom: 1px solid #B48700;
 	background-color: #e4f7ff;
+	font-size: 85%;
 }
 
 .filterSection a:link

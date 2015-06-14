@@ -42,6 +42,7 @@
 <div class="filterSection">
 
 <!-- === MODE : ALL / BORROW / TAKE-AWAY === -->
+<div>
 @if ($currentMode == 'all')
 	<b>all</b>
 @else
@@ -59,10 +60,12 @@
 @else
 	<a href={{ URL::route('browse', array('take-away',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>To Take Away</a>
 @endif
+</div>
 
 <!-- === LOCATION === -->
+
 @if ($locations)
-<br/>
+<div>
 Location: 
 	@if ($currentLocation != 'all')
 		<a href={{ URL::route('browse', array($currentMode,'all',$currentLanguageLinkValue,$currentCategoryLinkValue))}}>
@@ -81,13 +84,15 @@ Location:
 			<b>{{{ $location->Location }}}</b>
 		@endif
 	@endforeach
+</div>
 @endif
+
 <!--<br/>
 Showing: <b>{{{ $currentLocation }}}</b><br/>-->
 
 <!-- --- LANGUAGE --- -->
 @if ($languages)
-<br/>
+<div>
 Language: 
 	@if ($currentLanguage != 'all')
 		<a href={{ URL::route('browse', array($currentMode,$currentLocationLinkValue,'all',$currentCategoryLinkValue))}}>
@@ -106,11 +111,12 @@ Language:
 			<b>{{{ $language->LanguageEnglish }}}</b>
 		@endif
 	@endforeach
+</div>
 @endif
 
 <!-- --- CATEGORY --- -->
-<br/>
 @if ($categories)
+<div>
 Category: 
 	@if ($currentCategory != 'all')
 		<a href={{ URL::route('browse', array($currentMode,$currentLocationLinkValue,$currentLanguageLinkValue,'all'))}}>
@@ -129,6 +135,7 @@ Category:
 			<b>{{{ $category->Category }}}</b>
 		@endif
 	@endforeach
+</div>
 @endif
 </div>
 <!-- --- END BROWSE FILTER SECTION --- -->
