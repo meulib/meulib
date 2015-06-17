@@ -10,6 +10,22 @@ class Language extends Eloquent {
 		return $this->hasMany('FlatBook', 'Language1ID', 'ID');
 	}
 
+	public static function getAllLanguages()
+	{
+		$cacheKey = Config::get('app.cacheKeys')['allLanguages'];
+		if (Cache::has($cacheKey))
+		{
+			return Cache::get($cacheKey);
+		}
+		else
+		{
+			$languages = self::orderBy('LanguageEnglish')
+                                ->get();
+			Cache::forever($cacheKey,$languages);
+			return $languages;
+		}
+	}
+
 	/*
 	public static function havingBooks()
 	{
