@@ -434,6 +434,27 @@ class FlatBook extends Eloquent {
 
 	// ------------------- RETRIEVE FUNCTIONS --------------
 
+	public static function getAllBooks()
+	{
+		$cacheKey = Config::get('app.cacheKeys')['allBooks'].Input::get('page');
+		if (Cache::has($cacheKey))
+		{
+			Log::debug('from cacheKey '.$cacheKey);
+			return Cache::get($cacheKey);
+		}
+		else
+		{
+			Log::debug('from db '.$cacheKey);
+			$paginationItemCount = Config::get('view.pagination-itemcount');
+			$result = self::checked()
+                            ->orderBy('updated_at','desc')
+                            ->orderBy('Title', 'asc')
+                            ->paginate($paginationItemCount);
+			Cache::put($cacheKey,$result,60);
+			return $result;
+		}
+	}
+
 	public static function filtered($mode='all',$LocationID=0,$LanguageID=0,$CategoryID=0)
 	{
         $books = NULL;

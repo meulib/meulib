@@ -28,8 +28,7 @@ class BookController extends BaseController
         }
 
         // --------------- get the languages ---------------
-        $languages = Language::orderBy('LanguageEnglish')
-                                ->get();
+        $languages = Language::getAllLanguages();
         // set current language
         $currentLanguage = false;
         //$currentLanguage = $languages->find($language);
@@ -51,8 +50,7 @@ class BookController extends BaseController
         }
 
         // ----------------- get the categories ------------------
-        $categories = Category::orderBy('Category')
-                                ->get();
+        $categories = Category::getAllCategories();
         // set current category
         $currentCategory = false;
         $currentCategory = $categories->filter(function($thisCategory) use ($category)
@@ -77,9 +75,10 @@ class BookController extends BaseController
 
         $books = null;
         if (($mode == 'all') && ($location == 'all') && ($language == 'all') && ($category == 'all'))
+            // $books = FlatBook::getAllBooks();
             $books = FlatBook::checked()
+                            ->orderBy('updated_at','desc')
                             ->orderBy('Title', 'asc')
-                            ->orderBy('Author1', 'asc')
                             ->paginate($paginationItemCount);
         else
             $books = FlatBook::filtered($mode,$cLocationID,$cLanguageID,$cCategoryID);

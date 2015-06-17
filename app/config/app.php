@@ -237,5 +237,9 @@ return array(
 
 	'cacheKeys' => array("flatBook"=>"flatBook_",
 		"bookCategories"=>'bookCategories_',
-		"bookCopies"=>'bookCopies_')
+		"bookCopies"=>'bookCopies_',
+		'allBooksLocations'=>'allBooksLocations',
+		'allLanguages'=>'allLanguages',
+		'allCategories'=>'allCategories',
+		'allBooks'=>'allBooksPage_')
 );

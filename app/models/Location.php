@@ -18,10 +18,20 @@ class Location extends Eloquent {
 
 	public static function havingBooks()
 	{
-		return Location::has('BookCopies')
+		$cacheKey = Config::get('app.cacheKeys')['allBooksLocations'];
+		if (Cache::has($cacheKey))
+		{
+			return Cache::get($cacheKey);
+		}
+		else
+		{
+			$locations = Location::has('BookCopies')
 						->orderBy('Country','asc')
 						->orderBy('Location', 'asc')						
 						->get();
+			Cache::put($cacheKey,$locations,60);
+			return $locations;
+		}
 	}
 
 	public static function newUserLocationID($city, $state, $country)
