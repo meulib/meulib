@@ -506,8 +506,8 @@ class FlatBook extends Eloquent {
 
 		$paginationItemCount = Config::get('view.pagination-itemcount');
 
-		$books = $books->orderBy('Title', 'asc')
-            ->orderBy('Author1', 'asc')
+		$books = $books->orderBy('updated_at','desc')
+                            ->orderBy('Title', 'asc')
 			->paginate($paginationItemCount);
 
 		/*$queries = DB::getQueryLog();
