@@ -436,6 +436,7 @@ class FlatBook extends Eloquent {
 
 	public static function getAllBooks()
 	{
+		// Cache::flush();
 		$cacheKey = Config::get('app.cacheKeys')['allBooks'].Input::get('page');
 		if (Cache::has($cacheKey))
 		{
@@ -450,8 +451,13 @@ class FlatBook extends Eloquent {
                             ->orderBy('updated_at','desc')
                             ->orderBy('Title', 'asc')
                             ->paginate($paginationItemCount);
-			Cache::put($cacheKey,$result,60);
-			return $result;
+            // pagination object cannot be saved to cache - cannot serialize closure
+            // hence breaking data (getItems) and the html of pagination links
+            // to save in cache
+            $result1['data'] = $result->getItems();
+            $result1['paginationLinks'] = (string) $result->links();
+			Cache::put($cacheKey,$result1,60);
+			return $result1;
 		}
 	}
 
