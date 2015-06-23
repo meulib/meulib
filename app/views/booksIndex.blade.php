@@ -31,7 +31,9 @@
 	else
 		$currentCategoryLinkValue = $currentCategory->Category;
 
-	$bookCount = $books->count();
+	// var_dump($books);
+	// $bookCount = 2;
+	$bookCount = count($books['data']);
 ?>
 
 @section('title', 'Browse Collection: ')
@@ -140,19 +142,6 @@ Category:
 </div>
 <!-- --- END BROWSE FILTER SECTION --- -->
 
-<!--
-@if (!$loggedIn)
-	<form action={{URL::to('/signup-or-login')}}>
-		{{ Form::submit('Become a Member', 
-			array('class' => 'richButton',
-			'name'=>'btnMember')); }}
-		{{ Form::submit('Login', 
-			array('class' => 'normalButton',
-			'name'=>'btnLogin')); }} to request books to borrow, to add your own books to lend.
-	</form>	
-@endif
--->
-
 @if ($tMsg[1]!="")
 	<p align='center'>
 		<span style="border:2px solid blue;padding:4px;background-color:LemonChiffon">
@@ -164,9 +153,9 @@ Category:
 <!-- --- BOOK LISTING --- -->
 
 @if ($bookCount > 0)
-	{{ $books->links() }}
+	{{ $books['paginationLinks'] }}
 	<br/>
-		@foreach($books as $book)
+		@foreach($books['data'] as $book)
 			<div class="bookMat">
 				<a href={{  URL::route('single-book', array($book->ID))}}>
 				@if (strlen($book->CoverFilename)>0)
@@ -207,7 +196,7 @@ Category:
 		@endforeach
 	<br/>
 	<br/>
-	{{ $books->links() }}
+	{{ $books['paginationLinks'] }}
 	<br/>
 @else
 		No books found in Location <b>{{$currentLocationLinkValue}}</b> in Language <b>{{$currentLanguageLinkValue}}</b> of Category <b>{{$currentCategoryLinkValue}}</b>

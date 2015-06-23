@@ -75,11 +75,11 @@ class BookController extends BaseController
 
         $books = null;
         if (($mode == 'all') && ($location == 'all') && ($language == 'all') && ($category == 'all'))
-            // $books = FlatBook::getAllBooks();
-            $books = FlatBook::checked()
-                            ->orderBy('updated_at','desc')
-                            ->orderBy('Title', 'asc')
-                            ->paginate($paginationItemCount);
+            $books = FlatBook::getAllBooks();
+            // $books = FlatBook::checked()
+            //                 ->orderBy('updated_at','desc')
+            //                 ->orderBy('Title', 'asc')
+            //                 ->paginate($paginationItemCount);
         else
             $books = FlatBook::filtered($mode,$cLocationID,$cLanguageID,$cCategoryID);
         
