@@ -520,7 +520,10 @@ class FlatBook extends Eloquent {
 		$last_query = end($queries);
 		var_dump($last_query);*/
 
-		return $books;
+		$booksData['data'] = $books->getItems();
+		$booksData['paginationLinks'] = (string) $books->links();
+
+		return $booksData;
 	}
 
 
