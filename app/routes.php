@@ -186,6 +186,12 @@ Route::group(array('before' => 'admin'), function()
         echo 'ok you have access to admin functionality';
     });
 
+    Route::get('/admin/clear-cache', function()
+	{
+		Cache::flush();
+		echo 'cache flushed';
+	});
+
     Route::get('/admin/add-book', 'BookController@getAdminAddBook');
     //Route::post('add-book', 'BookController@addBook');
 

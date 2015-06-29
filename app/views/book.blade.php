@@ -24,7 +24,7 @@
 @section('title', $book->Title.': '.$book->Author1.': ')
 
 @section('content')
-<div class='contentDiv'>
+<div class='contentDiv' style="width:100%">
 
 @if (!$loggedIn)
 	<form action={{URL::to('/signup-or-login')}}>
@@ -35,7 +35,7 @@
 			array('class' => 'normalButton',
 			'name'=>'btnLogin')); }} to request this book.
 	</form>	
-	<br/><br/>
+	
 @endif
 
 @if ($tMsg[1]!="")
@@ -48,7 +48,7 @@
 @endforeach
 </ul>
 
-<div style="display:inline-block" id="bookDisplay">
+<div id="bookDisplay">
 	@if (strlen($book->CoverFilename)>0)
 		{{ HTML::image('images/book-covers/'.$book->CoverFilename, '', array('height' => '200','style'=>'float: left; margin-right: 15px;')) }}
 	@endif
@@ -122,23 +122,22 @@
 <div>
 <br/>
 Book Copies ({{{count($copies)}}})
-<br/><br/>
+<br/>
 <b>Owners</b><br/>
 @foreach($copies as $bCopy)
 	<a href={{ URL::route('user-books', array($bCopy->Owner->Username))}}>
 	{{{$bCopy->Owner->FullName.': '}}}</a>
 	in 
-	{{{$bCopy->Owner->City.', '.$bCopy->Owner->Locality}}}<br/>
+	{{{$bCopy->Owner->City.' ('.$bCopy->Owner->Locality.'), '.$bCopy->Owner->Country}}}<br/>
 	@if ($bCopy->ForGiveAway)
 		For Give-Away
 	@else
 		For Lending
 	@endif
-	<br/>
-	Status: {{ $bCopy->StatusTxt() }}
+	| Status: {{ $bCopy->StatusTxt() }}
 	@if ($loggedIn)
 		@if ($bCopy->Owner->UserID != $loggedInUser->UserID)
-			<br/>
+			| 
 			<?php 
 				if ($bCopy->ForGiveAway)
 					$requestText = "Request to Take Away";
@@ -148,23 +147,32 @@ Book Copies ({{{count($copies)}}})
 			?>
 			{{ HTML::link('#',$requestText, ['onclick'=>$onclick]); }}
 			@include('templates.requestBookForm')
-		@else {{-- USER's OWN BOOK --}}
+		@else
 			@if ($bCopy->StatusTxt() == 'Lent Out')
 				{{ 'on '.$bCopy->niceLentOutDt().'. '.$bCopy->daysAgoLentOut().' days ago'}}
 			@endif
-			<br/>
+		@endif
+	@endif
+	@if (strlen($bCopy->OwnersComment)>0)
+	<br/>
+	Owner's comment: <i>{{nl2br($bCopy->OwnersComment)}}
+	@endif
+	@if (strlen($bCopy->ShelfCode)>0)
+	<br/>
+	Shelf Code: <i>{{$bCopy->ShelfCode}}
+	@endif
+	@if ($loggedIn)
+		@if ($bCopy->Owner->UserID == $loggedInUser->UserID)
 			{{ Form::open(array('route' => 'edit-bookcopy','id'=>'formEditBookCopySettings'.$bCopy->ID)) }}
 			<?php $submitEditBookCopy = "document.getElementById('formEditBookCopySettings".$bCopy->ID."').submit();"; ?>
 			{{ Form::hidden('bookID',$book->ID) }}
 			{{ Form::hidden('bookCopyID',$bCopy->ID)}}
 			@if ($bCopy->ForGiveAway)			
-				For Give Away
 				<span class="subtleActionLink">
 				{{ HTML::link('#','Switch to For Lending', ['onclick'=>$submitEditBookCopy]) }}
 				</span>
 				{{ Form::hidden('ForGiveAway',0)}}
 			@else
-				For Lending
 				<span class="subtleActionLink">
 				{{ HTML::link('#','Switch to For Give Away', ['onclick'=>$submitEditBookCopy]) }}
 				</span>
@@ -174,7 +182,6 @@ Book Copies ({{{count($copies)}}})
 			{{"<div id='editBookCopy".$bCopy->ID."' style='display:none'>"}}
 				@include('templates.editBookCopy')
 			{{"</div>"}}
-			<br/>
 			<?php $onclick = "showPostDiv('".$bCopy->ID."','".$deleteFormURL."')"; ?>
 			<span class="aTreadCarefully">{{ HTML::link('#','Delete This Copy', ['onclick'=>$onclick]) }}</span>
 			{{"<div id='postDiv".$bCopy->ID."' style='display:none;' class='carefulDiv'></div>"}}

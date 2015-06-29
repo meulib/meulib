@@ -11,7 +11,8 @@
 
 	$appName = Config::get('app.name');
 	$whatsNew = Config::get('app.whatsnew');
-	$randomPromo = rand(1,5);
+	//$randomPromo = rand(1,6);
+	$randomPromo = 5;
 ?>
 
 @section('content')
@@ -83,9 +84,14 @@
 			{{ HTML::image('images/promo/directLending.png','',array('style'=>'max-width:100%')) }}
 		@endif
 		@if ($randomPromo == 5)
-			Looks like Piku is inundated. Are you too?<br/>
-			Give away books you no longer want.<br/>
-			{{ HTML::image('images/promo/pikuFB.jpg','',array('width'=>600,'style'=>'max-width:100%')) }}
+			Inundated with books? Give away the ones you no longer want.<br/>
+			{{ HTML::image('images/promo/pikuFB.jpg','',array('width'=>600,'style'=>'max-width:100%')) }}<br/>
+			<span style="font-size:80%">Image taken from the movie "Piku".</span>
+		@endif
+		@if ($randomPromo == 6)
+			What a book means to us. Word-o-graphic <a href="https://www.facebook.com/groups/meulib" target="_blank">co-created by 
+			MeULib members and others</a>.<br/>
+			{{ HTML::image('images/promo/book-word-vis.png','',array('width'=>600,'style'=>'max-width:100%')) }}
 		@endif
 		</div>
 	</div>
