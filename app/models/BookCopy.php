@@ -73,6 +73,26 @@ class BookCopy extends Eloquent {
 				});
 	}
 
+	public static function myBorrowedBooks($borrowerID)
+	{
+		$booksIDs = DB::table('transactions_active')
+						->select('ItemCopyID')
+						->distinct()
+						->where('Borrower','=',$borrowerID)
+						->where('Status','=',Transaction::tStatusByKey('T_STATUS_LENT'))
+						->lists('ItemCopyID');
+		if (!empty($booksIDs))
+		{
+			$bookCopies = BookCopy::whereIn('ID',$booksIDs)
+						->with('Book')
+						->orderBy('LentOutDt', 'desc')
+						->get();
+			return $bookCopies;
+		}
+		else
+			return false;
+	}
+
 	// force delete = true aborts transactions if any exist
 	// force delete = false prevents delete if transactions exist
 	// if no active transactions exist, force delete false and true

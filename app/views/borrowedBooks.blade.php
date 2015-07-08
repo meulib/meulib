@@ -5,8 +5,6 @@
 	$loggedIn = false;
 	if (Session::has('loggedInUser'))
 		$loggedIn = true;
-	$pendingReqURL = URL::to('pendingRequests');
-	$returnForm = URL::to('returnForm');
 	$tMsg = ["",""];
 	if (Session::has('TransactionMessage'))
 	{
@@ -35,25 +33,24 @@
 	</p>
 @endif
 <ul>
-@if ($books)
-	@foreach($books as $book)
+@if ($bookCopies)
+	@foreach($bookCopies as $bookCopy)
 		<li>
-			<a href={{  URL::action('BookController@showSingle', array($book->ID))}}>
-			{{{ $book->Title }}}
-			@if ($book->SubTitle)
-				{{{ ": ".$book->SubTitle }}}
+			<a href={{  URL::action('BookController@showSingle', array($bookCopy->Book->ID))}}>
+			{{{ $bookCopy->Book->Title }}}
+			@if ($bookCopy->Book->SubTitle)
+				{{{ ": ".$bookCopy->Book->SubTitle }}}
 			@endif
 			</a>
-			@if ($book->Author1)
-				{{{ "&nbsp;by ".$book->Author1 }}}
+			@if ($bookCopy->Book->Author1)
+				{{{ "&nbsp;by ".$bookCopy->Book->Author1 }}}
 			@endif
-			@if ($book->Author2)
-				{{{ ", ".$book->Author2 }}}
+			@if ($bookCopy->Book->Author2)
+				{{{ ", ".$bookCopy->Book->Author2 }}}
 			@endif
 			<br/>
-			@foreach($book->Copies as $copy)
-				{{{$copy->StatusTxt()}}} 
-			@endforeach
+			{{{$bookCopy->StatusTxt()}}} 
+			{{ 'on '.$bookCopy->niceLentOutDt().'. '.$bookCopy->daysAgoLentOut().' days ago'}}
 			<br/><br/>			
 	@endforeach
 @else

@@ -100,9 +100,9 @@ class BookController extends BaseController
                 return Redirect::to(URL::to('/'));
 
         $borrowerID = Session::get('loggedInUser')->UserID;
-        $books = FlatBook::myBorrowedBooks($borrowerID);
+        $bookCopies = BookCopy::myBorrowedBooks($borrowerID);
 
-        return View::make('borrowedBooks',array('books' => $books));
+        return View::make('borrowedBooks',array('bookCopies' => $bookCopies));
     }
 
     public function showSingle($bookId = null)

@@ -18,7 +18,7 @@
 // 	        ]);
 // echo 'migration done';
 
-// Artisan::call('up');
+//Artisan::call('up');
 // echo 'maintenance ended';
 
 // -------- APP ROUTES --------------------------
