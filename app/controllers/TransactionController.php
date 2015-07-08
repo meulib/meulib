@@ -18,7 +18,9 @@ class TransactionController extends BaseController
         }
         catch (Exception $e)
         {
+            // Session::put('TransactionMessage',['RequestBook','There was some error. Request not sent. '.$e->getMessage()]);
             Session::put('TransactionMessage',['RequestBook','There was some error. Request not sent.']);
+            return Redirect::to(URL::previous());
         }        
 
         if ($tranID > 0)

@@ -11,8 +11,8 @@
 
 	$appName = Config::get('app.name');
 	$whatsNew = Config::get('app.whatsnew');
-	//$randomPromo = rand(1,6);
-	$randomPromo = 5;
+	$randomPromo = rand(1,6);
+	//$randomPromo = 5;
 ?>
 
 @section('content')

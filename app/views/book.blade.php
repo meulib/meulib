@@ -70,7 +70,7 @@
 		@foreach($bookCategories as $bCategory)
 			{{$firstCategory?', ':''}}
 			<?php $firstCategory = true; ?>
-			{{$bCategory->Category}}
+			<a href="{{URL::route('browse',['all','all','all',$bCategory->Category])}}">{{$bCategory->Category}}</a>
 		@endforeach
 		<br/><br/>
 	@endif
