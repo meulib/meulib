@@ -115,7 +115,7 @@ class BookCopy extends Eloquent {
 			$bookItself->FullTitle() . " : " . $bookItself->Author1 . " : " .
 			$user->UserID . " : " . $user->FullName;
 
-		// figure out of transactions are to be aborted
+		// figure out if transactions are to be aborted
 		$abortTransactions = false;
 		$activeTransactions = Transaction::itemCopy($this->ID)->get();
 		if (count($activeTransactions) > 0)
@@ -203,6 +203,9 @@ class BookCopy extends Eloquent {
 		{
 			return array('success'=>false,'error'=>$e->getMessage());
 		}
+
+		// clear cache for this book
+		$this->Book->clearCachedCopies();
 		return array('success' => true, 'Book Copy setting changed.');
 	}
 
