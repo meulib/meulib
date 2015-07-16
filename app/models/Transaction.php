@@ -256,6 +256,9 @@ class Transaction extends Eloquent {
 		$subject = 'Book Lent';
 		Postman::mailToAdmin($subject,$bodyText);
 
+		// clear cache for this book
+		$itemCopy->Book->clearCachedCopies();
+
 		return $tran->ID;
 
 	}
@@ -349,6 +352,9 @@ class Transaction extends Eloquent {
 		$subject = 'Book Lent';
 		Postman::mailToAdmin($subject,$bodyText);
 
+		// clear cache for this book
+		$itemCopy->Book->clearCachedCopies();
+
 		return [$tranID];
 	}
 
@@ -436,6 +442,9 @@ class Transaction extends Eloquent {
 					$toUser->FullName;
 		$subject = 'Book Given Away';
 		Postman::mailToAdmin($subject,$bodyText);
+
+		// clear cache for this book
+		$itemCopy->Book->clearCachedCopies();
 
 		return array('success' => true, 'msg' => 'Book given away');
 
@@ -571,6 +580,9 @@ class Transaction extends Eloquent {
 			Postman::mailToAdmin($subject,$bodyText);
   		}
 
+  		// clear cache for this book
+  		$itemCopy->Book->clearCachedCopies();
+
 		return array('success' => true, 'msg' => 'Book given away'.$mailResult);
 	}
 
@@ -632,6 +644,9 @@ class Transaction extends Eloquent {
 					$itemCopy->Owner->FullName;
 		$subject = 'Book Returned';
 		Postman::mailToAdmin($subject,$bodyText);
+
+		// clear cache for this book
+		$itemCopy->Book->clearCachedCopies();
 
 		return $tranID;
 	}
