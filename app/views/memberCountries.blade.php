@@ -7,7 +7,8 @@
 @section('content')
 
 <div class="contentDiv" style="text-align:center">
-
+<b>{{ HTML::link(URL::route('founders'), 'Founding Members')}}</b>
+<br/><br/>
 <div class="pageTitle">All Members</div>
 
 <!-- === COUNTRY LISTING === -->
@@ -23,7 +24,7 @@
 	@endforeach
 @endif
 <br/><br/>
-<b>{{ HTML::link(URL::route('founders'), 'Founding Members')}}</b>
+
 </div>
 
 @stop

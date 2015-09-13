@@ -11,7 +11,7 @@
 
 	$appName = Config::get('app.name');
 	$whatsNew = Config::get('app.whatsnew');
-	$randomPromo = rand(1,6);
+	$randomPromo = rand(1,7);
 	//$randomPromo = 5;
 ?>
 
@@ -92,6 +92,12 @@
 			What a book means to us. Word-o-graphic <a href="https://www.facebook.com/groups/meulib" target="_blank">co-created by 
 			MeULib members and others</a>.<br/>
 			{{ HTML::image('images/promo/book-word-vis.png','',array('width'=>600,'style'=>'max-width:100%')) }}
+		@endif
+		@if ($randomPromo == 7)
+			<a href="http://meulib.com/blog/books-depreciate/">
+			<img src="http://meulib.com/blog/wp-content/uploads/2015/08/cars-books-veg2-825x510.png" width=600 style="max-width:100%" /><br/>
+			The MeULib Blog's September post.
+			</a>
 		@endif
 		</div>
 	</div>

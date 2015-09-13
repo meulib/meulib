@@ -39,7 +39,8 @@
             {{($currentRoute=='browse' ? "<span class='currentPageHighlighter'>Books</span>" : HTML::link(URL::route('browse'), 'Books'))}} | 
             {{(($currentRoute=='member-browse') || ($currentRoute=='founders') ? "<span class='currentPageHighlighter'>Members</span>" : HTML::link(URL::route('member-browse'), 'Members'))}} | 
             {{HTML::link('https://www.facebook.com/groups/meulib', 'Forum',['target'=>'_blank'])}} | 
-            {{($currentRoute=='how-it-works' ? "<span class='currentPageHighlighter'>How It Works</span>" : HTML::link(URL::route('how-it-works'), 'How It Works'))}} 
+            {{HTML::link('http://meulib.com/blog', 'Blog',['target'=>'_blank'])}} <!-- | 
+            {{($currentRoute=='how-it-works' ? "<span class='currentPageHighlighter'>How It Works</span>" : HTML::link(URL::route('how-it-works'), 'How It Works'))}} -->
         @if ($loggedInUser)
             &nbsp;||&nbsp;
             {{(($currentRoute=='user-books') && (Request::is('*'.$user->Username.'*')) ? "<span class='currentPageHighlighter'>MyBooks</span>" : HTML::link(URL::to('/'.$user->Username), 'MyBooks'))}} | 
