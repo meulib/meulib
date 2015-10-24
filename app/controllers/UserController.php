@@ -226,7 +226,7 @@ class UserController extends BaseController
         if ($result[0])
             return View::make('signupSubmit');
         else
-            return Redirect::to(URL::previous())->withErrors([$result[1]]);;
+            return Redirect::to(URL::previous())->withErrors([$result[1]]);
     }
 
     // display founding members

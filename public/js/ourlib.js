@@ -10,6 +10,15 @@ function showDiv(divid)
 	shownDiv = divid;
 }
 
+function showDivTable(divid)
+{
+    if (shownDiv != "")
+        document.getElementById(shownDiv).style.display = "none";
+
+    document.getElementById(divid).style.display = "table";
+    shownDiv = divid;
+}
+
 // to show divs where content will come from a post
 // ajax call
 function showPostDiv(id,callURL)

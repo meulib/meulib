@@ -53,15 +53,17 @@
 		{{ HTML::image('images/book-covers/'.$book->CoverFilename, '', array('height' => '200','style'=>'float: left; margin-right: 15px;')) }}
 	@endif
 
-	<b>{{{$title}}}</b><br/>
+	<h3>{{{$title}}}</h3>
 	@if ($book->Author1)
+		<b>
 		{{{ $book->Author1 }}}
 		@if ($book->Author2)
 			{{{ ", ".$book->Author2 }}}
 			 (Authors)
 		@else
 			  (Author)
-		@endif		
+		@endif
+		</b>		
 	@endif
 	<br/><br/>
 	@if (count($bookCategories)>0)
@@ -123,43 +125,85 @@
 <br/>
 Book Copies ({{{count($copies)}}})
 <br/>
-<b>Owners</b><br/>
+<h2>Owners</h2>
 @foreach($copies as $bCopy)
-	<a href={{ URL::route('user-books', array($bCopy->Owner->Username))}}>
+	<h3><a href={{ URL::route('user-books', array($bCopy->Owner->Username))}}>
 	{{{$bCopy->Owner->FullName.': '}}}</a>
 	in 
-	{{{$bCopy->Owner->City.' ('.$bCopy->Owner->Locality.'), '.$bCopy->Owner->Country}}}<br/>
-	@if ($bCopy->ForGiveAway)
-		For Give-Away
-	@else
-		For Lending
-	@endif
-	| Status: {{ $bCopy->StatusTxt() }}
-	@if ($loggedIn)
-		@if ($bCopy->Owner->UserID != $loggedInUser->UserID)
-			| 
-			<?php 
-				if ($bCopy->ForGiveAway)
-					$requestText = "Request to Take Away";
-				else
-					$requestText = "Request to Borrow";
-				$onclick = "showDiv('requestBook".$bCopy->ID."')"; 
-			?>
-			{{ HTML::link('#',$requestText, ['onclick'=>$onclick]); }}
-			@include('templates.requestBookForm')
-		@else
-			@if ($bCopy->StatusTxt() == 'Lent Out')
-				{{ 'on '.$bCopy->niceLentOutDt().'. '.$bCopy->daysAgoLentOut().' days ago'}}
+	{{{$bCopy->Owner->City.' ('.$bCopy->Owner->Locality.'), '.$bCopy->Owner->Country}}}</h3>
+	@if ($book->ID == Config::get('ourlib.womens-bodies-bookid'))
+		<table class="rateTable">
+			<thead><td></td><td>Your cost</td>
+				<td>
+					You save approx.<br/>
+					<span style="font-size:80%">(compared to purchasing)<span>
+				</td></thead>
+			@if ($loggedIn)
+				@if ($bCopy->Owner->LocationID == $loggedInUser->LocationID)
+					@include('templates.borrowerCollectsRow')
+					@include('templates.ownerDeliversRow')
+				@else
+					@include('templates.ownerPostsRow')
+				@endif
+			@else
+				@include('templates.borrowerCollectsRow')
+				@include('templates.ownerDeliversRow')
+				@include('templates.ownerPostsRow')
 			@endif
+		</table>
+		@include('templates.borrowerCollectsInfo')
+		@include('templates.ownerDeliversInfo')
+		@include('templates.ownerPostsInfo')
+		<br/>
+	@else
+		@if ($bCopy->Owner->fDeliveryService)
+			<b>Owner will deliver within {{$bCopy->Owner->City}}
+			@if ($bCopy->Owner->WithinCityDeliveryRate > 0)
+				for Rs. {{$bCopy->Owner->WithinCityDeliveryRate}}
+			@endif</b>
+			<br/>
+		@endif
+		@if ($bCopy->Owner->fLendToOtherCities)
+			<b>Owner will post book within {{$bCopy->Owner->Country}}
+			@if ($bCopy->PostingRate > 0)
+				for Rs. {{$bCopy->PostingRate}}
+			@endif</b>
+			<br/>
 		@endif
 	@endif
+	<div>
+		@if ($bCopy->ForGiveAway)
+			For Give-Away
+		@else
+			For Lending
+		@endif
+		| Status: {{ $bCopy->StatusTxt() }}
+		@if ($loggedIn)
+			@if ($bCopy->Owner->UserID != $loggedInUser->UserID)
+				| 
+				<?php 
+					if ($bCopy->ForGiveAway)
+						$requestText = "<b>Request to Take Away</b>";
+					else
+						$requestText = "<b>Request to Borrow</b>";
+					$onclick = "showDivTable('requestBook".$bCopy->ID."')"; 
+				?>
+				<a href="#" onclick="{{$onclick}}">{{$requestText}}</a>
+				@include('templates.requestBookForm')
+			@else
+				@if ($bCopy->StatusTxt() == 'Lent Out')
+					{{ 'on '.$bCopy->niceLentOutDt().'. '.$bCopy->daysAgoLentOut().' days ago'}}
+				@endif
+			@endif
+		@endif
+	</div>
 	@if (strlen($bCopy->OwnersComment)>0)
-	<br/>
-	Owner's comment: <i>{{nl2br($bCopy->OwnersComment)}}
+		<br/>
+		<b>Owner's comment:</b> <span style="color:blue">{{nl2br($bCopy->OwnersComment)}}</span>
 	@endif
 	@if (strlen($bCopy->ShelfCode)>0)
-	<br/>
-	Shelf Code: <i>{{$bCopy->ShelfCode}}
+		<br/>
+		Shelf Code: <i>{{$bCopy->ShelfCode}}
 	@endif
 	@if ($loggedIn)
 		@if ($bCopy->Owner->UserID == $loggedInUser->UserID)
@@ -194,5 +238,6 @@ Book Copies ({{{count($copies)}}})
 </div>
 
 </div>
+
 @stop
 

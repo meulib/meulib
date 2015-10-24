@@ -11,7 +11,7 @@
 
 	$appName = Config::get('app.name');
 	$whatsNew = Config::get('app.whatsnew');
-	$randomPromo = rand(1,7);
+	$randomPromo = rand(1,9);
 	//$randomPromo = 5;
 ?>
 
@@ -60,7 +60,7 @@
 		</p-->
 		<!-- blockquote class="twitter-tweet" data-partner="tweetdeck"><p lang="en" dir="ltr">Looks like <a href="https://twitter.com/hashtag/Piku?src=hash">#Piku</a> is inundated. Are you too?&#10;Give away books you no longer want on <a href="http://t.co/KEDcFfBxth">http://t.co/KEDcFfBxth</a> <a href="http://t.co/KKRskLAuai">pic.twitter.com/KKRskLAuai</a></p>&mdash; Meulib (@meulib) <a href="https://twitter.com/meulib/status/595796037199110144">May 6, 2015</a></blockquote>
 		<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script -->
-		<div style="max-width:100%;text-align:center">
+		<div style="max-width:100%;text-align:center;font-size:120%;font-weight:bold">
 		@if ($randomPromo == 1)
 			<a href={{ URL::to('/how-it-works-owner') }}>
 			{{ HTML::image('images/howitworks/o1.png','',array('width'=>287, 'height'=>246,
@@ -96,7 +96,21 @@
 		@if ($randomPromo == 7)
 			<a href="http://meulib.com/blog/books-depreciate/">
 			<img src="http://meulib.com/blog/wp-content/uploads/2015/08/cars-books-veg2-825x510.png" width=600 style="max-width:100%" /><br/>
-			The MeULib Blog's September post.
+			<b>The MeULib Blog's September post.</b>
+			</a>
+		@endif
+		@if ($randomPromo == 8)
+			<a href="http://meulib.com/blog/books-on-our-journey-post/">
+				<b>Here I was, reading the gripping Alistair Maclean novel ...</b><br/>
+			<img src="http://meulib.com/blog/wp-content/uploads/2015/09/st8-825x510.jpg" width=600 style="max-width:100%" /><br/>
+			
+			</a>
+		@endif
+		@if ($randomPromo == 9)
+			<a href="http://meulib.com/blog/books-on-our-journey-post/">
+				<b>Launching the Books On Our Journey article series ...</b><br/>
+			<img src="http://meulib.com/blog/wp-content/uploads/2015/09/st8-825x510.jpg" width=600 style="max-width:100%" /><br/>
+			
 			</a>
 		@endif
 		</div>
