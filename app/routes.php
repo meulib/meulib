@@ -157,6 +157,11 @@ Route::get('/faq', array('as' => 'faq', function()
 	return View::make('faq');
 }));
 
+// Route::get('/delivery-service', array('as' => 'delivery-service', function()
+// {
+// 	return View::make('delivery-service');
+// }));
+
 Route::get('/vision', array('as' => 'vision', function()
 {
 	return View::make('vision');
