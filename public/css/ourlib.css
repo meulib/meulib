@@ -278,23 +278,14 @@ textarea {
 	color: #5703C5;
 }
 
-.homeLeft
+.homeCenterDiv
 {
-	display:inline-block;
-	/*border-bottom: 1px solid #B48700;*/
-	text-align: left;
-	padding-bottom: 10px;
-	margin-bottom:1px;
+	display:table;
+	margin:0 auto;
+	text-align:center;
+	padding-bottom:5px;
 }
 
-.homeRight
-{
-	display:inline-block;
-	border-top: 1px solid #B48700;
-	text-align: center;
-	padding-top: 10px;
-	margin-top:1px;
-}
 
 /* to show books in their own rectangle 
 introduced for book cover */
@@ -412,31 +403,6 @@ introduced for book cover */
 		}
 }
 
-/* only for Home */
-@media (min-width: 810px) {
-	.homeRight
-	{
-		display:inline-block;
-		border-top: 0;
-		border-left: 1px solid #B48700;
-		margin-top: 0;
-		margin-left:1px;
-		padding-top: 0;
-		padding-left:40px;
-	}
-
-	.homeLeft
-	{
-		display:inline-block;
-		vertical-align: top; 
-		border-bottom: 0;
-		margin-bottom: 0;
-		margin-right:1px;
-		padding-bottom: 0;
-		padding-right:40px;
-	}
-}
-
 /* all large */
 @media (min-width: 600px) {
 	.topLinks
@@ -449,6 +415,11 @@ introduced for book cover */
 		text-align:right;
 		width: 60%;
 		display: block;
+	}
+
+	#homeLoginSignupButtons
+	{
+		display: none;
 	}
 }
 
