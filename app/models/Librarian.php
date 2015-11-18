@@ -18,12 +18,16 @@ class Librarian {
 			asc limit 0,30";
 		$searchResult = DB::select($sql,
 			array('term1'=>$searchTerm,'term2'=>$searchTerm));
+		// var_dump($searchResult);
+		
 
 		// retrieve only ids
 		$bookIDsA = array_map(function($val)
 					{
 					    return $val->EntityID;
 					}, $searchResult);
+		// var_dump($bookIDsA);
+		echo "<br/>";
 
 		if (count($bookIDsA)>0)
 		{
@@ -33,6 +37,7 @@ class Librarian {
 					->whereIn('ID', $bookIDsA)
 					->get()
 					->toArray();
+			// var_dump($books);
 
 			// sort search result by id
 			usort($searchResult, function($a, $b)
@@ -42,6 +47,7 @@ class Librarian {
 					    }
 					    return ($a->EntityID < $b->EntityID) ? -1 : 1;
 					});
+			// var_dump($searchResult);
 
 			// combine book records and search results
 			// so that book records may have search score
@@ -49,14 +55,30 @@ class Librarian {
 			$finalArray = [];
 			foreach ($books as $book) 
 			{
-				if ($book['ID'] == $searchResult[$sIdx]->EntityID)
-				{
-					$finalArray[$bIdx] = $book;
-					$finalArray[$bIdx]['Score'] = $searchResult[$sIdx]->score;
-					$sIdx++;
-					$bIdx++;
-				}
+				$found = true;
+				$x = 0;
+				do {
+					if ($book['ID'] == $searchResult[$sIdx]->EntityID)
+					{
+						$finalArray[$bIdx] = $book;
+						$finalArray[$bIdx]['Score'] = $searchResult[$sIdx]->score;
+						$sIdx++;
+						$bIdx++;
+						$found = true;
+						$x++;
+					}
+					else
+					{
+						//var_dump($book['ID']);
+						//var_dump($searchResult[$sIdx]->EntityID);
+						//echo "<br/>";
+						$sIdx++;
+						$found = false;
+						$x++;
+					}
+				} while((!$found) && ($x < 2));
 			}
+			// var_dump($finalArray);
 
 			// sort book records by search score (or title if score is same)
 			usort($finalArray, function($a, $b)
@@ -114,7 +136,7 @@ class Librarian {
 		if (strlen($newIDsString) > 0)
 		{
 			// insert data abt new books into search tbl
-			$sql = "insert into ".$tblPrefix."search_tbl (EntityID,Phrase,EntityType) select ID,Title,1 from ".$tblPrefix."books_flat where ID in (".$newIDsString.")";
+			$sql = "insert into ".$tblPrefix."search_tbl (EntityID,Phrase,EntityType) select ID, concat(Title,' ',SubTitle,' ',Author1,' ',Author2), 1 from ".$tblPrefix."books_flat where ID in (".$newIDsString.") and deleted_at is not null";
 			// var_dump($sql);
 			$result = DB::statement($sql);
 		}
