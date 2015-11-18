@@ -13,6 +13,7 @@
 	$whatsNew = Config::get('app.whatsnew');
 	$randomPromo = rand(1,9);
 	// $randomPromo = 7;
+	$booksList = array_slice($books['data'], 0, 6);
 ?>
 
 @section('content')
@@ -83,6 +84,32 @@
 		@endif
 		</div>
 	</div>
-	{{-- <b>Recently Added Books</b> --}}
+	<b>Recently Added Books | {{ HTML::link(URL::route('browse'), 'More ... browse by location, language, category') }}</b>
+	<br/>
+	@foreach($booksList as $book)
+		<div class="bookMat">
+			<a href={{  URL::route('single-book', array($book->ID))}}>
+			@if (strlen($book->CoverFilename)>0)
+			{{ HTML::image('images/book-covers/'.$book->CoverFilename, 'a picture', array('height' => '150')) }}<br/>
+			@endif
+			{{{ $book->Title }}}
+			@if ($book->SubTitle)
+				<div class="bookMatSubTitle">
+					{{{ $book->SubTitle }}}
+				</div>
+			@endif
+			</a>
+			@if ($book->Author1)
+				<div class="bookMatAuthor">
+				{{{ $book->Author1 }}}
+				@if ($book->Author2)
+					{{{ ", ".$book->Author2 }}}
+				@endif
+				</div>
+			@endif
+		</div>
+	@endforeach
+	<br/>
+	<b>{{ HTML::link(URL::route('browse'), 'More ... browse by location, language, category') }}</b>
 	</div>
 @stop
