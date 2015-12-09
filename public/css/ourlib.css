@@ -18,7 +18,6 @@ body
 	/*font-size: 120%;*/
 }
 
-/*a {	font-weight: bold; }*/
 
 a:link {
     text-decoration: none;
@@ -284,6 +283,28 @@ textarea {
 	margin:0 auto;
 	text-align:center;
 	padding-bottom:5px;
+}
+
+.searchContainer {
+	display:table;
+	margin:0 auto;
+	background:hsla(197,100%,92%,1);
+	width:95%;
+	max-width:600px;
+	border:1px solid green;
+}
+
+.searchBox {
+	background-color:transparent;
+	border:0;
+	width:92%;
+}
+
+.searchButton {
+	background-color:transparent;
+	border:0;
+	height:30px;
+	float:right;
 }
 
 

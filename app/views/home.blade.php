@@ -17,6 +17,15 @@
 ?>
 
 @section('content')
+	<div class="searchContainer">
+		{{ Form::open(array('action' => 'BookController@search','method'=>'get')) }}
+    	<input type="text" name="s" class="searchBox" placeholder="Search Books" />
+    	{{-- <button style="background-color:transparent;border:0;background:hsla(197,100%,92%,1) url(1447869415_magnifying-glass-search.png) 0 0 no-repeat;width:30px;height:30px;float:right">&nbsp;</button> --}}
+    	{{ Form::submit(' ', 
+				array('class' => 'searchButton',
+					'style' => 'background:hsla(197,100%,92%,1) url(1447869415_magnifying-glass-search.png) 0 0 no-repeat;width:30px;')); }}
+    	{{ Form::close() }}
+	</div>
 	<div class="contentDiv" style="width:100%">
 	<div class="homeCenterDiv" id="homeLoginSignupButtons">
 		<form action={{URL::to('/signup-or-login')}}>
@@ -30,8 +39,7 @@
 			<b>{{HTML::link(URL::to('/how-it-works'), 'How It Works')}}</b>
 		</form>
 	</div>
-	<div class="homeCenterDiv">
-		<div style="max-width:100%;text-align:center;font-size:120%;font-weight:bold">
+	<div class="homeCenterDiv" style="font-size:120%;margin-bottom:5px;font-weight:bold">
 		@if ($randomPromo == 1)
 			<a href={{ URL::to('/how-it-works-owner') }}>
 			{{ HTML::image('images/howitworks/o1.png','',array('width'=>287, 'height'=>246,
@@ -40,7 +48,12 @@
 			See how {{Config::get('app.name')}} works for the book owner</a>
 		@endif
 		@if ($randomPromo == 2)
-			{{HTML::image('images/promo/vision.png','',array('style'=>'max-width:100%'))}}
+			<div class="pageTitle" style="color:green">Vision</div>
+			<span style="font-weight:normal">A self-sustained unlimited public library.<br/>
+						Unlimited in collection, unlimited in locations.<br/>
+						Made possible by Me and You.<br/></span>
+						<b>Because we share!</b>
+			{{-- HTML::image('images/promo/vision.png','',array('style'=>'max-width:100%')) --}}
 		@endif
 		@if ($randomPromo == 3)
 			<a href={{ URL::to('/how-it-works-borrower') }}>
@@ -54,37 +67,36 @@
 		@endif
 		@if ($randomPromo == 5)
 			Inundated with books? Give away the ones you no longer want.<br/>
-			{{ HTML::image('images/promo/pikuFB.jpg','',array('width'=>600,'style'=>'max-width:100%')) }}<br/>
+			{{ HTML::image('images/promo/pikuFB.jpg','',array('width'=>500,'style'=>'max-width:100%')) }}<br/>
 			<span style="font-size:80%">Image taken from the movie "Piku".</span>
 		@endif
 		@if ($randomPromo == 6)
 			What a book means to us. Word-o-graphic <a href="https://www.facebook.com/groups/meulib" target="_blank">co-created by 
 			MeULib members and others</a>.<br/>
-			{{ HTML::image('images/promo/book-word-vis.png','',array('width'=>600,'style'=>'max-width:100%')) }}
+			{{ HTML::image('images/promo/book-word-vis.png','',array('width'=>500,'style'=>'max-width:100%')) }}
 		@endif
 		@if ($randomPromo == 7)
 			<a href="http://meulib.com/blog/books-depreciate/">
-			<img src="http://meulib.com/blog/wp-content/uploads/2015/08/cars-books-veg2-825x510.png" width=600 style="max-width:100%" /><br/>
-			<b>Your books are turning into trash ...</b>
+			<img src="http://meulib.com/blog/wp-content/uploads/2015/08/cars-books-veg2-825x510.png" width=500 style="max-width:100%" /><br/>
+			<b>Something is happening to your books sitting idle ...</b>
 			</a>
 		@endif
 		@if ($randomPromo == 8)
 			<a href="http://meulib.com/blog/books-on-our-journey-post/">
 				<b>Here I was, reading the gripping Alistair Maclean novel ...</b><br/>
-			<img src="http://meulib.com/blog/wp-content/uploads/2015/09/st8-825x510.jpg" width=600 style="max-width:100%" /><br/>
+			<img src="http://meulib.com/blog/wp-content/uploads/2015/09/st8-825x510.jpg" width=500 style="max-width:100%" /><br/>
 			
 			</a>
 		@endif
 		@if ($randomPromo == 9)
 			<a href="http://meulib.com/blog/elated-to-be-a-woman/">
 				<b>Elated To Be A Woman ... Article on the book Women's Bodies Women's Wisdom</b><br/>
-			<img src="http://meulib.com/blog/wp-content/uploads/2015/10/Happy-Day-1200-900-825x510.jpg" width=600 style="max-width:100%" /><br/>
+			<img src="http://meulib.com/blog/wp-content/uploads/2015/10/Happy-Day-1200-900-825x510.jpg" width=500 style="max-width:100%" /><br/>
 			
 			</a>
 		@endif
-		</div>
 	</div>
-	<b>Recently Added Books | {{ HTML::link(URL::route('browse'), 'More ... browse by location, language, category') }}</b>
+	<span style="font-size:120%;font-weight:bold">Recently Added Books | {{ HTML::link(URL::route('browse'), 'More ... browse by location, language, category') }}</span>
 	<br/>
 	@foreach($booksList as $book)
 		<div class="bookMat">

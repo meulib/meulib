@@ -45,23 +45,23 @@
 
 <!-- === MODE : ALL / BORROW / TAKE-AWAY === -->
 <div>
-@if ($currentMode == 'all')
-	<b>all</b>
-@else
-	<a href={{ URL::route('browse', array('all',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>all</a>
-@endif
- | 
-@if ($currentMode == 'borrow')
-	<b>To Borrow</b>
-@else
-	<a href={{ URL::route('browse', array('borrow',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>To Borrow</a>
-@endif
- | 
-@if ($currentMode == 'take-away')
-	<b>To Take Away</b>
-@else
-	<a href={{ URL::route('browse', array('take-away',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>To Take Away</a>
-@endif
+	@if ($currentMode == 'all')
+		<b>all</b>
+	@else
+		<a href={{ URL::route('browse', array('all',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>all</a>
+	@endif
+	 | 
+	@if ($currentMode == 'borrow')
+		<b>To Borrow</b>
+	@else
+		<a href={{ URL::route('browse', array('borrow',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>To Borrow</a>
+	@endif
+	 | 
+	@if ($currentMode == 'take-away')
+		<b>To Take Away</b>
+	@else
+		<a href={{ URL::route('browse', array('take-away',$currentLocationLinkValue,$currentLanguageLinkValue,$currentCategoryLinkValue))}}>To Take Away</a>
+	@endif
 </div>
 
 <!-- === LOCATION === -->
