@@ -286,7 +286,9 @@ class BookController extends BaseController
     {
         $s = Input::get('s');
         $result = Librarian::search($s);
-        var_dump($result);
+        return View::make('searchResults', 
+            array('books'=>$result,
+                'term'=>$s));
     }
 
     

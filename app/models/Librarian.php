@@ -27,12 +27,11 @@ class Librarian {
 					    return $val->EntityID;
 					}, $searchResult);
 		// var_dump($bookIDsA);
-		echo "<br/>";
 
 		if (count($bookIDsA)>0)
 		{
 			// get book records for matching ids
-			$books = FlatBook::select('ID','Title','Author1')
+			$books = FlatBook::select('ID','Title','SubTitle','Author1','Author2','CoverFilename')
 					->orderBy('ID','asc')
 					->whereIn('ID', $bookIDsA)
 					->get()

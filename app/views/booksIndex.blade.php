@@ -181,18 +181,6 @@ Category:
 					</div>
 				@endif
 			</div>
-			<!-- 
-			{{{ $book->Title }}}
-			@if ($book->SubTitle)
-				{{{ ": ".$book->SubTitle }}}
-			@endif
-			</a>
-			@if ($book->Author1)
-				{{{ "&nbsp;by ".$book->Author1 }}}
-			@endif
-			@if ($book->Author2)
-				{{{ ", ".$book->Author2 }}}
-			@endif -->
 		@endforeach
 	<br/>
 	<br/>
