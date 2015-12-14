@@ -63,7 +63,7 @@ Route::get('b/{mode?}/{location?}/{language?}/{category?}',
 	array('as' => 'browse', 'uses' => 'BookController@showAll'));
 Route::get('browse/{mode?}/{location?}/{language?}/{category?}', 
 	array('uses' => 'BookController@showAll'));
-Route::get('search/{term}', 
+Route::get('search', 
 	array('as' => 'search', 'uses' => 'BookController@search'));
 
 Route::get('book/{id?}', array('as' => 'single-book', 'uses' => 'BookController@showSingle'));

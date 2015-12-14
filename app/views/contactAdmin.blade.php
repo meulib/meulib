@@ -41,7 +41,7 @@
 			<td>{{ Form::email('email', '', ['required']) }}<br/></td>
 		</tr>
 		<tr>
-			<td align="right" valign="top">Your message<br/>to say</td>
+			<td align="right" valign="top">Your message</td>
 			<td>{{ Form::textarea('message', '', ['required']) }}<br/></td>
 		</tr>
 		<tr>

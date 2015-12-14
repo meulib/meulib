@@ -27,12 +27,11 @@ class Librarian {
 					    return $val->EntityID;
 					}, $searchResult);
 		// var_dump($bookIDsA);
-		echo "<br/>";
 
 		if (count($bookIDsA)>0)
 		{
 			// get book records for matching ids
-			$books = FlatBook::select('ID','Title','Author1')
+			$books = FlatBook::select('ID','Title','SubTitle','Author1','Author2','CoverFilename')
 					->orderBy('ID','asc')
 					->whereIn('ID', $bookIDsA)
 					->get()
@@ -117,7 +116,7 @@ class Librarian {
 
 	// ------------------- MAINTENANCE --------------
 
-	public static function updateSearchTbl()
+	public static function updateSearchTblNew()
 	{
 		$connSettings = Config::get('database.connections');
 		$tblPrefix = '';
@@ -136,12 +135,27 @@ class Librarian {
 		if (strlen($newIDsString) > 0)
 		{
 			// insert data abt new books into search tbl
-			$sql = "insert into ".$tblPrefix."search_tbl (EntityID,Phrase,EntityType) select ID, concat(Title,' ',SubTitle,' ',Author1,' ',Author2), 1 from ".$tblPrefix."books_flat where ID in (".$newIDsString.") and deleted_at is not null";
+			$sql = "insert into ".$tblPrefix."search_tbl (EntityID,Phrase,EntityType) select ID, concat(Title,' ',SubTitle,' ',Author1,' ',Author2), 1 from ".$tblPrefix."books_flat where ID in (".$newIDsString.") and deleted_at is null";
 			// var_dump($sql);
 			$result = DB::statement($sql);
 		}
 		else
 			$result = true;
+		return $result;
+	}
+
+	public static function updateSearchTbl()
+	{
+		$connSettings = Config::get('database.connections');
+		$tblPrefix = '';
+		$tblPrefix = $connSettings['mysql']['prefix'];
+
+		$lastDate = DB::table('search_tbl')
+						->select('created_at')
+						->orderBy('created_at','desc')
+						->first();
+		$sql = "insert into ".$tblPrefix."search_tbl (EntityID,Phrase,EntityType) select ID, concat(Title,' ',SubTitle,' ',Author1,' ',Author2), 1 from ".$tblPrefix."books_flat where updated_at > '".$lastDate->created_at."' and deleted_at is null";
+		$result = DB::statement($sql);
 		return $result;
 	}
 

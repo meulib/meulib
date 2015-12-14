@@ -282,11 +282,13 @@ class BookController extends BaseController
     }
 
 
-    public function search($term = 'abc')
+    public function search()
     {
-        // $searchTerm = Input::get('searchTerm');
-        $result = Librarian::search($term);
-        var_dump($result);
+        $s = Input::get('s');
+        $result = Librarian::search($s);
+        return View::make('searchResults', 
+            array('books'=>$result,
+                'term'=>$s));
     }
 
     
