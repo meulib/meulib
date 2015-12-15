@@ -241,5 +241,6 @@ return array(
 		'allBooksLocations'=>'allBooksLocations',
 		'allLanguages'=>'allLanguages',
 		'allCategories'=>'allCategories',
-		'allBooks'=>'allBooksPage_')
+		'allBooks'=>'allBooksPage_',
+		'searchBooks'=>'searchBooks_')
 );
