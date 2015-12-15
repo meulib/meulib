@@ -94,6 +94,17 @@ class Librarian {
 		
 	}
 
+	public static function cachedSearch($searchTerm)
+	{
+		$cacheKey = Config::get('app.cacheKeys')['searchBooks'].$searchTerm;
+		log::info('cachedSearch for cacheKey '.$cacheKey);
+    	return Cache::remember($cacheKey, 60, function() use($cacheKey,$searchTerm)
+        {
+        	Log::info('cachedSearch from db, not cacheKey '.$cacheKey);
+            return self::search($searchTerm);
+        });
+	}
+
 	public static function membersByCountry($country)
 	{
 		return DB::table('users')
