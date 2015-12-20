@@ -131,7 +131,7 @@ Book Copies ({{{count($copies)}}})
 	{{{$bCopy->Owner->FullName.': '}}}</a>
 	in 
 	{{{$bCopy->Owner->City.' ('.$bCopy->Owner->Locality.'), '.$bCopy->Owner->Country}}}</h3>
-	@if ($book->ID == Config::get('ourlib.womens-bodies-bookid'))
+	@if ($bCopy->BorrowingFee > 0)
 		<table class="rateTable">
 			<thead><td></td><td>Your cost</td>
 				<td>

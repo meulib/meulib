@@ -12,7 +12,7 @@
         Lending Fee charged by {{$bCopy->Owner->FullName}}: Rs. {{$bCopy->BorrowingFee}}.<br/>
         <b>Total cost to you: Rs. {{$bCopy->Owner->WithinCityDeliveryRate+$bCopy->BorrowingFee}}</b><br/>
         Payment: Cash on delivery.<br/>
-        <b>You save Rs. {{1500-$bCopy->BorrowingFee-$bCopy->Owner->WithinCityDeliveryRate}}</b> approximately, compared to purchasing (as per prices on Flipkart).
+        <b>You save Rs. {{$bCopy->MarketRate - $bCopy->BorrowingFee-$bCopy->Owner->WithinCityDeliveryRate}}</b> approximately, compared to purchasing (as per prices on Flipkart).
         <br/>
         <br/>
         <button data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Close</span></button>

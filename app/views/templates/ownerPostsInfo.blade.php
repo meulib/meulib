@@ -13,7 +13,7 @@
         <b>Total cost to you: Rs. {{$bCopy->BorrowingFee+$bCopy->PostingRate+$bCopy->PostingRate}}</b> approx.<br/>
         <b>You pay to Owner: Rs. {{$bCopy->BorrowingFee+$bCopy->PostingRate}}</b><br/>
         <br/>
-        <b>You save Rs. {{1500-$bCopy->BorrowingFee-$bCopy->PostingRate-$bCopy->PostingRate}}</b> approximately, compared to purchasing (as per prices on Flipkart).<br/>
+        <b>You save Rs. {{$bCopy->MarketRate - $bCopy->BorrowingFee-$bCopy->PostingRate-$bCopy->PostingRate}}</b> approximately, compared to purchasing (as per prices on Flipkart).<br/>
         <br/>
         Payment: via Netbanking.<br/>
         Owner will give her bank account details after approving your request.<br/>

@@ -10,7 +10,7 @@
         <br/>
         <b>Lending Fee charged by {{$bCopy->Owner->FullName}}: Rs. {{$bCopy->BorrowingFee}}</b>.<br/>
         Payment in cash when borrowing.<br/>
-        You save approximately Rs. {{1500-$bCopy->BorrowingFee}} compared to purchasing (as per prices on Flipkart).
+        You save approximately Rs. {{$bCopy->MarketRate - $bCopy->BorrowingFee}} compared to purchasing (as per prices on Flipkart).
         <br/>
         <br/>
         {{$bCopy->Owner->FullName}} will give the address to collect the book after approving your request.<br/>
