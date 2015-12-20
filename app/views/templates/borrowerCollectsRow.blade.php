@@ -9,6 +9,6 @@
 	</td>
 	<td>Rs. {{$bCopy->BorrowingFee}}</td>
 	<td>
-		Rs. {{1500-$bCopy->BorrowingFee}}
+		Rs. {{$bCopy->MarketRate - $bCopy->BorrowingFee}}
 	</td>
 </tr>

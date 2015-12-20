@@ -8,6 +8,6 @@
 	Rs. {{$bCopy->BorrowingFee+$bCopy->PostingRate+$bCopy->PostingRate}} approx.
 </td>
 <td>
-	Rs. {{1500-$bCopy->BorrowingFee-$bCopy->PostingRate-$bCopy->PostingRate}}
+	Rs. {{$bCopy->MarketRate - $bCopy->BorrowingFee-$bCopy->PostingRate-$bCopy->PostingRate}}
 </td>
 </tr>

@@ -14,7 +14,9 @@ class AddBorrowingfeeBookcopy extends Migration {
 	{
 		Schema::table('bookcopies', function(Blueprint $table)
 		{
+			// how much is the owner charging to lend this book
 			$table->smallInteger('BorrowingFee')->unsigned()->default(0)->after('Checked');
+			// how much is the owner charging to post this book outside the owner's city
 			$table->smallInteger('PostingRate')->unsigned()->default(0)->after('BorrowingFee');
 		});
 	}
