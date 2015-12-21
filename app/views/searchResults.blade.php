@@ -3,15 +3,7 @@
 @section('title', 'Browse Collection: ')
 
 @section('content')
-<div class="searchContainer">
-	{{ Form::open(array('action' => 'BookController@search','method'=>'get')) }}
-	<input type="text" name="s" class="searchBox" placeholder="Search Books" />
-	{{-- <button style="background-color:transparent;border:0;background:hsla(197,100%,92%,1) url(1447869415_magnifying-glass-search.png) 0 0 no-repeat;width:30px;height:30px;float:right">&nbsp;</button> --}}
-	{{ Form::submit(' ', 
-			array('class' => 'searchButton',
-				'style' => 'background:hsla(197,100%,92%,1) url(1447869415_magnifying-glass-search.png) 0 0 no-repeat;width:30px;')); }}
-	{{ Form::close() }}
-</div>
+@include('templates.searchBox')
 <div class="contentDiv" style="width:100%">
 @if (($books) && (count($books) > 0))
 	<span style="font-size:120%">{{count($books) ." results for "}}<b>{{$term}}</b></span><br/>

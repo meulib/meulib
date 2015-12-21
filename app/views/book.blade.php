@@ -24,6 +24,7 @@
 @section('title', $book->Title.': '.$book->Author1.': ')
 
 @section('content')
+@include('templates.searchBox')
 <div class='contentDiv' style="width:100%">
 
 @if (!$loggedIn)

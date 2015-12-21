@@ -140,6 +140,7 @@ Category:
 </div>
 @endif
 </div>
+@include('templates.searchBox')
 <!-- --- END BROWSE FILTER SECTION --- -->
 
 @if ($tMsg[1]!="")
