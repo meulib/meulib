@@ -24,6 +24,7 @@
     </style>
     @section('htmlHead')
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        {{ HTML::style('css/bootstrap-grid.min.css') }}
         {{ HTML::style('css/bootstrap-modal-only.min.css') }}
         {{ HTML::style('css/ourlib.css') }}
     	<title>@yield('title'){{Config::get('app.name')}}</title>
