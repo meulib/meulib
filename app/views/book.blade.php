@@ -19,6 +19,9 @@
 	}
 	$deleteFormURL = URL::to('delete-book-confirmation');
 	$copies = $copies->keyBy('UserID');
+
+	$onclickShowEdit = "showHideDiv('bookEdit','bookDisplay','inline-block')"; 
+	$onclickHideEdit = "showHideDiv('bookDisplay','bookEdit','inline-block')";
 ?>
 
 @section('title', $book->Title.': '.$book->Author1.': ')
@@ -80,9 +83,6 @@
 				<br/><br/>
 			@endif
 			@if (($loggedIn) && (isset($copies[$loggedInUser->UserID])))
-				<?php $onclickShowEdit = "showHideDiv('bookEdit','bookDisplay','inline-block')"; 
-					$onclickHideEdit = "showHideDiv('bookDisplay','bookEdit','inline-block')";
-				?>
 				<span>
 					{{ HTML::link('#','Edit Book Info', ['onclick'=>$onclickShowEdit]) }}
 				</span>
