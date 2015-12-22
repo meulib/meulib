@@ -5,7 +5,7 @@ class FileManager
 	protected static $imagePath = '/images/';
 	protected static $imageMimes = array(
 		'image/gif'=>['gif'],
-		'image/jpeg'=>['jpg','jpeg','jpe','jfif'],
+		'image/jpeg'=>['jpg','jpeg','jpe','jfif','JPG'],
 		'image/png'=>['png'],
 		'image/jp2'=>['jp2','jpx']);
 	protected static $maxFileSize = 5242880;
