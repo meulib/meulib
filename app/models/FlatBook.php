@@ -144,10 +144,6 @@ class FlatBook extends Eloquent {
         $userID = $user->UserID;
         $userLocation = $user->LocationID;
 
-		// $rules = array(
-  //           'Title' => 'required',
-  //           'Author1' => 'required'
-  //       );
         $validator = Validator::make($bookDetails, self::$rules);
         if ($validator->fails()) 
         {
